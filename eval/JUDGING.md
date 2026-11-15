@@ -37,5 +37,7 @@ explicit decision can reduce the judged set to six queries; do not thin the
 judgments within a query. Every top-ten report of every compared retriever
 must be judged before fair relevance comparisons can be reported.
 
-Completed qrels and relevance metrics belong to a later step. Step 3 ends with
-this ungraded pool; unjudged reports are not treated as irrelevant.
+Step 4 provides `uv run python eval/import_judgments.py` to validate and convert
+your fully graded CSV, followed by `uv run python eval/run_eval.py` to compute
+relevance metrics. No qrels or grades are created until you supply judgments;
+unjudged reports are not treated as irrelevant.

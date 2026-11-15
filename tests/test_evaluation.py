@@ -1,10 +1,17 @@
 import csv
+import hashlib
 import importlib.util
+import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
+from psycopg.rows import dict_row
+from test_chunk_embed import FakeProvider
+from test_retrieval_index import populate
 
 from safelens.config import Settings
+from safelens.reindex import reindex
 from safelens.retrieve import RetrievalConfig
 
 spec = importlib.util.spec_from_file_location("run_eval", Path("eval/run_eval.py"))
@@ -71,3 +78,44 @@ def test_pool_is_exact_blinded_union_shuffled_and_ungraded(tmp_path):
     evaluation.write_pool(path, pool)
     with pytest.raises(ValueError, match="human work"):
         evaluation.write_pool(path, [])
+
+
+def test_eval_runner_consumes_toy_qrels_and_preserves_filled_pool(database, tmp_path):
+    conn, _, settings = database
+    settings = replace(settings, embedding_dim=3)
+    populate(conn, settings)
+    reindex(conn, settings, FakeProvider)
+    queries = evaluation.load_queries(Path("eval/queries.jsonl"))
+    for query in queries:
+        if query["id"] == "control-time":
+            query["verification"].update(acn="100", report_month="2015-10")
+    query_path = tmp_path / "queries.jsonl"
+    query_path.write_text("".join(json.dumps(q) + "\n" for q in queries), encoding="utf-8")
+    with conn.cursor(row_factory=dict_row) as cursor:
+        reports = {r["acn"]: r for r in cursor.execute("SELECT * FROM reports ORDER BY acn").fetchall()}
+    snapshot = hashlib.sha256("".join(f"{acn}:{r['content_hash']}\n" for acn, r in reports.items()).encode("utf-8")).hexdigest()
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps({"selected_acns": sorted(reports), "snapshot_sha256": snapshot,
+                                         "source_dataset": "synthetic", "source_revision": "synthetic", "seed": 42}), encoding="utf-8")
+    judged_ids = [q["id"] for q in queries if q["layer"] == 2]
+    (tmp_path / "qrels.jsonl").write_text("".join(json.dumps({"query_id": qid, "acn": acn, "grade": grade}) + "\n"
+                                                for qid in judged_ids for acn, grade in zip(sorted(reports), (0, 1, 2))), encoding="utf-8")
+    provider = FakeProvider(settings)
+    record = evaluation.run(conn, settings, provider, query_path, manifest_path, tmp_path, 42,
+                            rankings_path=tmp_path / "rankings.json")
+    assert record["judged_relevance"]["status"] == "ready"
+    assert record["judged_relevance"]["averages"]["dense"]["precision_at_10"] == pytest.approx(.2)
+    assert "Per-query judged relevance" in (tmp_path / "results.md").read_text(encoding="utf-8")
+    pool_path = tmp_path / "judging_pool.csv"
+    with pool_path.open(encoding="utf-8", newline="") as source:
+        rows = list(csv.DictReader(source))
+    rows[0]["grade"] = "2"
+    rows[0]["note"] = "Synthetic fixture only"
+    with pool_path.open("w", encoding="utf-8", newline="") as target:
+        writer = csv.DictWriter(target, fieldnames=evaluation.POOL_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    before = pool_path.read_bytes()
+    evaluation.run(conn, settings, provider, query_path, manifest_path, tmp_path, 42,
+                   rankings_path=tmp_path / "rankings.json")
+    assert pool_path.read_bytes() == before

@@ -1,6 +1,6 @@
 """Unfiltered report-level category agreement and a blinded, ungraded pool.
 
-Step 3 only: no generation calls, relevance judgments, or Layer-2 scoring.
+No generation calls or automatic judgments. Layer-2 scoring requires human qrels.
 """
 
 import argparse
@@ -24,6 +24,7 @@ from psycopg.rows import dict_row
 
 from safelens.config import Settings
 from safelens.embed import LocalEmbeddingProvider
+from safelens.evaluation import judged_metrics, load_qrels
 from safelens.ingest import require_active_index
 from safelens.reindex import LOCK
 from safelens.retrieve import (
@@ -160,10 +161,16 @@ def judging_pool(queries, rankings, reports, seed):
     return rows
 
 
-def write_pool(path, rows):
+def write_pool(path, rows, preserve_judgments=False):
     if path.exists():
         with path.open(encoding="utf-8", newline="") as source:
-            if any(r["grade"] or r["note"] for r in csv.DictReader(source)):
+            reader = csv.DictReader(source)
+            existing = list(reader)
+            if any(r["grade"] or r["note"] for r in existing):
+                if preserve_judgments and reader.fieldnames == POOL_COLUMNS and {
+                    (r["query_id"], r["acn"], r["synopsis"]) for r in existing
+                } == {(r["query_id"], r["acn"], r["synopsis"]) for r in rows} and len(existing) == len(rows):
+                    return
                 raise ValueError("Judging pool already contains human work; refusing to overwrite")
     with path.open("w", encoding="utf-8", newline="") as target:
         writer = csv.DictWriter(target, fieldnames=POOL_COLUMNS)
@@ -202,26 +209,42 @@ def render_results(record):
                   "| Retriever | Queries with changed top-10 ACN order | Change in mean Category Precision@10 |", "|---|---:|---:|"])
     for method, values in record["candidate_depth_sensitivity"].items():
         lines.append(f"| {method} | {values['changed_top10_queries']}/28 | {values['category_precision_at_10_delta']:+.3f} |")
-    lines.extend(["", "## Layer-2 judging is pending", "",
+    relevance = record.get("judged_relevance", {"status": "pending"})
+    lines.extend(["", "## Layer-2 judging", "",
                   f"`judging_pool.csv` contains **{record['judging_pool']['rows']}** unique (query_id, acn) pairs for eight queries, shuffled with seed {record['judging_pool']['shuffle_seed']}.",
-                  "The sheet contains no retriever identity or ranks. Grade and note are blank; no documents have been pre-judged.",
+                  f"The sheet contains no retriever identity or ranks. Filled grades: {record['judging_pool']['grades_assigned']}; filled notes: {record['judging_pool']['notes_assigned']}. No automated judgments are assigned.",
                   "Cynthia: read synopsis first, consult the indexed full narrative if ambiguous, then use grades 2=directly relevant, 1=partially relevant, 0=irrelevant. Record notes as needed.",
-                  "Only the judging CSV should be used during blinded judging. A future step will version completed qrels and compute relevance metrics; unjudged reports are not assumed irrelevant.",
+                  "After human grading, run `uv run python eval/import_judgments.py`, then rerun this evaluator. Unjudged top-ten reports cause an error rather than being assumed irrelevant."])
+    if relevance["status"] == "ready":
+        lines.extend(["", "### Judged relevance (macro averages)", "",
+                      "Precision@10 and MRR treat grade >=1 as relevant. MRR uses the retrieved top ten. nDCG@10 uses linear gains 2/1/0 and the pooled ideal ranking.",
+                      "These eight queries are a development set, not an independent held-out test; pooling does not establish complete corpus relevance.", "",
+                      "| Retriever | Precision@10 | MRR | nDCG@10 |", "|---|---:|---:|---:|"])
+        for method, scores in relevance["averages"].items():
+            lines.append(f"| {method} | {scores['precision_at_10']:.3f} | {scores['mrr']:.3f} | {scores['ndcg_at_10']:.3f} |")
+        lines.extend(["", "### Per-query judged relevance", "",
+                      "| Query | Retriever | Precision@10 | MRR | nDCG@10 |", "|---|---|---:|---:|---:|"])
+        for row in relevance["per_query"]:
+            lines.append(f"| {row['query_id']} | {row['method']} | {row['precision_at_10']:.3f} | {row['mrr']:.3f} | {row['ndcg_at_10']:.3f} |")
+    else:
+        lines.extend(["", "Human relevance metrics are pending: `qrels.jsonl` does not exist. No grades have been invented."])
+    lines.extend([
                   "", "## Abstention controls", "",
-                  "Controls are present with `expect: insufficient_evidence`. Absence was checked against this frozen subset; generation outcomes are **not run in Step 3**.", ""])
+                  "Controls are present with `expect: insufficient_evidence`. Absence was checked against this frozen subset. This retrieval evaluator does not call generation; Step 4 generation smoke outcomes are recorded separately in `docs/STEP4_NOTES.md`.", ""])
     for name, control in record["controls"].items():
         lines.append(f"- `{name}`: absence verified; `{json.dumps(control['evidence'], ensure_ascii=False)}`")
     lines.extend(["", "## Limitations and experiment record", "",
-                  "These are weak-label category metrics, not judged Precision@10, MRR, nDCG, or proof that any method is better at answering questions. Twenty-eight hand-written queries are a development set, not an independent held-out test.",
+                  "Layer-1 category metrics are not judged relevance or proof that any method is better at answering questions. Judged relevance, when available above, is reported separately. Twenty-eight hand-written queries are a development set, not an independent held-out test.",
                   "The category-balanced subset includes every available runway-incursion report; category overlap and year skew are recorded in the manifest and DATA_NOTES. Synopsis text is included in indexing and may simplify retrieval.",
                   "PostgreSQL FTS uses simple configuration and websearch query semantics; long conjunctive queries may underfill the top ten. This baseline is not BM25. Exact cosine search uses no ANN index.",
                   "Candidate-depth changes above must be considered before interpreting hybrid results; the default was not silently tuned.",
                   "The complete experiment configuration, corpus/content hashes, query/qrels hashes, per-query metrics and latency samples, software/hardware notes, and timestamp are in `experiment.json`.",
-                  "Generation/API/UI and human judging are outside this completed Step 3.", ""])
+                  "No generation or human judging is performed by this evaluator.", ""])
     return "\n".join(lines)
 
 
-def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed):
+def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed,
+        rankings_path=Path("data/eval_rankings.json")):
     queries = load_queries(queries_path)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if not conn.execute("SELECT pg_try_advisory_lock_shared(%s)", (LOCK,)).fetchone()[0]:
@@ -246,8 +269,15 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
         deep_rows = category_metrics(queries, deep, {acn: r["anomaly_codes"] for acn, r in reports.items()})
         summary, deep_summary = average_metrics(rows), average_metrics(deep_rows)
         pool = judging_pool(queries, rankings, reports, pool_seed)
+        qrels_path = output / "qrels.jsonl"
+        relevance = {"status": "pending", "reason": "qrels.jsonl absent; human judging not performed"}
+        if qrels_path.exists():
+            qrels = load_qrels(qrels_path, {q["id"] for q in queries if q["layer"] == 2})
+            relevance = judged_metrics(queries, rankings, qrels)
         output.mkdir(parents=True, exist_ok=True)
-        write_pool(output / "judging_pool.csv", pool)
+        write_pool(output / "judging_pool.csv", pool, preserve_judgments=True)
+        with (output / "judging_pool.csv").open(encoding="utf-8", newline="") as source:
+            saved_pool = list(csv.DictReader(source))
         index["built_at"] = index["built_at"].isoformat()
         record = {
             "timestamp": datetime.now(UTC).isoformat(), "unfiltered": True,
@@ -262,7 +292,9 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             "timing_scope": "31 queries; retrieval plus query embeddings; excludes model initialization and generation",
             "judging_pool": {"rows": len(pool), "unique_queries": len({r['query_id'] for r in pool}),
                              "shuffle_seed": pool_seed, "sha256": file_hash(output / "judging_pool.csv"),
-                             "grades_assigned": 0, "notes_assigned": 0},
+                             "grades_assigned": sum(bool(r["grade"]) for r in saved_pool),
+                             "notes_assigned": sum(bool(r["note"]) for r in saved_pool)},
+            "judged_relevance": relevance,
             "layer1_primary": average_metrics([r for r in rows if r["layer"] == 1]),
             "all_category_queries": summary, "per_query": rows, "controls": controls,
             "latency_ms": {name: {"n": len(values), "samples": values, "mean": mean(values),
@@ -274,7 +306,7 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             } for method in METHODS},
             "sensitivity_retrieval_config": asdict(replace(config, candidate_chunks=200)),
             "sensitivity_per_query": deep_rows,
-            "detailed_rankings_local_path": "data/eval_rankings.json",
+            "detailed_rankings_local_path": str(rankings_path),
             "hardware": {"processor": platform.processor(), "platform": platform.platform()},
             "software": {"python": platform.python_version(), **{
                 name: importlib.metadata.version(name)
@@ -284,7 +316,7 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
         }
         (output / "experiment.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         (output / "results.md").write_text(render_results(record), encoding="utf-8")
-        Path("data/eval_rankings.json").write_text(json.dumps(rankings, ensure_ascii=False), encoding="utf-8")
+        rankings_path.write_text(json.dumps(rankings, ensure_ascii=False), encoding="utf-8")
         print(json.dumps({"corpus": record["corpus"], "layer1_primary": record["layer1_primary"],
                           "judging_pool": record["judging_pool"], "controls_verified": list(controls)}, indent=2))
         return record

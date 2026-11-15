@@ -5,9 +5,11 @@ aviation safety reporter accounts. The Mini milestone will compare PostgreSQL
 full-text search, dense retrieval, and hybrid retrieval with report-level
 evaluation.
 
-Current milestone: Step 3 — a deterministic 5,000-report subset, unfiltered
-Layer-1 evaluation, and a blinded judging pool. Human relevance judgments and
-generation remain future work; this is not yet a complete RAG application.
+Current milestone: retrieval and evaluation on 5,000 reports. Step 4 adds the
+generation API, citation validation, Gradio client, and human-qrels metric path.
+Live generation acceptance passed; see [Step 4 notes](docs/STEP4_NOTES.md) for
+control outcomes, qualified refusals, and a cited positive-path example.
+Human relevance judging remains pending.
 
 ## Scaffold quickstart
 
@@ -148,6 +150,71 @@ the eight Layer-2 queries, with no retriever identities and blank grade/note
 fields. See [the judging handoff](eval/JUDGING.md). The evaluator protects a CSV
 with filled human work from overwriting. No grading, qrels, generation/API/UI,
 or generation-based abstention scoring is performed in Step 3.
+
+## Step 4 generation API and Gradio
+
+Set `OPENAI_API_KEY` for an account with available API credit. Model defaults
+to `gpt-4o-mini` at temperature 0; `LLM_MODEL`, `LLM_TEMPERATURE`,
+`LLM_MAX_OUTPUT_TOKENS`, and `LLM_TIMEOUT` are
+configurable. Keep the UTF-8 environment variables from quickstart set in both
+terminals. Start the API and UI in separate terminals:
+
+```powershell
+uv run uvicorn safelens.app:app --host 127.0.0.1 --port 8000
+```
+
+```powershell
+uv run python -m safelens.ui
+```
+
+Open [Gradio](http://127.0.0.1:7860) or [API documentation](http://127.0.0.1:8000/docs).
+The UI reads FastAPI over HTTP only; `SAFELENS_API_URL` selects its API URL.
+`GET /health` checks the ready index, not external provider quota.
+
+- `POST /ask` accepts `{question, category?}` and returns `{answer, citations,
+  results, validation, index_id}`. Citations contain `{acn, chunk_id, passage}`.
+- `GET /report/{acn}` returns the indexed normalized report, exact chunk texts,
+  content hash, source dataset/revision, and active build ID.
+- OpenAPI defines stable request/response schemas. A model/config mismatch or
+  offline build makes serving unavailable; the API never serves mixed builds.
+
+Context is the best chunk of each hybrid top-five report, plus a distinct
+component chunk only when that report is top-five in the component. There are
+at most two chunks per report and eight total. Prompts distinguish reporter
+accounts from confirmed findings, prohibit unsupported claims and invented
+date precision, and request qualified refusal when support is missing.
+
+Every cited ACN must belong to supplied passages. Fabricated citations are
+dropped, the answer is flagged, and unsafe/uncited output is replaced with
+`insufficient evidence.` Valid citation membership does not prove claim support.
+Lexical semantics and retrieval defaults remain unchanged.
+
+Run `uv run python scripts/smoke_step4.py` for the three controls and two normal
+queries; it verifies citation passages and source reports against PostgreSQL.
+`uv run python scripts/check_step4_local.py` verifies health, source contracts,
+and the Gradio report callback without calling generation. Retrieved text and
+full smoke output stay under ignored `data/`; outcomes are documented in notes.
+
+### Human judging and relevance metrics
+
+Do not create labels automatically. After Cynthia fills every row in
+`eval/judging_pool.csv`:
+
+```powershell
+uv run python eval/import_judgments.py
+uv run python eval/run_eval.py
+```
+
+The importer checks query IDs, subset ACNs, complete pool coverage, unique pairs,
+and grades 0/1/2, then creates `eval/qrels.jsonl` without overwriting an existing
+file. Blank or invalid grades create no output. The evaluator preserves matching
+human-filled CSVs. It scores only when qrels exist and refuses comparisons with
+unjudged top-ten reports.
+
+Precision@10 and MRR use grade >=1 as relevant. MRR is measured over the returned
+top ten. nDCG@10 uses linear gains 2/1/0 and the ideal ranking of the judged pool.
+Both per-query and macro-average scores are appended separately from Layer-1
+category agreement. No qrels or human grades are supplied by this implementation.
 
 ## Project documents
 

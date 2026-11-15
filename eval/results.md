@@ -125,9 +125,9 @@ Single local run, warmed model; excludes model initialization and generation. Ti
 
 | Retriever | Mean ms | p95 ms |
 |---|---:|---:|
-| lexical | 11.69 | 19.35 |
-| dense | 105.43 | 222.26 |
-| hybrid | 104.49 | 195.96 |
+| lexical | 6.80 | 11.35 |
+| dense | 58.47 | 76.26 |
+| hybrid | 60.57 | 69.25 |
 
 ## Candidate-depth check
 
@@ -139,16 +139,18 @@ Defaults remain 100/50. Doubling candidate chunks to 200 is a separately recorde
 | dense | 0/28 | +0.000 |
 | hybrid | 0/28 | +0.000 |
 
-## Layer-2 judging is pending
+## Layer-2 judging
 
 `judging_pool.csv` contains **88** unique (query_id, acn) pairs for eight queries, shuffled with seed 20261116.
-The sheet contains no retriever identity or ranks. Grade and note are blank; no documents have been pre-judged.
+The sheet contains no retriever identity or ranks. Filled grades: 0; filled notes: 0. No automated judgments are assigned.
 Cynthia: read synopsis first, consult the indexed full narrative if ambiguous, then use grades 2=directly relevant, 1=partially relevant, 0=irrelevant. Record notes as needed.
-Only the judging CSV should be used during blinded judging. A future step will version completed qrels and compute relevance metrics; unjudged reports are not assumed irrelevant.
+After human grading, run `uv run python eval/import_judgments.py`, then rerun this evaluator. Unjudged top-ten reports cause an error rather than being assumed irrelevant.
+
+Human relevance metrics are pending: `qrels.jsonl` does not exist. No grades have been invented.
 
 ## Abstention controls
 
-Controls are present with `expect: insufficient_evidence`. Absence was checked against this frozen subset; generation outcomes are **not run in Step 3**.
+Controls are present with `expect: insufficient_evidence`. Absence was checked against this frozen subset. This retrieval evaluator does not call generation; Step 4 generation smoke outcomes are recorded separately in `docs/STEP4_NOTES.md`.
 
 - `control-domain`: absence verified; `{"matching_report_counts": {"Pelagic Meridian": 0, "MARINE-CONTROL-20261115-X": 0, "ballast pump": 0}}`
 - `control-time`: absence verified; `{"acn": "1857031", "report_month": "2021-11", "content_hash": "d37509d66f1bc4eedc11e5bb5dc3a08f006ed5c5754c7a1aa340d47c381e6295", "temporal_marker_found": false, "manual_full_text_inspection": "Entire synopsis and narrative manually inspected: neither contains an event day or clock time; structured date has month precision only. Broad source time-of-day bands cannot establish an exact timestamp."}`
@@ -156,9 +158,9 @@ Controls are present with `expect: insufficient_evidence`. Absence was checked a
 
 ## Limitations and experiment record
 
-These are weak-label category metrics, not judged Precision@10, MRR, nDCG, or proof that any method is better at answering questions. Twenty-eight hand-written queries are a development set, not an independent held-out test.
+Layer-1 category metrics are not judged relevance or proof that any method is better at answering questions. Judged relevance, when available above, is reported separately. Twenty-eight hand-written queries are a development set, not an independent held-out test.
 The category-balanced subset includes every available runway-incursion report; category overlap and year skew are recorded in the manifest and DATA_NOTES. Synopsis text is included in indexing and may simplify retrieval.
 PostgreSQL FTS uses simple configuration and websearch query semantics; long conjunctive queries may underfill the top ten. This baseline is not BM25. Exact cosine search uses no ANN index.
 Candidate-depth changes above must be considered before interpreting hybrid results; the default was not silently tuned.
 The complete experiment configuration, corpus/content hashes, query/qrels hashes, per-query metrics and latency samples, software/hardware notes, and timestamp are in `experiment.json`.
-Generation/API/UI and human judging are outside this completed Step 3.
+No generation or human judging is performed by this evaluator.

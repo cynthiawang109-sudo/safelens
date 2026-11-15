@@ -17,6 +17,9 @@ class Settings:
     embed_query_prefix: str = "Represent this sentence for searching relevant passages: "
     llm_provider: str = "openai"
     llm_model: str = "gpt-4o-mini"
+    llm_max_output_tokens: int = 800
+    llm_timeout: float = 30.0
+    llm_temperature: float = 0.0
     openai_api_key: str = field(default="", repr=False)
     chunk_tokens: int = 500
     chunk_overlap: float = 0.15
@@ -28,6 +31,10 @@ class Settings:
             raise ValueError("Chunk overlap must be in [0, 1)")
         if self.embedding_batch_size <= 0 or self.embedding_threads <= 0:
             raise ValueError("Embedding batch size and thread count must be positive")
+        if self.llm_max_output_tokens <= 0 or self.llm_timeout <= 0:
+            raise ValueError("LLM output limit and timeout must be positive")
+        if not 0 <= self.llm_temperature <= 2:
+            raise ValueError("LLM temperature must be in [0, 2]")
 
     @property
     def chunk_config(self) -> dict:
@@ -65,6 +72,9 @@ class Settings:
             embed_query_prefix=os.getenv("EMBED_QUERY_PREFIX", defaults.embed_query_prefix),
             llm_provider=os.getenv("LLM_PROVIDER", defaults.llm_provider),
             llm_model=os.getenv("LLM_MODEL", defaults.llm_model),
+            llm_max_output_tokens=int(os.getenv("LLM_MAX_OUTPUT_TOKENS", defaults.llm_max_output_tokens)),
+            llm_timeout=float(os.getenv("LLM_TIMEOUT", defaults.llm_timeout)),
+            llm_temperature=float(os.getenv("LLM_TEMPERATURE", defaults.llm_temperature)),
             openai_api_key=os.getenv("OPENAI_API_KEY", ""),
             chunk_tokens=int(os.getenv("CHUNK_TOKENS", defaults.chunk_tokens)),
             chunk_overlap=float(os.getenv("CHUNK_OVERLAP", defaults.chunk_overlap)),
