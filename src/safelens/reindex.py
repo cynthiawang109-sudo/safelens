@@ -13,7 +13,7 @@ LOCK = 742802
 LOG = logging.getLogger(__name__)
 
 
-def reindex(conn, settings, provider_factory, before_swap=None):
+def reindex(conn, settings, provider_factory, before_swap=None, replacement_reports=None):
     """Use an autocommit connection. Session lock excludes serving and ingestion.
 
     A killed builder retains only a building metadata row; old chunks stay valid.
@@ -25,9 +25,14 @@ def reindex(conn, settings, provider_factory, before_swap=None):
         raise RuntimeError("Another ingest/reindex operation is active")
     build_id = None
     try:
+        with conn.cursor(row_factory=dict_row) as cursor:
+            original = cursor.execute("SELECT * FROM reports ORDER BY acn COLLATE \"C\"").fetchall()
+        reports = original if replacement_reports is None else sorted(replacement_reports, key=lambda r: r["acn"])
+        if len({report["acn"] for report in reports}) != len(reports):
+            raise ValueError("Replacement corpus contains duplicate ACNs")
         with conn.transaction():
             conn.execute("UPDATE index_meta SET status='failed' WHERE status='building'")
-            count = conn.execute("SELECT count(*) FROM reports").fetchone()[0]
+            count = len(reports)
             if not count:
                 raise ValueError("Cannot build an empty corpus")
             build_id = conn.execute(
@@ -39,12 +44,12 @@ def reindex(conn, settings, provider_factory, before_swap=None):
             ).fetchone()[0]
         provider = provider_factory(settings)
         conn.execute("CREATE TEMP TABLE staged_chunks (acn text, chunk_idx int, text text, embedding text)")
-        with conn.cursor(row_factory=dict_row) as cursor:
-            reports = cursor.execute("SELECT * FROM reports ORDER BY acn COLLATE \"C\"").fetchall()
         pending = []
         for report in reports:
             passages = chunk_report(report["synopsis"] or "", report["narrative"], provider, settings)
             pending.extend((report["acn"], index, text) for index, text in enumerate(passages))
+        # Pack similarly sized inputs together to avoid padding short chunks to 500 tokens.
+        pending.sort(key=lambda row: provider.count_tokens(row[2]), reverse=True)
         expected = len(pending)
         for start in range(0, expected, settings.embedding_batch_size):
             batch = pending[start:start + settings.embedding_batch_size]
@@ -69,9 +74,21 @@ def reindex(conn, settings, provider_factory, before_swap=None):
             conn.execute("LOCK TABLE reports IN SHARE MODE")
             with conn.cursor(row_factory=dict_row) as cursor:
                 current = cursor.execute("SELECT * FROM reports ORDER BY acn COLLATE \"C\"").fetchall()
-            if current != reports:
+            if current != original:
                 raise ValueError("Corpus changed while embedding; rebuild required")
             conn.execute("DELETE FROM chunks")
+            if replacement_reports is not None:
+                # Old reports and ingestion state are removed only inside the atomic swap.
+                conn.execute("DELETE FROM reports")
+                columns = list(reports[0])
+                with conn.cursor() as cursor:
+                    cursor.executemany(
+                        sql.SQL("INSERT INTO reports ({}) VALUES ({})").format(
+                            sql.SQL(", ").join(map(sql.Identifier, columns)),
+                            sql.SQL(", ").join(sql.Placeholder() for _ in columns),
+                        ),
+                        [[report[c] for c in columns] for report in reports],
+                    )
             conn.execute(sql.SQL("ALTER TABLE chunks ALTER COLUMN embedding TYPE vector({})").format(
                 sql.Literal(settings.embedding_dim)
             ))

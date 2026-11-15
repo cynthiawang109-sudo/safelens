@@ -1,0 +1,31 @@
+{"id":"ri-l1-1","query":"aircraft crossed the runway hold short line without clearance","category":"Ground Incursion Runway","layer":1,"style":"plain"}
+{"id":"ri-l1-2","query":"crew taxied onto an active runway while another aircraft was landing","category":"Ground Incursion Runway","layer":1,"style":"plain"}
+{"id":"ri-l1-3","query":"airport surface navigation confusion led pilots past a protected boundary","category":"Ground Incursion Runway","layer":1,"style":"paraphrase"}
+{"id":"ri-l1-4","query":"a vehicle occupied the takeoff path unexpectedly and the departure had to stop","category":"Ground Incursion Runway","layer":1,"style":"paraphrase"}
+{"id":"ri-l1-5","query":"LUAW hold short ATC runway incursion","category":"Ground Incursion Runway","layer":1,"style":"jargon"}
+{"id":"alt-l1-1","query":"aircraft climbed above its assigned altitude","category":"Deviation - Altitude Excursion From Assigned Altitude","layer":1,"style":"plain"}
+{"id":"alt-l1-2","query":"flight crew descended below the altitude cleared by air traffic control","category":"Deviation - Altitude Excursion From Assigned Altitude","layer":1,"style":"plain"}
+{"id":"alt-l1-3","query":"the airplane kept going up after the pilots expected it to level off","category":"Deviation - Altitude Excursion From Assigned Altitude","layer":1,"style":"paraphrase"}
+{"id":"alt-l1-4","query":"a distraction caused the crew to miss the selected vertical stopping point","category":"Deviation - Altitude Excursion From Assigned Altitude","layer":1,"style":"paraphrase"}
+{"id":"alt-l1-5","query":"FL altitude bust MCP VNAV level off ATC clearance","category":"Deviation - Altitude Excursion From Assigned Altitude","layer":1,"style":"jargon"}
+{"id":"nmac-l1-1","query":"two aircraft came dangerously close in flight","category":"Conflict NMAC","layer":1,"style":"plain"}
+{"id":"nmac-l1-2","query":"pilots maneuvered to avoid a near midair collision","category":"Conflict NMAC","layer":1,"style":"plain"}
+{"id":"nmac-l1-3","query":"an unexpected airplane appeared directly ahead and the crew took evasive action","category":"Conflict NMAC","layer":1,"style":"paraphrase"}
+{"id":"nmac-l1-4","query":"a controller warning was followed by an urgent climb to miss converging traffic","category":"Conflict NMAC","layer":1,"style":"paraphrase"}
+{"id":"nmac-l1-5","query":"TCAS RA NMAC intruder traffic resolution advisory","category":"Conflict NMAC","layer":1,"style":"jargon"}
+{"id":"equip-l1-1","query":"engine failure required an emergency landing","category":"Aircraft Equipment Problem Critical","layer":1,"style":"plain"}
+{"id":"equip-l1-2","query":"smoke and an electrical system failure forced the flight to divert","category":"Aircraft Equipment Problem Critical","layer":1,"style":"plain"}
+{"id":"equip-l1-3","query":"the airplane stopped responding normally to the pilots and they declared an emergency","category":"Aircraft Equipment Problem Critical","layer":1,"style":"paraphrase"}
+{"id":"equip-l1-4","query":"loss of a vital onboard function left the crew unable to continue safely","category":"Aircraft Equipment Problem Critical","layer":1,"style":"paraphrase"}
+{"id":"equip-l1-5","query":"ECAM EICAS HYD failure emergency QRH diversion","category":"Aircraft Equipment Problem Critical","layer":1,"style":"jargon"}
+{"id":"ri-l2-1","query":"a pilot mistook a taxi instruction for permission to cross the runway","category":"Ground Incursion Runway","layer":2,"style":"plain"}
+{"id":"ri-l2-2","query":"low visibility or confusing airport signs led a crew into the departure path","category":"Ground Incursion Runway","layer":2,"style":"paraphrase"}
+{"id":"alt-l2-1","query":"an incorrectly set altitude selector caused the aircraft to pass through the cleared level","category":"Deviation - Altitude Excursion From Assigned Altitude","layer":2,"style":"plain"}
+{"id":"alt-l2-2","query":"a readback misunderstanding led the crew to stop the climb at a different level than the controller intended","category":"Deviation - Altitude Excursion From Assigned Altitude","layer":2,"style":"paraphrase"}
+{"id":"nmac-l2-1","query":"a TCAS resolution advisory required avoiding traffic that the pilots had not seen","category":"Conflict NMAC","layer":2,"style":"jargon"}
+{"id":"nmac-l2-2","query":"an aircraft without radio contact passed very close to an airplane in the airport traffic pattern","category":"Conflict NMAC","layer":2,"style":"paraphrase"}
+{"id":"equip-l2-1","query":"hydraulic failure degraded flight controls and forced an emergency diversion","category":"Aircraft Equipment Problem Critical","layer":2,"style":"plain"}
+{"id":"equip-l2-2","query":"unreliable airspeed indications left the pilots uncertain about the airplane's actual energy state","category":"Aircraft Equipment Problem Critical","layer":2,"style":"paraphrase"}
+{"id":"control-domain","query":"What maintenance findings caused the ballast pump failure aboard the research vessel Pelagic Meridian on voyage MARINE-CONTROL-20261115-X?","category":null,"layer":"control","expect":"insufficient_evidence","verification":{"kind":"absent_phrases","phrases":["Pelagic Meridian","MARINE-CONTROL-20261115-X","ballast pump"],"reason":"The named marine incident and its identifying phrases must be absent from every subset report."}}
+{"id":"control-time","query":"What exact calendar day and clock time did the EGPWS event in ASRS report 1857031 occur?","category":null,"layer":"control","expect":"insufficient_evidence","verification":{"kind":"month_only_report","acn":"1857031","report_month":"2021-11","reason":"Entire synopsis and narrative manually inspected: neither contains an event day or clock time; structured date has month precision only. Broad source time-of-day bands cannot establish an exact timestamp."}}
+{"id":"control-acn","query":"What happened in ASRS report 999999999999999, and what were its findings?","category":null,"layer":"control","expect":"insufficient_evidence","verification":{"kind":"absent_acn","acn":"999999999999999","reason":"Verify this fabricated ACN is absent from the frozen subset before recording the control."}}

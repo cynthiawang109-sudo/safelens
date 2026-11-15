@@ -85,3 +85,44 @@ chunks, build #2 ready, RRF contract audited in source, sample comparison sane.)
   judging pool has ≤ 240 unique (query_id, acn) rows; controls present with
   `expect: insufficient_evidence`; all prior tests still pass, plus new tests
   for subset determinism (same seed → same manifest) and unfiltered eval runs.
+
+## Step 4 — Generation: /ask with validated citations + Gradio UI
+
+*(Issued by Sunny on 2026-11-15 after Step 3 verification. Step 3 headline
+finding to keep in mind: the lexical baseline is extremely weak on
+natural-language queries — Category Precision@10 0.090 vs dense 0.895 —
+because websearch_to_tsquery is conjunctive. That is recorded in
+eval/results.md; do NOT retune lexical semantics in this step. A fairer
+lexical variant is a flagship M3 bake-off item.)*
+
+- `safelens/generate.py` per spec §5: grounded prompt over the hybrid top-5
+  reports (≤ 2 chunks each, ≤ 8 total); passages presented as **reporter
+  accounts, not confirmed findings**; the model must answer only from the
+  supplied evidence or reply "insufficient evidence". Validate every cited
+  ACN against the supplied documents — fabricated citations are dropped and
+  the answer flagged. Return structured evidence `{acn, chunk_id, passage}`
+  per citation.
+- `safelens/app.py` per spec §5: `POST /ask {question, category?}` →
+  `{answer, citations[], results[]}`; `GET /report/{acn}` returns exactly the
+  indexed source text + provenance; `GET /health`. Response shapes are a
+  stable contract for the future Next.js UI.
+- Gradio UI (`ui.py` or similar): calls the FastAPI endpoints over HTTP only;
+  shows answer, citations with passages, and the report-level result list.
+- Smoke-test `/ask` against the 3 abstention controls from eval/queries.jsonl
+  plus 2 normal Layer-2 queries; record outcomes (declined? fabricated
+  citation? qualified answer?) in a short `docs/STEP4_NOTES.md`. A confident
+  invented answer on any control is a failed check — fix the prompt/validation
+  before reporting.
+- Wire Layer-2 metrics into `eval/run_eval.py`: when `eval/qrels.jsonl`
+  exists, also compute Precision@10 and MRR (grade ≥ 1 = relevant) and
+  nDCG@10 (graded gains) per retriever, per query and averaged, and append to
+  results.md. Do NOT create qrels.jsonl and do not fill any grades — Cynthia
+  judges `eval/judging_pool.csv` herself; the metrics must simply work when
+  the file appears (converting her filled CSV to qrels is part of this step:
+  add a small `eval/import_judgments.py` that validates and converts it).
+- Acceptance: `/ask` answers a normal query with at least one validated
+  citation whose passage text matches the indexed chunk; all 3 controls
+  behave (qualified refusal, no invented ACN/date); `/report/{acn}` output
+  matches the DB row; prior tests still pass plus new tests for citation
+  validation (fabricated ACN dropped) and the qrels metric math on a toy
+  fixture.

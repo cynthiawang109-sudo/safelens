@@ -5,9 +5,9 @@ aviation safety reporter accounts. The Mini milestone will compare PostgreSQL
 full-text search, dense retrieval, and hybrid retrieval with report-level
 evaluation.
 
-Current status: Step 2 chunking, local embeddings, offline indexing, and three
-report-level retrievers on the 1,000-report slice. Evaluation and generation
-remain future work; this is not yet a complete RAG application.
+Current milestone: Step 3 — a deterministic 5,000-report subset, unfiltered
+Layer-1 evaluation, and a blinded judging pool. Human relevance judgments and
+generation remain future work; this is not yet a complete RAG application.
 
 ## Scaffold quickstart
 
@@ -30,6 +30,8 @@ running for integration tests; each test uses and cleans up its own schema.
 Keep raw downloads and intermediate data under gitignored `data/`.
 
 ## Step 1 validation
+
+Historical first-1,000 validation on a fresh database, before subset replacement:
 
 After setting the UTF-8 variables above:
 
@@ -68,6 +70,9 @@ localhost connection fallback. The initial vector column is 384-dimensional;
 changing model dimension will require an explicit offline schema/index rebuild.
 
 ## Step 2 indexing and retrieval
+
+Historical first-1,000 smoke check; `validate_retrieval.py` expects that slice.
+Use the Step 3 evaluator/acceptance checker for the active 5,000-report corpus.
 
 ```powershell
 uv run python -m safelens.cli reindex --model BAAI/bge-small-en-v1.5
@@ -112,6 +117,37 @@ results and a 100-versus-200 candidate-chunk check in
 `docs/STEP2_VALIDATION.json`; full source passages stay in
 `data/step2_sample_results.json`. These samples are not benchmark relevance
 scores or p95 measurements. Evaluation remains the next step.
+
+## Step 3 subset, category agreement, and judging pool
+
+```powershell
+uv run python -m safelens.subset
+uv run python -m safelens.cli reindex --subset-manifest eval/subset_manifest.json
+uv run python eval/run_eval.py
+uv run python scripts/validate_step3.py
+uv run pytest
+uv run ruff check src scripts tests eval
+```
+
+The default selection seed is 20261115. The manifest versions 5,000 selected
+ACNs, counts, overlaps, years, source revision, and the normalized content hash.
+The subset reindex stages reports/chunks and atomically replaces the previous
+corpus; non-subset reports are removed from both source and chunk tables.
+CPU embedding can take substantial time on this machine. Failure preserves
+the prior corpus/index, and retrieval is offline during the build.
+
+The query file has 20 dedicated Layer-1 queries, eight separate Layer-2 pool
+queries, and three verified absence controls. Retrieval never receives their
+category labels as filters. `eval/results.md` reports category agreement for
+the primary 20 and all 28 category queries; `eval/experiment.json` records the
+full reproducibility metadata and per-query metrics. Category Precision@10 is
+weak-label topical agreement, not judged relevance.
+
+`eval/judging_pool.csv` contains the shuffled, deduplicated top-ten union for
+the eight Layer-2 queries, with no retriever identities and blank grade/note
+fields. See [the judging handoff](eval/JUDGING.md). The evaluator protects a CSV
+with filled human work from overwriting. No grading, qrels, generation/API/UI,
+or generation-based abstention scoring is performed in Step 3.
 
 ## Project documents
 

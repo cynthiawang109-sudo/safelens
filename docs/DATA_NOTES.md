@@ -3,7 +3,8 @@
 Status: **full-corpus inspection finalized on 2026-11-15** for Step 1.
 Counts below cover all three pinned files. The 1,000-report validation slice
 is imported. Step 1 evidence below records its pre-index state; Step 2 indexes
-the same slice (see `STEP2_VALIDATION.json`). Final ~5,000 selection is deferred.
+the same slice (see `STEP2_VALIDATION.json`). Step 3 supersedes that slice with
+the 5,000-report subset documented below; earlier figures remain historical.
 
 ## Source and reproduction
 
@@ -120,8 +121,8 @@ Selection: first **1,000 unique nonempty-narrative ACNs** in file order
 train → validation → test, first occurrence retained. All 1,000 come from train.
 This is deterministic, with **no random sampling/seed**, category filter, or
 recent-years-first sort. It validates ingestion; it is not the final balanced
-evaluation corpus. The future ~5,000 selection must use a fixed seed and
-document selection order, temporal skew, label counts, and overlap.
+evaluation corpus. Step 3 selection records the seed, order, temporal skew,
+label counts, and overlap below.
 
 Slice selected-label counts: runway **20**, altitude **68**, NMAC **75**,
 critical equipment **193**. **657** reports have no selected label, **330**
@@ -149,3 +150,76 @@ exactly one, **13** exactly two; selected-label union **343**.
   require explicit offline reindex/migration.
 
 Full-file inspection does not import all 47,723 reports into PostgreSQL.
+
+## Step 3 — final Mini subset (5,000 reports)
+
+The versioned selection is [eval/subset_manifest.json](../eval/subset_manifest.json),
+created by `uv run python -m safelens.subset` with **seed 20261115**.
+Deduplicate ACNs first, retaining the first occurrence in train → validation →
+test order. Sort ACNs as strings before using a private Python 3.12
+`random.Random(seed)` and `sample`. No recent-years-first sorting is used.
+
+In the fixed category order runway → altitude → NMAC → critical equipment,
+sample up to **1,250 previously unselected reports per pass**. The runway pool
+has only 1,245 reports, all selected. Later passes each add 1,250; fill the final
+five places from the sorted remaining union with the same RNG. ACNs in the
+manifest are sorted; overlapping categories count a report only once.
+
+| Exact selected label | Final label assignments |
+|---|---:|
+| `Ground Incursion Runway` | 1,245 |
+| `Deviation - Altitude Excursion From Assigned Altitude` | 1,305 |
+| `Conflict NMAC` | 1,352 |
+| `Aircraft Equipment Problem Critical` | 1,390 |
+
+**4,708** reports carry exactly one selected label; **292** carry exactly two;
+none carry three or four. The **5,292 assignments** therefore describe exactly
+**5,000 unique reports**. This is a category-balanced development corpus, not a
+random sample of ASRS as a whole; all available runway reports are included.
+
+| Year | Selected reports | Subset share | Full-corpus share |
+|---|---:|---:|---:|
+| 2012 | 630 | 12.60% | 10.59% |
+| 2013 | 509 | 10.18% | 9.38% |
+| 2014 | 490 | 9.80% | 9.59% |
+| 2015 | 574 | 11.48% | 12.51% |
+| 2016 | 262 | 5.24% | 5.92% |
+| 2017 | 482 | 9.64% | 10.93% |
+| 2018 | 295 | 5.90% | 6.44% |
+| 2019 | 572 | 11.44% | 13.47% |
+| 2020 | 455 | 9.10% | 10.42% |
+| 2021 | 668 | 13.36% | 9.50% |
+| 2022 | 63 | 1.26% | 1.25% |
+
+Category selection produces temporal skew even without date-based sampling:
+2021 is overrepresented by about **3.86 percentage points**, while 2019 is
+underrepresented by about **2.03 points**. Do not generalize evaluation numbers
+to the original corpus distribution.
+
+### Superseding the first-1,000 corpus
+
+Run `uv run python -m safelens.cli reindex --subset-manifest eval/subset_manifest.json`.
+The command reproduces the manifest from the pinned files before building.
+It stages all selected normalized reports and their chunks under the offline
+lock. The final transaction deletes old chunks and reports, inserts exactly the
+5,000 selected reports, installs the staged embeddings, replaces ingestion
+state, supersedes the old ready build, and publishes the new ready build.
+Deleting non-subset reports from `reports` and `chunks` ensures they cannot
+appear in retrieval; they are not merely hidden by an optional search filter.
+Only **122** reports overlap the former first-1,000 slice: **878** old slice
+reports are excluded and **4,878** selected reports are newly included.
+Failure before commit restores the entire previous corpus/index. Tests exercise
+both rollback and successful exclusion of old reports.
+
+The selected corpus snapshot is SHA-256 of sorted `acn:content_hash\n` pairs:
+`df6c66bb1efd9beba7bf3fd07de19446a0639db2228bed4d079b3d4201349e09`.
+The evaluation runner checks the active ACN set and this hash against the
+manifest before running unfiltered benchmarks. The final index counts and
+configuration are recorded in `eval/experiment.json`.
+
+Step 3 contains **20 dedicated Layer-1 queries + 8 additional Layer-2 pool
+queries + 3 controls**. Category agreement is reported for the 20 primary
+queries and for all 28 category queries. No human relevance labels or
+generation outcomes are assigned in Step 3. The only redistributed source
+excerpts are the synopsis cells explicitly requested for the blinded judging
+CSV; raw files and full retrieved passages stay in ignored `data/`.
