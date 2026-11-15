@@ -1,0 +1,68 @@
+{
+  "full_rows_schema_and_normalization_validated": 47723,
+  "file_sha256": {
+    "data\\asrs-aviation-reports-train.jsonl": "1b9300b926774d2ba025552db0bbd3894891c69ddb1f43f85fc4f5241221f101",
+    "data\\asrs-aviation-reports-validation.jsonl": "6734d8823eba239b1b296e7bfa606407659903bfb4e614ed7f4864aea65cce1c",
+    "data\\asrs-aviation-reports-test.jsonl": "56272a11b62c1b17137b638b99b7f05c105a9eaf3443165e7de5b844fd8a735a"
+  },
+  "reports": 1000,
+  "unique_acns": 1000,
+  "chunks": 0,
+  "ready_indexes": 0,
+  "rerun": {
+    "skipped": 1000,
+    "inserted": 0,
+    "updated": 0,
+    "failed": 0,
+    "dropped": 0,
+    "duplicates": 0
+  },
+  "spot_checks": [
+    {
+      "acn": "1574675",
+      "slice_index": 0,
+      "has_report_2": true,
+      "report_month": "2018-08",
+      "verified": true
+    },
+    {
+      "acn": "1437983",
+      "slice_index": 499,
+      "has_report_2": false,
+      "report_month": "2017-04",
+      "verified": true
+    },
+    {
+      "acn": "1701562",
+      "slice_index": 999,
+      "has_report_2": true,
+      "report_month": "2019-11",
+      "verified": true
+    }
+  ],
+  "slice_selection": "First 1000 unique nonempty-narrative ACNs in train, validation, test file order; no sampling",
+  "slice_years": {
+    "2012": 111,
+    "2013": 99,
+    "2014": 94,
+    "2015": 116,
+    "2016": 54,
+    "2017": 115,
+    "2018": 70,
+    "2019": 132,
+    "2020": 102,
+    "2021": 101,
+    "2022": 6
+  },
+  "slice_selected_labels": {
+    "Aircraft Equipment Problem Critical": 193,
+    "Conflict NMAC": 75,
+    "Deviation - Altitude Excursion From Assigned Altitude": 68,
+    "Ground Incursion Runway": 20
+  },
+  "slice_selected_label_overlap": {
+    "0": 657,
+    "1": 330,
+    "2": 13
+  }
+}
