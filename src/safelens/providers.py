@@ -1,11 +1,15 @@
-"""Provider contracts only; concrete model integrations belong to later steps."""
+"""Thin embedding/LLM provider contracts; local embeddings live in embed.py."""
 
 from collections.abc import Sequence
-from typing import Protocol
+from typing import Any, Protocol
 
 
 class EmbeddingProvider(Protocol):
     """Implementations apply the configured instruction only to queries."""
+
+    tokenizer: Any
+    max_tokens: int
+    dimension: int
 
     def embed_documents(self, texts: Sequence[str]) -> list[list[float]]: ...
 

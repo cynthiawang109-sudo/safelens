@@ -2,7 +2,8 @@
 
 Status: **full-corpus inspection finalized on 2026-11-15** for Step 1.
 Counts below cover all three pinned files. The 1,000-report validation slice
-is imported; final ~5,000-report selection and vector indexing remain deferred.
+is imported. Step 1 evidence below records its pre-index state; Step 2 indexes
+the same slice (see `STEP2_VALIDATION.json`). Final ~5,000 selection is deferred.
 
 ## Source and reproduction
 
@@ -134,9 +135,10 @@ exactly one, **13** exactly two; selected-label union **343**.
 - Spot checks: **1574675**, **1437983**, **1701562** match raw source for all
   stored fields/hash. Narrative order/labels, month parsing, anomaly splitting
   independently verified. The first and third include Report 2.
-- Slice: **0 chunks, 0 index builds**. Auxiliary `ingest_state` records the
+- At Step 1 completion: **0 chunks, 0 index builds**. Auxiliary `ingest_state` records the
   report-only stage/configuration and never claims an active vector index.
-  Report-only CLI rejects existing chunks or a ready index. The prepared-chunk
+  Report-only CLI rejects changes to existing indexed content; unchanged rows
+  skip only when their hash and active configuration match. The prepared-chunk
   write seam supports atomic replacement without implementing chunking/models.
 - PostgreSQL integration tests check successful replacement, exception rollback,
   and **process kill after replacement report/chunk writes but before commit**.

@@ -11,6 +11,9 @@ class Settings:
     database_url: str = "postgresql://safelens:safelens@127.0.0.1:5432/safelens"
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     embedding_dim: int = 384
+    embedding_revision: str = "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a"
+    embedding_batch_size: int = 32
+    embedding_threads: int = 4
     embed_query_prefix: str = "Represent this sentence for searching relevant passages: "
     llm_provider: str = "openai"
     llm_model: str = "gpt-4o-mini"
@@ -23,6 +26,8 @@ class Settings:
             raise ValueError("Embedding dimension must be positive; chunk tokens must be 400..600")
         if not 0 <= self.chunk_overlap < 1:
             raise ValueError("Chunk overlap must be in [0, 1)")
+        if self.embedding_batch_size <= 0 or self.embedding_threads <= 0:
+            raise ValueError("Embedding batch size and thread count must be positive")
 
     @property
     def chunk_config(self) -> dict:
@@ -31,6 +36,10 @@ class Settings:
             "overlap": self.chunk_overlap,
             "text_construction": "synopsis+all_labeled_narratives; synopsis_per_chunk",
             "lexical_config": "simple",
+            "embedding_revision": self.embedding_revision,
+            "algorithm": "paragraph_offsets_v1",
+            "token_limit": "min(target, model_max_seq_length); includes synopsis and special tokens",
+            "overlap_policy": "configured fraction of previous narrative window tokens; synopsis repeated separately",
         }
 
     @property
@@ -50,6 +59,9 @@ class Settings:
             database_url=os.getenv("DATABASE_URL", defaults.database_url),
             embedding_model=os.getenv("EMBEDDING_MODEL", defaults.embedding_model),
             embedding_dim=int(os.getenv("EMBEDDING_DIM", defaults.embedding_dim)),
+            embedding_revision=os.getenv("EMBEDDING_REVISION", defaults.embedding_revision),
+            embedding_batch_size=int(os.getenv("EMBEDDING_BATCH_SIZE", defaults.embedding_batch_size)),
+            embedding_threads=int(os.getenv("EMBEDDING_THREADS", defaults.embedding_threads)),
             embed_query_prefix=os.getenv("EMBED_QUERY_PREFIX", defaults.embed_query_prefix),
             llm_provider=os.getenv("LLM_PROVIDER", defaults.llm_provider),
             llm_model=os.getenv("LLM_MODEL", defaults.llm_model),

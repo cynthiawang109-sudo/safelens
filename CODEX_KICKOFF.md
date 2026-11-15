@@ -53,3 +53,35 @@ file opens specify `encoding="utf-8"` explicitly.
 Retrieval (lexical → dense → hybrid, spec §5 aggregation contract) → evaluation
 (§6) → `/ask` + citation validation → Gradio → scale ingest to 5,000 → README.
 Do not start a later step while an earlier acceptance check is red.
+
+## Step 3 — Mini subset (5,000) + Layer-1 evaluation + judging pool
+
+*(Issued by Sunny on 2026-11-15 after independent Step 2 verification: 1,380
+chunks, build #2 ready, RRF contract audited in source, sample comparison sane.)*
+
+- **Subset selection** per spec §4 and DATA_NOTES (the four decided categories):
+  fixed seed (record it), dedupe by ACN first, documented selection order.
+  Write `eval/subset_manifest.json`: selected ACNs, per-label counts, year
+  distribution, multi-label overlap. Update DATA_NOTES.md subset figures with
+  actuals. The active corpus becomes **the subset only** — the Step 1
+  first-1,000 slice is superseded; document the mechanism used to exclude
+  non-subset reports from the indexed corpus.
+- **Ingest + reindex** the subset. Verify: one `ready` build whose
+  `report_count` equals the subset size; every chunk embedded.
+- **`eval/queries.jsonl`** per spec §6: 20 Layer-1 queries (5 per category,
+  mixing plain-language, paraphrase, and jargon-heavy phrasings) + 8 Layer-2
+  queries (2 per category) + the 3 abstention controls (out-of-domain;
+  exact day/time the record cannot contain; a fabricated ACN — verify it is
+  absent from the subset and record that check in the file or results).
+- **`eval/run_eval.py`** per spec §6: benchmark runs are **unfiltered** (never
+  pass a query's category as a retrieval filter); Layer-1 metrics
+  (Category Precision@10, Hit@10) for lexical / dense / hybrid; full experiment
+  record alongside `eval/results.md`.
+- **Judging pool export**: union of the top-10 reports of all three retrievers
+  for the 8 Layer-2 queries, blinded (no retriever identity) and shuffled, as
+  `eval/judging_pool.csv` with columns `query_id, acn, synopsis, grade, note`
+  (grade/note left empty — Cynthia fills them; do not pre-judge).
+- Acceptance: `eval/results.md` contains the three-retriever Layer-1 table;
+  judging pool has ≤ 240 unique (query_id, acn) rows; controls present with
+  `expect: insufficient_evidence`; all prior tests still pass, plus new tests
+  for subset determinism (same seed → same manifest) and unfiltered eval runs.

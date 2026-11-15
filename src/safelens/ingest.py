@@ -1,7 +1,7 @@
 """Stream and validate pinned ASRS JSONL; commit each normalized ACN atomically.
 
-Step 1 imports reports only. It cannot mutate an existing vector index: a ready
-index or existing chunks require the later offline indexing implementation.
+The CLI imports reports only. Unchanged indexed reports may skip; changed
+indexed content requires prepared chunks or the explicit offline reindex path.
 """
 
 import argparse
@@ -53,7 +53,7 @@ class Report:
 
 @dataclass(frozen=True)
 class PreparedChunk:
-    """Already prepared outside the transaction; no chunker/model in Step 1."""
+    """Already prepared outside the transaction; the write seam never runs models."""
 
     text: str
     embedding: list[float]
@@ -122,7 +122,7 @@ def require_active_index(conn, settings):
 
 
 def upsert_report(conn, report: Report, settings: Settings, after_write=None, prepared_chunks=None):
-    """Report-only replacement. after_write is a failure-test synchronization hook."""
+    """Atomic report/chunk replacement; after_write synchronizes failure tests."""
     if prepared_chunks is not None:
         prepared_chunks = list(prepared_chunks)
         if not prepared_chunks or any(
@@ -135,17 +135,10 @@ def upsert_report(conn, report: Report, settings: Settings, after_write=None, pr
         # Serialize import writers and index-state inspection for this transaction.
         conn.execute("SELECT pg_advisory_xact_lock(742802)")
         active = active_index_config(conn)
-        if active is not None:
-            if active != settings.index_config:
-                raise ValueError("Active index configuration mismatch; offline reindex required")
-            if prepared_chunks is None:
-                raise ValueError("Report-only ingestion cannot update a ready index; offline reindex required")
-        if prepared_chunks is None and conn.execute(
-            "SELECT 1 FROM chunks WHERE acn = %s LIMIT 1", (report.acn,)
-        ).fetchone():
-            raise ValueError("Existing chunks require atomic offline index replacement")
+        if active is not None and active != settings.index_config:
+            raise ValueError("Active index configuration mismatch; offline reindex required")
         state = {
-            "stage": "indexed" if prepared_chunks is not None else "reports_only",
+            "stage": "indexed" if prepared_chunks is not None or active is not None else "reports_only",
             "index_config": settings.index_config, "active_index": active,
         }
         old = conn.execute(
@@ -154,6 +147,12 @@ def upsert_report(conn, report: Report, settings: Settings, after_write=None, pr
         ).fetchone()
         if old and old == (report.content_hash, state):
             return "skipped"
+        if active is not None and prepared_chunks is None:
+            raise ValueError("Report-only ingestion cannot update a ready index; offline reindex required")
+        if prepared_chunks is None and conn.execute(
+            "SELECT 1 FROM chunks WHERE acn = %s LIMIT 1", (report.acn,)
+        ).fetchone():
+            raise ValueError("Existing chunks require atomic offline index replacement")
         record = asdict(report)
         record["content_hash"] = report.content_hash
         columns = list(record)

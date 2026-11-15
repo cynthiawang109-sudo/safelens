@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Retrieval and grounded answers over NASA ASRS reporter accounts."
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = ["psycopg[binary]>=3.2", "python-dotenv>=1"]
+dependencies = ["psycopg[binary]>=3.2", "python-dotenv>=1", "sentence-transformers>=3,<6"]
 
 [dependency-groups]
 dev = ["pytest>=8", "ruff>=0.8"]

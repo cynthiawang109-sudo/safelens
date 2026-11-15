@@ -1,0 +1,223 @@
+{
+  "timestamp": "2026-11-15T17:15:39.975698+00:00",
+  "hardware": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "active_build": {
+    "id": 2,
+    "status": "ready",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dim": 384,
+    "embed_query_prefix": "Represent this sentence for searching relevant passages: ",
+    "chunk_config": {
+      "tokens": 500,
+      "overlap": 0.15,
+      "algorithm": "paragraph_offsets_v1",
+      "token_limit": "min(target, model_max_seq_length); includes synopsis and special tokens",
+      "lexical_config": "simple",
+      "overlap_policy": "configured fraction of previous narrative window tokens; synopsis repeated separately",
+      "text_construction": "synopsis+all_labeled_narratives; synopsis_per_chunk",
+      "embedding_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a"
+    },
+    "report_count": 1000,
+    "built_at": "2026-11-15T17:13:57.005332+00:00"
+  },
+  "reports": 1000,
+  "chunks": 1380,
+  "token_counts": {
+    "min": 32,
+    "max": 500,
+    "mean": 337.72,
+    "below_400": 812
+  },
+  "query": "TCAS RA",
+  "category_filter": null,
+  "retrieval_config": {
+    "candidate_chunks": 100,
+    "candidate_reports": 50,
+    "rrf_k": 60,
+    "aggregation": "max_chunk_score_then_report_rrf; ties=acn; chunk_ties=id"
+  },
+  "latency_ms_single_run_excludes_model_load_not_p95": {
+    "lexical": 8.67,
+    "dense": 36.24,
+    "hybrid": 35.3
+  },
+  "samples": {
+    "lexical": [
+      {
+        "acn": "1122787",
+        "chunk_id": 241,
+        "score": 0.32162037,
+        "ranks": {
+          "lexical": 1,
+          "dense": null
+        }
+      },
+      {
+        "acn": "1467950",
+        "chunk_id": 723,
+        "score": 0.3076976,
+        "ranks": {
+          "lexical": 2,
+          "dense": null
+        }
+      },
+      {
+        "acn": "1289481",
+        "chunk_id": 499,
+        "score": 0.3071591,
+        "ranks": {
+          "lexical": 3,
+          "dense": null
+        }
+      },
+      {
+        "acn": "1694805",
+        "chunk_id": 1024,
+        "score": 0.30292594,
+        "ranks": {
+          "lexical": 4,
+          "dense": null
+        }
+      },
+      {
+        "acn": "1307058",
+        "chunk_id": 528,
+        "score": 0.2315,
+        "ranks": {
+          "lexical": 5,
+          "dense": null
+        }
+      }
+    ],
+    "dense": [
+      {
+        "acn": "998938",
+        "chunk_id": 1380,
+        "score": 0.6763174323657236,
+        "ranks": {
+          "lexical": null,
+          "dense": 1
+        }
+      },
+      {
+        "acn": "1840188",
+        "chunk_id": 1310,
+        "score": 0.6708735619934127,
+        "ranks": {
+          "lexical": null,
+          "dense": 2
+        }
+      },
+      {
+        "acn": "1866809",
+        "chunk_id": 1341,
+        "score": 0.6683000721573744,
+        "ranks": {
+          "lexical": null,
+          "dense": 3
+        }
+      },
+      {
+        "acn": "1348828",
+        "chunk_id": 599,
+        "score": 0.6615946494582516,
+        "ranks": {
+          "lexical": null,
+          "dense": 4
+        }
+      },
+      {
+        "acn": "1004278",
+        "chunk_id": 17,
+        "score": 0.6516600458824618,
+        "ranks": {
+          "lexical": null,
+          "dense": 5
+        }
+      }
+    ],
+    "hybrid": [
+      {
+        "acn": "1122787",
+        "chunk_id": 241,
+        "score": 0.030886196246139225,
+        "ranks": {
+          "lexical": 1,
+          "dense": 9
+        }
+      },
+      {
+        "acn": "1840188",
+        "chunk_id": 1310,
+        "score": 0.030834914611005692,
+        "ranks": {
+          "lexical": 8,
+          "dense": 2
+        }
+      },
+      {
+        "acn": "1289481",
+        "chunk_id": 499,
+        "score": 0.030798389007344232,
+        "ranks": {
+          "lexical": 3,
+          "dense": 7
+        }
+      },
+      {
+        "acn": "998938",
+        "chunk_id": 1380,
+        "score": 0.03047794966520434,
+        "ranks": {
+          "lexical": 11,
+          "dense": 1
+        }
+      },
+      {
+        "acn": "1866809",
+        "chunk_id": 1341,
+        "score": 0.030158730158730156,
+        "ranks": {
+          "lexical": 10,
+          "dense": 3
+        }
+      }
+    ]
+  },
+  "candidate_chunks_200_top5": {
+    "lexical": [
+      "1122787",
+      "1467950",
+      "1289481",
+      "1694805",
+      "1307058"
+    ],
+    "dense": [
+      "998938",
+      "1840188",
+      "1866809",
+      "1348828",
+      "1004278"
+    ],
+    "hybrid": [
+      "1122787",
+      "1840188",
+      "1289481",
+      "998938",
+      "1866809"
+    ]
+  },
+  "candidate_depth_changes_top5": {
+    "lexical": false,
+    "dense": false,
+    "hybrid": false
+  },
+  "checks": {
+    "token_budget_and_synopsis": "passed",
+    "nonfinal_chunks_at_least_400": "passed",
+    "chunk_metadata": "passed",
+    "unique_report_results": "passed",
+    "repeat_queries_identical": "passed"
+  }
+}
