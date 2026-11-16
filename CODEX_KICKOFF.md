@@ -126,3 +126,37 @@ lexical variant is a flagship M3 bake-off item.)*
   matches the DB row; prior tests still pass plus new tests for citation
   validation (fabricated ACN dropped) and the qrels metric math on a toy
   fixture.
+
+## Step 5 — Flagship scale-up: corpus 5,000 → 20,000
+
+*(Issued by Sunny on 2026-11-15 after Mini completion. Decisions recorded by
+Cynthia the same day: the name SafeLens is confirmed; the corpus grows to
+20k first; the regulations mini-corpus stays in Phase 2; the LLM provider
+default — OpenAI generation/filter, local embeddings — stands.)*
+
+- **Selection**: keep ALL 5,000 reports of the Mini subset (every eval asset —
+  queries, judging pool, qrels — must stay valid). Add 15,000 reports from the
+  remaining corpus, stratified proportionally by year (`Time_Date` year)
+  across all anomaly categories, fixed seed recorded in the manifest, deduped
+  by ACN against the existing 5,000 and within the addition.
+- **Manifest**: write a NEW file `eval/corpus_manifest_20k.json` (seed,
+  per-year counts, per-label counts, ACN lists or hashes, snapshot hash).
+  Do NOT overwrite `eval/subset_manifest.json` — it stays as the Mini record.
+  The eval runner must validate the active corpus against whichever manifest
+  is designated current; record the switch explicitly in experiment.json.
+- **Ingest + index** through the existing pipeline (idempotent upsert by ACN +
+  content hash; only new reports should be processed). Produce a new ready
+  build with report_count = 20,000 and zero NULL embeddings.
+- **Re-run the full evaluation** (`eval/run_eval.py`) on the 20k corpus:
+  Layer-1 (same 28 category queries) and Layer-2 (existing qrels — all pooled
+  reports are retained, so judged metrics remain computable). Append a clearly
+  labeled "20,000-report corpus" section to `eval/results.md` with both tables
+  and the deltas against the 5,000-report numbers.
+- **Do NOT change retriever code, queries, prompts, or generation in this
+  step.** The point is isolating the corpus-size effect; retrieval changes
+  belong to the Step 6 bake-off.
+- Acceptance: DB ready build = 20,000 reports, chunks > reports, zero NULL
+  embeddings; manifest confirms 5,000/5,000 original ACNs retained;
+  results.md contains the 20k Layer-1 and Layer-2 tables with deltas;
+  all prior tests still pass, plus a test that the 20k selection is
+  deterministic (same seed → same manifest) and a superset of the 5k subset.
