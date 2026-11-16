@@ -125,9 +125,9 @@ Single local run, warmed model; excludes model initialization and generation. Ti
 
 | Retriever | Mean ms | p95 ms |
 |---|---:|---:|
-| lexical | 6.80 | 11.35 |
-| dense | 58.47 | 76.26 |
-| hybrid | 60.57 | 69.25 |
+| lexical | 7.71 | 13.44 |
+| dense | 66.70 | 133.75 |
+| hybrid | 61.33 | 82.09 |
 
 ## Candidate-depth check
 
@@ -142,11 +142,49 @@ Defaults remain 100/50. Doubling candidate chunks to 200 is a separately recorde
 ## Layer-2 judging
 
 `judging_pool.csv` contains **88** unique (query_id, acn) pairs for eight queries, shuffled with seed 20261116.
-The sheet contains no retriever identity or ranks. Filled grades: 0; filled notes: 0. No automated judgments are assigned.
+The sheet contains no retriever identity or ranks. Filled grades: 88; filled notes: 0. No automated judgments are assigned.
 Cynthia: read synopsis first, consult the indexed full narrative if ambiguous, then use grades 2=directly relevant, 1=partially relevant, 0=irrelevant. Record notes as needed.
 After human grading, run `uv run python eval/import_judgments.py`, then rerun this evaluator. Unjudged top-ten reports cause an error rather than being assumed irrelevant.
 
-Human relevance metrics are pending: `qrels.jsonl` does not exist. No grades have been invented.
+### Judged relevance (macro averages)
+
+Precision@10 and MRR treat grade >=1 as relevant. MRR uses the retrieved top ten. nDCG@10 uses linear gains 2/1/0 and the pooled ideal ranking.
+These eight queries are a development set, not an independent held-out test; pooling does not establish complete corpus relevance.
+
+| Retriever | Precision@10 | MRR | nDCG@10 |
+|---|---:|---:|---:|
+| lexical | 0.050 | 0.042 | 0.037 |
+| dense | 0.963 | 1.000 | 0.914 |
+| hybrid | 0.938 | 1.000 | 0.889 |
+
+### Per-query judged relevance
+
+| Query | Retriever | Precision@10 | MRR | nDCG@10 |
+|---|---|---:|---:|---:|
+| ri-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| ri-l2-1 | dense | 1.000 | 1.000 | 0.859 |
+| ri-l2-1 | hybrid | 1.000 | 1.000 | 0.859 |
+| ri-l2-2 | lexical | 0.400 | 0.333 | 0.294 |
+| ri-l2-2 | dense | 0.900 | 1.000 | 0.917 |
+| ri-l2-2 | hybrid | 0.700 | 1.000 | 0.720 |
+| alt-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| alt-l2-1 | dense | 1.000 | 1.000 | 1.000 |
+| alt-l2-1 | hybrid | 1.000 | 1.000 | 1.000 |
+| alt-l2-2 | lexical | 0.000 | 0.000 | 0.000 |
+| alt-l2-2 | dense | 1.000 | 1.000 | 0.951 |
+| alt-l2-2 | hybrid | 1.000 | 1.000 | 0.951 |
+| nmac-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| nmac-l2-1 | dense | 1.000 | 1.000 | 0.874 |
+| nmac-l2-1 | hybrid | 1.000 | 1.000 | 0.874 |
+| nmac-l2-2 | lexical | 0.000 | 0.000 | 0.000 |
+| nmac-l2-2 | dense | 1.000 | 1.000 | 0.846 |
+| nmac-l2-2 | hybrid | 1.000 | 1.000 | 0.846 |
+| equip-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| equip-l2-1 | dense | 1.000 | 1.000 | 0.910 |
+| equip-l2-1 | hybrid | 1.000 | 1.000 | 0.910 |
+| equip-l2-2 | lexical | 0.000 | 0.000 | 0.000 |
+| equip-l2-2 | dense | 0.800 | 1.000 | 0.955 |
+| equip-l2-2 | hybrid | 0.800 | 1.000 | 0.955 |
 
 ## Abstention controls
 
