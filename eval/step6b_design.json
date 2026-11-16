@@ -1,0 +1,16 @@
+{
+  "step": "6B",
+  "split": "development",
+  "families": ["weighted_rrf", "normalized_scores"],
+  "dense_lexical_weights": [[1, 0], [10, 1], [5, 1], [3, 1], [2, 1], [1, 1], [1, 2], [0, 1]],
+  "rrf_k": 60,
+  "candidate_chunks": 100,
+  "candidate_reports": 50,
+  "selection": "all 28 category queries: Category P@10, then Hit@10, then smaller lexical fraction w_l/(w_d+w_l)",
+  "remaining_exact_ties": "report co-winners; use family order only to display one representative, no extra trials",
+  "normalization": "per query and leg over up to 50 report candidates; (score-min)/(max-min); constant-score leg maps to 0; absent report contributes 0",
+  "zero_weight": "exclude zero-weight leg entirely; pure-leg endpoints preserve that leg's exact ranking and evidence",
+  "cache_policy": "reuse complete Step 6 report candidates when available; existing top-ten-only cache preserved and verified against one full-depth recapture; sweep itself is pure reranking",
+  "layer2": "Step 6 judged-only condensed protocol on runtime qrels; coverage beside each signal; never used for selection",
+  "boundary": "report endpoint wins without extending grid"
+}
