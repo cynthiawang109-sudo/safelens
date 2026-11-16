@@ -202,3 +202,141 @@ PostgreSQL FTS uses simple configuration and websearch query semantics; long con
 Candidate-depth changes above must be considered before interpreting hybrid results; the default was not silently tuned.
 The complete experiment configuration, corpus/content hashes, query/qrels hashes, per-query metrics and latency samples, software/hardware notes, and timestamp are in `experiment.json`.
 No generation or human judging is performed by this evaluator.
+
+<!-- corpus-scaleup-20000 -->
+## 20,000-report corpus (development split)
+
+Ready build **4**: **20,000 reports**, **28,306 embedded chunks**. All 5,000 Mini ACNs retained; 15,000 year-stratified additions, seed 20261120.
+Only corpus size changed. Retrieval, queries, prompts, generation, chunking, model/revision, and scoring definitions are unchanged. These are development results, not a frozen final test.
+The original Mini manifest, judging pool, and qrels are preserved. `current_corpus.json` designates `corpus_manifest_20k.json`; experiment.json records that switch and the archived `experiment_5k.json` baseline.
+
+### Layer-1 category agreement — all 28 category queries
+
+Unfiltered retrieval. Category agreement is coarse topical alignment, not judged relevance. Precision denominator is 10, including underfilled ranks.
+
+| Retriever | Metric | 5,000 | 20,000 | Delta |
+|---|---|---:|---:|---:|
+| lexical | category_precision_at_10 | 0.089 | 0.089 | +0.000 |
+| lexical | hit_at_10 | 0.250 | 0.250 | +0.000 |
+| dense | category_precision_at_10 | 0.904 | 0.629 | -0.275 |
+| dense | hit_at_10 | 1.000 | 0.964 | -0.036 |
+| hybrid | category_precision_at_10 | 0.896 | 0.611 | -0.286 |
+| hybrid | hit_at_10 | 1.000 | 0.964 | -0.036 |
+
+### Layer-2 judged relevance — eight development queries
+
+**Not yet computable:** 46 unique top-ten (query_id, ACN) pairs lack judgments. Retaining all Mini reports preserves existing labels but does not judge newly retrieved candidates.
+No unjudged report is assumed irrelevant. The 20k scores and deltas remain pending; treating these rows as zero would invalidate the comparison.
+`judging_pool_20k_additions.csv` is a blinded, shuffled export of only the missing pairs, with blank grades/notes. The original pool and qrels are untouched.
+
+| Retriever | Metric | 5,000 | 20,000 | Delta |
+|---|---|---:|---:|---:|
+| lexical | precision_at_10 | 0.050 | pending judgments | N/A |
+| lexical | mrr | 0.042 | pending judgments | N/A |
+| lexical | ndcg_at_10 | 0.037 | pending judgments | N/A |
+| dense | precision_at_10 | 0.963 | pending judgments | N/A |
+| dense | mrr | 1.000 | pending judgments | N/A |
+| dense | ndcg_at_10 | 0.914 | pending judgments | N/A |
+| hybrid | precision_at_10 | 0.938 | pending judgments | N/A |
+| hybrid | mrr | 1.000 | pending judgments | N/A |
+| hybrid | ndcg_at_10 | 0.889 | pending judgments | N/A |
+
+### Per-query Layer-1 metrics
+
+| Query | Layer | Retriever | Retrieved | Category Precision@10 | Hit@10 |
+|---|---:|---|---:|---:|---:|
+| ri-l1-1 | 1 | lexical | 10 | 0.800 | 1 |
+| ri-l1-1 | 1 | dense | 10 | 0.900 | 1 |
+| ri-l1-1 | 1 | hybrid | 10 | 1.000 | 1 |
+| ri-l1-2 | 1 | lexical | 3 | 0.100 | 1 |
+| ri-l1-2 | 1 | dense | 10 | 0.700 | 1 |
+| ri-l1-2 | 1 | hybrid | 10 | 0.700 | 1 |
+| ri-l1-3 | 1 | lexical | 0 | 0.000 | 0 |
+| ri-l1-3 | 1 | dense | 10 | 0.000 | 0 |
+| ri-l1-3 | 1 | hybrid | 10 | 0.000 | 0 |
+| ri-l1-4 | 1 | lexical | 0 | 0.000 | 0 |
+| ri-l1-4 | 1 | dense | 10 | 0.200 | 1 |
+| ri-l1-4 | 1 | hybrid | 10 | 0.200 | 1 |
+| ri-l1-5 | 1 | lexical | 1 | 0.100 | 1 |
+| ri-l1-5 | 1 | dense | 10 | 1.000 | 1 |
+| ri-l1-5 | 1 | hybrid | 10 | 1.000 | 1 |
+| alt-l1-1 | 1 | lexical | 5 | 0.100 | 1 |
+| alt-l1-1 | 1 | dense | 10 | 0.900 | 1 |
+| alt-l1-1 | 1 | hybrid | 10 | 0.600 | 1 |
+| alt-l1-2 | 1 | lexical | 1 | 0.000 | 0 |
+| alt-l1-2 | 1 | dense | 10 | 0.200 | 1 |
+| alt-l1-2 | 1 | hybrid | 10 | 0.200 | 1 |
+| alt-l1-3 | 1 | lexical | 0 | 0.000 | 0 |
+| alt-l1-3 | 1 | dense | 10 | 0.600 | 1 |
+| alt-l1-3 | 1 | hybrid | 10 | 0.600 | 1 |
+| alt-l1-4 | 1 | lexical | 0 | 0.000 | 0 |
+| alt-l1-4 | 1 | dense | 10 | 0.400 | 1 |
+| alt-l1-4 | 1 | hybrid | 10 | 0.400 | 1 |
+| alt-l1-5 | 1 | lexical | 0 | 0.000 | 0 |
+| alt-l1-5 | 1 | dense | 10 | 0.200 | 1 |
+| alt-l1-5 | 1 | hybrid | 10 | 0.200 | 1 |
+| nmac-l1-1 | 1 | lexical | 2 | 0.200 | 1 |
+| nmac-l1-1 | 1 | dense | 10 | 1.000 | 1 |
+| nmac-l1-1 | 1 | hybrid | 10 | 1.000 | 1 |
+| nmac-l1-2 | 1 | lexical | 0 | 0.000 | 0 |
+| nmac-l1-2 | 1 | dense | 10 | 1.000 | 1 |
+| nmac-l1-2 | 1 | hybrid | 10 | 1.000 | 1 |
+| nmac-l1-3 | 1 | lexical | 0 | 0.000 | 0 |
+| nmac-l1-3 | 1 | dense | 10 | 0.700 | 1 |
+| nmac-l1-3 | 1 | hybrid | 10 | 0.700 | 1 |
+| nmac-l1-4 | 1 | lexical | 0 | 0.000 | 0 |
+| nmac-l1-4 | 1 | dense | 10 | 0.400 | 1 |
+| nmac-l1-4 | 1 | hybrid | 10 | 0.400 | 1 |
+| nmac-l1-5 | 1 | lexical | 0 | 0.000 | 0 |
+| nmac-l1-5 | 1 | dense | 10 | 0.800 | 1 |
+| nmac-l1-5 | 1 | hybrid | 10 | 0.800 | 1 |
+| equip-l1-1 | 1 | lexical | 10 | 0.900 | 1 |
+| equip-l1-1 | 1 | dense | 10 | 0.900 | 1 |
+| equip-l1-1 | 1 | hybrid | 10 | 0.800 | 1 |
+| equip-l1-2 | 1 | lexical | 0 | 0.000 | 0 |
+| equip-l1-2 | 1 | dense | 10 | 0.500 | 1 |
+| equip-l1-2 | 1 | hybrid | 10 | 0.500 | 1 |
+| equip-l1-3 | 1 | lexical | 0 | 0.000 | 0 |
+| equip-l1-3 | 1 | dense | 10 | 0.700 | 1 |
+| equip-l1-3 | 1 | hybrid | 10 | 0.700 | 1 |
+| equip-l1-4 | 1 | lexical | 0 | 0.000 | 0 |
+| equip-l1-4 | 1 | dense | 10 | 0.900 | 1 |
+| equip-l1-4 | 1 | hybrid | 10 | 0.900 | 1 |
+| equip-l1-5 | 1 | lexical | 0 | 0.000 | 0 |
+| equip-l1-5 | 1 | dense | 10 | 0.700 | 1 |
+| equip-l1-5 | 1 | hybrid | 10 | 0.700 | 1 |
+| ri-l2-1 | 2 | lexical | 0 | 0.000 | 0 |
+| ri-l2-1 | 2 | dense | 10 | 0.900 | 1 |
+| ri-l2-1 | 2 | hybrid | 10 | 0.900 | 1 |
+| ri-l2-2 | 2 | lexical | 10 | 0.300 | 1 |
+| ri-l2-2 | 2 | dense | 10 | 0.600 | 1 |
+| ri-l2-2 | 2 | hybrid | 10 | 0.400 | 1 |
+| alt-l2-1 | 2 | lexical | 0 | 0.000 | 0 |
+| alt-l2-1 | 2 | dense | 10 | 0.400 | 1 |
+| alt-l2-1 | 2 | hybrid | 10 | 0.400 | 1 |
+| alt-l2-2 | 2 | lexical | 0 | 0.000 | 0 |
+| alt-l2-2 | 2 | dense | 10 | 0.600 | 1 |
+| alt-l2-2 | 2 | hybrid | 10 | 0.600 | 1 |
+| nmac-l2-1 | 2 | lexical | 0 | 0.000 | 0 |
+| nmac-l2-1 | 2 | dense | 10 | 0.500 | 1 |
+| nmac-l2-1 | 2 | hybrid | 10 | 0.500 | 1 |
+| nmac-l2-2 | 2 | lexical | 0 | 0.000 | 0 |
+| nmac-l2-2 | 2 | dense | 10 | 0.600 | 1 |
+| nmac-l2-2 | 2 | hybrid | 10 | 0.600 | 1 |
+| equip-l2-1 | 2 | lexical | 0 | 0.000 | 0 |
+| equip-l2-1 | 2 | dense | 10 | 0.800 | 1 |
+| equip-l2-1 | 2 | hybrid | 10 | 0.800 | 1 |
+| equip-l2-2 | 2 | lexical | 0 | 0.000 | 0 |
+| equip-l2-2 | 2 | dense | 10 | 0.500 | 1 |
+| equip-l2-2 | 2 | hybrid | 10 | 0.500 | 1 |
+
+### Latency and candidate-depth sensitivity
+
+| Retriever | Mean ms | p95 ms | Top-ten changes at 200 candidate chunks |
+|---|---:|---:|---:|
+| lexical | 8.79 | 22.84 | 0/28 |
+| dense | 139.29 | 170.87 | 0/28 |
+| hybrid | 136.38 | 155.17 | 0/28 |
+
+Default candidate depths remain 100 chunks / 50 reports, report-level RRF k=60, ties by ACN. All controls were reverified absent; this evaluator makes no generation calls.
+Full corpus/query/qrels hashes, per-query measurements, sensitivity records, configuration, software, hardware, and timestamp are in `experiment.json`. No Step 6 retrieval variant was started.

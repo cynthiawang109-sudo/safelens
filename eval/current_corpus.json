@@ -1,0 +1,7 @@
+{
+  "manifest": "eval/corpus_manifest_20k.json",
+  "previous_manifest": "eval/subset_manifest.json",
+  "baseline_experiment": "eval/experiment_5k.json",
+  "ready_build_id": 4,
+  "split": "development"
+}

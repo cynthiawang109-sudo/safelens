@@ -8,12 +8,13 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 
 from safelens.chunk import chunk_report
+from safelens.ingest import require_active_index
 
 LOCK = 742802
 LOG = logging.getLogger(__name__)
 
 
-def reindex(conn, settings, provider_factory, before_swap=None, replacement_reports=None):
+def reindex(conn, settings, provider_factory, before_swap=None, replacement_reports=None, incremental=False):
     """Use an autocommit connection. Session lock excludes serving and ingestion.
 
     A killed builder retains only a building metadata row; old chunks stay valid.
@@ -30,6 +31,32 @@ def reindex(conn, settings, provider_factory, before_swap=None, replacement_repo
         reports = original if replacement_reports is None else sorted(replacement_reports, key=lambda r: r["acn"])
         if len({report["acn"] for report in reports}) != len(reports):
             raise ValueError("Replacement corpus contains duplicate ACNs")
+        reused, reused_chunks = set(), 0
+        if incremental:
+            require_active_index(conn, settings)
+            old = {r["acn"]: r for r in original}
+            if not old.keys() <= {r["acn"] for r in reports}:
+                raise ValueError("Incremental growth cannot delete existing reports")
+            states = dict(conn.execute("SELECT acn,config FROM ingest_state").fetchall())
+            counts = {acn: (total, embedded) for acn, total, embedded in conn.execute(
+                "SELECT acn,count(*),count(embedding) FROM chunks GROUP BY acn"
+            ).fetchall()}
+            expected_state = {"stage": "indexed", "index_config": settings.index_config,
+                              "active_index": settings.index_config}
+            for report in reports:
+                acn = report["acn"]
+                total, embedded = counts.get(acn, (0, 0))
+                if (acn in old and old[acn]["content_hash"] == report["content_hash"]
+                        and states.get(acn) == expected_state and total == embedded and total > 0):
+                    reused.add(acn)
+                    reused_chunks += total
+        processed = [r for r in reports if r["acn"] not in reused]
+        if incremental and not processed:
+            conn.execute("UPDATE index_meta SET status='failed' WHERE status='building'")
+            build_id = conn.execute("SELECT id FROM index_meta WHERE status='ready'").fetchone()[0]
+            return {"build_id": build_id, "status": "ready", "reports": len(reports),
+                    "chunks": reused_chunks, "processed_reports": 0, "skipped_reports": len(reused),
+                    "embedded_chunks": 0, "reused_chunks": reused_chunks}
         with conn.transaction():
             conn.execute("UPDATE index_meta SET status='failed' WHERE status='building'")
             count = len(reports)
@@ -45,7 +72,7 @@ def reindex(conn, settings, provider_factory, before_swap=None, replacement_repo
         provider = provider_factory(settings)
         conn.execute("CREATE TEMP TABLE staged_chunks (acn text, chunk_idx int, text text, embedding text)")
         pending = []
-        for report in reports:
+        for report in processed:
             passages = chunk_report(report["synopsis"] or "", report["narrative"], provider, settings)
             pending.extend((report["acn"], index, text) for index, text in enumerate(passages))
         # Pack similarly sized inputs together to avoid padding short chunks to 500 tokens.
@@ -67,7 +94,7 @@ def reindex(conn, settings, provider_factory, before_swap=None, replacement_repo
                 )
             LOG.info("Build %s: embedded %s/%s chunks", build_id, min(start + len(batch), expected), expected)
         actual = conn.execute("SELECT count(*), count(DISTINCT acn) FROM staged_chunks").fetchone()
-        if actual != (expected, count):
+        if actual != (expected, len(processed)):
             raise ValueError("Staged chunk/report count validation failed")
         with conn.transaction():
             # Defensive locks also protect against SQL writers outside the advisory protocol.
@@ -76,8 +103,11 @@ def reindex(conn, settings, provider_factory, before_swap=None, replacement_repo
                 current = cursor.execute("SELECT * FROM reports ORDER BY acn COLLATE \"C\"").fetchall()
             if current != original:
                 raise ValueError("Corpus changed while embedding; rebuild required")
-            conn.execute("DELETE FROM chunks")
-            if replacement_reports is not None:
+            if incremental:
+                conn.execute("DELETE FROM chunks WHERE acn=ANY(%s)", ([r["acn"] for r in processed],))
+            else:
+                conn.execute("DELETE FROM chunks")
+            if replacement_reports is not None and not incremental:
                 # Old reports and ingestion state are removed only inside the atomic swap.
                 conn.execute("DELETE FROM reports")
                 columns = list(reports[0])
@@ -89,9 +119,21 @@ def reindex(conn, settings, provider_factory, before_swap=None, replacement_repo
                         ),
                         [[report[c] for c in columns] for report in reports],
                     )
-            conn.execute(sql.SQL("ALTER TABLE chunks ALTER COLUMN embedding TYPE vector({})").format(
-                sql.Literal(settings.embedding_dim)
-            ))
+            elif incremental:
+                columns = list(processed[0])
+                with conn.cursor() as cursor:
+                    cursor.executemany(
+                        sql.SQL("INSERT INTO reports ({}) VALUES ({}) ON CONFLICT (acn) DO UPDATE SET {}").format(
+                            sql.SQL(", ").join(map(sql.Identifier, columns)),
+                            sql.SQL(", ").join(sql.Placeholder() for _ in columns),
+                            sql.SQL(", ").join(sql.SQL("{}=EXCLUDED.{}").format(sql.Identifier(c), sql.Identifier(c))
+                                               for c in columns if c != "acn"),
+                        ), [[r[c] for c in columns] for r in processed],
+                    )
+            if not incremental:
+                conn.execute(sql.SQL("ALTER TABLE chunks ALTER COLUMN embedding TYPE vector({})").format(
+                    sql.Literal(settings.embedding_dim)
+                ))
             conn.execute(
                 "INSERT INTO chunks (acn, chunk_idx, text, embedding, anomaly_codes, "
                 "flight_phase, aircraft_category, report_month, report_year) "
@@ -102,7 +144,7 @@ def reindex(conn, settings, provider_factory, before_swap=None, replacement_repo
             validated = conn.execute(
                 "SELECT count(*), count(DISTINCT acn), count(embedding) FROM chunks"
             ).fetchone()
-            if validated != (expected, count, expected):
+            if validated != (expected + reused_chunks, count, expected + reused_chunks):
                 raise ValueError("Installed index count validation failed")
             if before_swap:
                 before_swap(conn)
@@ -111,10 +153,13 @@ def reindex(conn, settings, provider_factory, before_swap=None, replacement_repo
             state = {"stage": "indexed", "index_config": settings.index_config,
                      "active_index": settings.index_config}
             conn.execute(
-                "INSERT INTO ingest_state SELECT acn, %s FROM reports "
-                "ON CONFLICT (acn) DO UPDATE SET config=EXCLUDED.config", (Jsonb(state),)
+                "INSERT INTO ingest_state SELECT acn, %s FROM reports WHERE acn=ANY(%s) "
+                "ON CONFLICT (acn) DO UPDATE SET config=EXCLUDED.config",
+                (Jsonb(state), [r["acn"] for r in processed]),
             )
-        return {"build_id": build_id, "status": "ready", "reports": count, "chunks": expected}
+        return {"build_id": build_id, "status": "ready", "reports": count,
+                "chunks": expected + reused_chunks, "processed_reports": len(processed),
+                "skipped_reports": len(reused), "embedded_chunks": expected, "reused_chunks": reused_chunks}
     except BaseException:
         if build_id is not None:
             conn.execute("UPDATE index_meta SET status='failed' WHERE id=%s AND status='building'", (build_id,))

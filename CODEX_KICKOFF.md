@@ -160,3 +160,59 @@ default — OpenAI generation/filter, local embeddings — stands.)*
   results.md contains the 20k Layer-1 and Layer-2 tables with deltas;
   all prior tests still pass, plus a test that the 20k selection is
   deterministic (same seed → same manifest) and a superset of the 5k subset.
+
+## Step 6 — Lexical bake-off (flagship M3, part 1)
+
+*(Issued by Sunny on 2026-11-15 after Step 5 verification. Context: at both 5k
+and 20k, the current lexical leg — `websearch_to_tsquery` conjunctive FTS —
+scores ~0.09 Layer-1 and ~0.05 judged P@10 because natural-language queries
+underfill. Dense is strong (20k Layer-1 0.629 category P@10). Hybrid is
+dragged toward dense-minus-noise. This step finds a lexical leg worth fusing.
+Spec v1.4 gates apply: development/validation queries only; the frozen final
+test set does not exist yet and nothing here touches it; no anomaly label may
+be used as a retrieval feature (text-only); unjudged documents are never
+assumed irrelevant.)*
+
+Evaluate these lexical variants, each behind the existing retriever interface
+and the SAME candidate contract (100 candidate chunks → fold by ACN → 50
+candidate reports; report-level outputs only):
+
+1. `lexical-fts-and` — the current implementation (baseline; already measured,
+   re-measure in this harness for comparability).
+2. `lexical-fts-or` — OR semantics: build a tsquery from the query's content
+   terms joined with `|`, rank with `ts_rank_cd` over the existing
+   'simple'-config tsvector/GIN index. No schema change.
+3. `lexical-bm25-ref` — a true-BM25 reference implementation (e.g. `rank_bm25`)
+   run offline over the same chunk texts, eval-only. This sizes the prize of a
+   real BM25 leg without touching the production stack. (A `pg_search`
+   production integration is OUT of scope here; it is reconsidered only if
+   BM25 wins decisively.)
+
+For each variant, and for **hybrid with each variant as its lexical leg**
+(dense leg unchanged, report-level RRF k=60 unchanged), report on the
+20,000-report corpus:
+- Layer-1 (primary selection metric): Category Precision@10 and Hit@10 over
+  all 28 category queries, per retriever, plus per-query rows.
+- Latency: mean and p95 per query, same protocol as prior steps.
+- Layer-2 (secondary, coverage-reported): judged P@10 / MRR / nDCG@10 computed
+  ONLY over (query, ACN) pairs present in qrels, with the judged-coverage
+  percentage of each top-10 printed alongside. Never zero-fill unjudged pairs;
+  label these numbers "partial-coverage development signals", not scores.
+
+Deliverables:
+- A bake-off table in a new `docs/STEP6_NOTES.md` and a labeled section in
+  `eval/results.md`, with a clear recommendation: which lexical leg the
+  flagship should adopt, and whether hybrid-with-winner beats dense alone on
+  the primary metric.
+- For the winning configuration only, export its unjudged top-10 pairs to
+  `eval/judging_pool_step6_additions.csv` (blinded, shuffled, blank grades) so
+  Cynthia can judge them later and complete Layer-2 for the winner.
+- Do NOT change the production default lexical implementation, the queries,
+  the corpus, or any generation code in this step. Adopting the winner is a
+  separate change after Cynthia's decision.
+- Acceptance: all variants run under the identical candidate contract
+  (auditable in code); Layer-1 table complete for 3 lexical variants + 3
+  hybrid combinations + dense reference; coverage percentages printed for
+  every Layer-2 number; prior tests still pass plus new tests for the OR
+  tsquery builder (stopword/empty-query edge cases) and the coverage
+  computation.

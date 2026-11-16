@@ -217,6 +217,60 @@ The evaluation runner checks the active ACN set and this hash against the
 manifest before running unfiltered benchmarks. The final index counts and
 configuration are recorded in `eval/experiment.json`.
 
+## Step 5 — flagship 20,000-report selection
+
+The new manifest is `eval/corpus_manifest_20k.json`; the Mini manifest above
+remains unchanged. Selection seed: **20261120**. Retain all **5,000** Mini
+ACNs, deduplicate the pinned full source by ACN first (train → validation → test,
+first occurrence wins), and remove those Mini ACNs from the sampling frame.
+There are **42,723** remaining unique reports. Sample **15,000 additions**
+across all anomaly categories without a category filter.
+
+Year quotas use Hamilton/largest-remainder allocation: floor each remaining
+year population's proportional share of 15,000, then distribute the residual
+to the largest fractional remainders, ties by ascending year. Within each year,
+sort ACNs as strings and use a private Python 3.12 `random.Random(seed).sample`;
+process years in ascending order. The manifest records both final and added
+ACN lists, quota populations, per-year counts, all observed label counts, and
+the normalized-record snapshot hash.
+
+| Year | Remaining population | Added | Final corpus |
+|---|---:|---:|---:|
+| 2012 | 4,426 | 1,554 | 2,184 |
+| 2013 | 3,966 | 1,392 | 1,901 |
+| 2014 | 4,087 | 1,435 | 1,925 |
+| 2015 | 5,397 | 1,895 | 2,469 |
+| 2016 | 2,561 | 899 | 1,161 |
+| 2017 | 4,734 | 1,662 | 2,144 |
+| 2018 | 2,776 | 975 | 1,270 |
+| 2019 | 5,855 | 2,056 | 2,628 |
+| 2020 | 4,519 | 1,587 | 2,042 |
+| 2021 | 3,868 | 1,358 | 2,026 |
+| 2022 | 534 | 187 | 250 |
+| Total | 42,723 | 15,000 | 20,000 |
+
+The final corpus contains **75 distinct observed exact anomaly labels**.
+The sampling frame permits every label, but very rare labels are not guaranteed
+to appear. Four original category counts become runway **1,245**, altitude
+**1,693**, NMAC **1,917**, and critical equipment **4,005**. Counts remain
+multi-label assignments. Retaining the category-balanced Mini means the final
+20k is not a fresh proportional sample of the whole corpus: only the additions
+are proportional to the remaining year populations.
+
+Snapshot SHA-256:
+`c47c73dae040d26dba7221e50c6cbeb457859632f6ef385e7fdf338b03db850b`.
+Incremental indexing reuses existing chunks only when the report content hash,
+active index configuration, and ingestion state match and embeddings are
+complete. Only added/changed reports are chunked and embedded; an atomic ready
+build switch publishes the union. No absence-based deletion is allowed by the
+incremental growth command. The baseline 5k experiment/results are archived as
+`eval/experiment_5k.json` and `eval/results_5k.md`.
+
+All Mini queries, the human-filled judging pool, and qrels are retained.
+This preserves the meaning of those labels, but does not label newly retrieved
+20k top-ten candidates. The evaluator checks exact query/ACN judgment coverage
+and must leave full Layer-2 scores pending when that coverage is incomplete.
+
 Step 3 contains **20 dedicated Layer-1 queries + 8 additional Layer-2 pool
 queries + 3 controls**. Category agreement is reported for the 20 primary
 queries and for all 28 category queries. No human relevance labels or

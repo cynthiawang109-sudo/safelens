@@ -25,7 +25,8 @@ def main():
     build.add_argument("--model")
     build.add_argument("--revision")
     build.add_argument("--dimension", type=int)
-    build.add_argument("--subset-manifest", help="Atomically replace the corpus with this verified subset")
+    build.add_argument("--subset-manifest", "--corpus-manifest", dest="subset_manifest", help="Verified corpus manifest")
+    build.add_argument("--incremental", action="store_true", help="Reuse unchanged indexed reports; permit growth but no deletion")
     search = commands.add_parser("search")
     search.add_argument("query")
     search.add_argument("--method", choices=["lexical", "dense", "hybrid", "all"], default="all")
@@ -45,10 +46,16 @@ def main():
                                embedding_dim=args.dimension or settings.embedding_dim)
             replacement = None
             if args.subset_manifest:
-                from safelens.subset import load_manifest_reports
-                replacement = load_manifest_reports(args.subset_manifest)
+                from pathlib import Path
+                manifest = json.loads(Path(args.subset_manifest).read_text(encoding="utf-8"))
+                if manifest.get("manifest_type") == "flagship_year_stratified_v1":
+                    from safelens.corpus import load_expanded_reports
+                    replacement = load_expanded_reports(args.subset_manifest)
+                else:
+                    from safelens.subset import load_manifest_reports
+                    replacement = load_manifest_reports(args.subset_manifest)
             print(json.dumps(reindex(conn, settings, LocalEmbeddingProvider,
-                                     replacement_reports=replacement), indent=2))
+                                     replacement_reports=replacement, incremental=args.incremental), indent=2))
         else:
             config = RetrievalConfig(args.candidate_chunks, args.candidate_reports)
             provider = None if args.method == "lexical" else LocalEmbeddingProvider(settings)

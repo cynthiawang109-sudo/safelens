@@ -1,0 +1,23 @@
+{
+  "index_acceptance": "passed",
+  "ready_build": 4,
+  "reports": 20000,
+  "chunks": 28306,
+  "null_embeddings": 0,
+  "retained_mini_reports": 5000,
+  "unchanged_mini_chunks": 6998,
+  "idempotent_repeat": {
+    "build_id": 4,
+    "status": "ready",
+    "reports": 20000,
+    "chunks": 28306,
+    "processed_reports": 0,
+    "skipped_reports": 20000,
+    "embedded_chunks": 0,
+    "reused_chunks": 28306
+  },
+  "protected_assets_unchanged": true,
+  "deterministic_manifest": true,
+  "layer2_status": "needs_judgments",
+  "unjudged_top10_pairs": 46
+}

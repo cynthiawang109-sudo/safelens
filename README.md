@@ -5,11 +5,12 @@ aviation safety reporter accounts. The Mini milestone will compare PostgreSQL
 full-text search, dense retrieval, and hybrid retrieval with report-level
 evaluation.
 
-Current milestone: retrieval and evaluation on 5,000 reports. Step 4 adds the
-generation API, citation validation, Gradio client, and human-qrels metric path.
-Live generation acceptance passed; see [Step 4 notes](docs/STEP4_NOTES.md) for
-control outcomes, qualified refusals, and a cited positive-path example.
-Human relevance judging remains pending.
+Current corpus: **20,000 reports**, retaining every Mini report. Step 5 indexing
+and Layer-1 evaluation pass; its full Layer-2 acceptance awaits 46 additional
+human query/report judgments. See [Step 5 notes](docs/STEP5_NOTES.md).
+The Mini generation API, citation validation, and Gradio client remain unchanged;
+their completed smoke validation is recorded in [Step 4 notes](docs/STEP4_NOTES.md).
+Step 6 has not started.
 
 ## Scaffold quickstart
 
@@ -215,6 +216,38 @@ Precision@10 and MRR use grade >=1 as relevant. MRR is measured over the returne
 top ten. nDCG@10 uses linear gains 2/1/0 and the ideal ranking of the judged pool.
 Both per-query and macro-average scores are appended separately from Layer-1
 category agreement. No qrels or human grades are supplied by this implementation.
+
+## Step 5 flagship scale-up
+
+Step 5 keeps every Mini report and adds 15,000 reports sampled proportionally
+by year from the remaining pinned source, with seed 20261120. No retrieval,
+query, prompt, or generation behavior changes. The original Mini manifest,
+human-filled pool, and qrels remain frozen; 5k experiment/results are archived.
+
+```powershell
+uv run python -m safelens.corpus
+uv run python -m safelens.cli reindex --corpus-manifest eval/corpus_manifest_20k.json --incremental
+uv run python eval/run_eval.py --manifest eval/corpus_manifest_20k.json
+uv run python scripts/validate_step5.py
+```
+
+Incremental growth reuses unchanged report chunks and embeddings when content
+hash and active configuration match. Only new/changed reports are embedded;
+the ready-build switch is atomic and growth never infers deletions. A repeat
+with unchanged inputs initializes no embedding model and creates no new build.
+The CPU embedding pass is offline and can take substantial time at this scale.
+
+After publication, `eval/current_corpus.json` designates the active manifest for
+default evaluation. The new experiment records this switch, the development
+split, and deltas against the archived 5k numbers. The 20k results section is
+appended to `eval/results.md`; the Mini section is retained.
+
+Retaining judged reports does not guarantee judgment coverage of every newly
+retrieved top-ten pair. The evaluator never treats missing qrels as grade zero.
+If coverage is incomplete, full 20k Layer-2 scores/deltas remain pending and a
+separate blinded `eval/judging_pool_20k_additions.csv` requests only the missing
+pairs. The original human judging sheet and qrels are never overwritten.
+Step 6 retrieval bake-offs are outside this step.
 
 ## Project documents
 

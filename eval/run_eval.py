@@ -33,6 +33,7 @@ from safelens.retrieve import (
     search_hybrid,
     search_lexical,
 )
+from safelens.scale_report import comparison, missing_judgments, render_scaleup
 from safelens.subset import CATEGORIES
 
 METHODS = {"lexical": search_lexical, "dense": search_dense, "hybrid": search_hybrid}
@@ -247,6 +248,9 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
         rankings_path=Path("data/eval_rankings.json")):
     queries = load_queries(queries_path)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    scaleup = manifest.get("manifest_type") == "flagship_year_stratified_v1"
+    if scaleup and rankings_path == Path("data/eval_rankings.json"):
+        rankings_path = Path("data/eval_rankings_20k.json")
     if not conn.execute("SELECT pg_try_advisory_lock_shared(%s)", (LOCK,)).fetchone()[0]:
         raise RuntimeError("Offline build is active; evaluate only a ready corpus")
     try:
@@ -273,10 +277,20 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
         relevance = {"status": "pending", "reason": "qrels.jsonl absent; human judging not performed"}
         if qrels_path.exists():
             qrels = load_qrels(qrels_path, {q["id"] for q in queries if q["layer"] == 2})
-            relevance = judged_metrics(queries, rankings, qrels)
+            missing = missing_judgments(queries, rankings, qrels)
+            if scaleup and missing:
+                relevance = {"status": "needs_judgments", "missing_pairs": missing,
+                             "reason": "Expanded corpus top-ten coverage incomplete; unjudged documents are not irrelevant"}
+            else:
+                relevance = judged_metrics(queries, rankings, qrels)
         output.mkdir(parents=True, exist_ok=True)
-        write_pool(output / "judging_pool.csv", pool, preserve_judgments=True)
-        with (output / "judging_pool.csv").open(encoding="utf-8", newline="") as source:
+        pool_path = output / ("judging_pool_20k.csv" if scaleup else "judging_pool.csv")
+        write_pool(pool_path, pool, preserve_judgments=True)
+        if scaleup and relevance["status"] == "needs_judgments":
+            missing_set = set(map(tuple, relevance["missing_pairs"]))
+            write_pool(output / "judging_pool_20k_additions.csv",
+                       [r for r in pool if (r["query_id"], r["acn"]) in missing_set], preserve_judgments=True)
+        with pool_path.open(encoding="utf-8", newline="") as source:
             saved_pool = list(csv.DictReader(source))
         index["built_at"] = index["built_at"].isoformat()
         record = {
@@ -284,6 +298,7 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             "corpus": {"source_dataset": manifest["source_dataset"], "source_revision": manifest["source_revision"],
                        "selection_seed": manifest["seed"], "reports": len(reports), "chunks": counts[0],
                        "snapshot_sha256": snapshot, "manifest_sha256": file_hash(manifest_path)},
+            "manifest_path": str(manifest_path), "split": "development",
             "index": index, "retrieval_config": asdict(config),
             "embedding_runtime": {"device": "cpu", "normalized": True, "batch_size": settings.embedding_batch_size,
                                   "threads": settings.embedding_threads, "build_batch_order": "token_length_descending"},
@@ -291,7 +306,7 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             "query_order": [q["id"] for q in queries],
             "timing_scope": "31 queries; retrieval plus query embeddings; excludes model initialization and generation",
             "judging_pool": {"rows": len(pool), "unique_queries": len({r['query_id'] for r in pool}),
-                             "shuffle_seed": pool_seed, "sha256": file_hash(output / "judging_pool.csv"),
+                             "shuffle_seed": pool_seed, "sha256": file_hash(pool_path), "path": str(pool_path),
                              "grades_assigned": sum(bool(r["grade"]) for r in saved_pool),
                              "notes_assigned": sum(bool(r["note"]) for r in saved_pool)},
             "judged_relevance": relevance,
@@ -314,8 +329,18 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             "postgres_version": conn.execute("SHOW server_version").fetchone()[0],
             "pgvector_version": conn.execute("SELECT extversion FROM pg_extension WHERE extname='vector'").fetchone()[0],
         }
+        if scaleup:
+            baseline = json.loads((output / "experiment_5k.json").read_text(encoding="utf-8"))
+            record["comparison_to_5k"] = comparison(record, baseline)
+            record["manifest_switch"] = {"previous": "eval/subset_manifest.json", "current": str(manifest_path),
+                                          "previous_manifest_sha256": baseline["corpus"]["manifest_sha256"],
+                                          "current_manifest_sha256": file_hash(manifest_path),
+                                          "baseline_experiment": "eval/experiment_5k.json"}
+            previous = (output / "results.md").read_text(encoding="utf-8").split("<!-- corpus-scaleup-20000 -->")[0]
+            (output / "results.md").write_text(previous.rstrip() + "\n\n" + render_scaleup(record), encoding="utf-8")
+        else:
+            (output / "results.md").write_text(render_results(record), encoding="utf-8")
         (output / "experiment.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        (output / "results.md").write_text(render_results(record), encoding="utf-8")
         rankings_path.write_text(json.dumps(rankings, ensure_ascii=False), encoding="utf-8")
         print(json.dumps({"corpus": record["corpus"], "layer1_primary": record["layer1_primary"],
                           "judging_pool": record["judging_pool"], "controls_verified": list(controls)}, indent=2))
@@ -327,10 +352,13 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--queries", type=Path, default=Path("eval/queries.jsonl"))
-    parser.add_argument("--manifest", type=Path, default=Path("eval/subset_manifest.json"))
+    parser.add_argument("--manifest", type=Path)
     parser.add_argument("--output", type=Path, default=Path("eval"))
     parser.add_argument("--pool-seed", type=int, default=20261116)
     args = parser.parse_args()
+    if args.manifest is None:
+        designation = Path("eval/current_corpus.json")
+        args.manifest = Path(json.loads(designation.read_text(encoding="utf-8"))["manifest"]) if designation.exists() else Path("eval/subset_manifest.json")
     settings = Settings.from_env()
     provider = LocalEmbeddingProvider(settings)
     with psycopg.connect(settings.database_url, autocommit=True, connect_timeout=10) as conn:
