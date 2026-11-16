@@ -216,3 +216,52 @@ Deliverables:
   every Layer-2 number; prior tests still pass plus new tests for the OR
   tsquery builder (stopword/empty-query edge cases) and the coverage
   computation.
+
+## Step 6B — Fusion-weight mini bake-off (dense + BM25)
+
+*(Issued by Sunny on 2026-11-16, at Cynthia's decision to test fusion weights
+before settling the retrieval default. Context: Step 6 found BM25 the best
+lexical leg (Layer-1 Category P@10 0.5714) but equal-weight RRF hybrid-BM25
+(0.5786) still lost to dense alone (0.6286). Question for this step: can a
+dense-heavy weighting make fusion beat dense alone? Spec v1.4 gates apply:
+development queries only, text-only features, unjudged never assumed
+irrelevant, no production default change in this step.)*
+
+Method:
+- Legs: dense and lexical-bm25-ref exactly as measured in Step 6. Reuse the
+  saved Step 6 rankings (`data/eval_rankings_step6.json`) if present so the
+  sweep is pure re-ranking; otherwise re-run the two legs once and cache the
+  rankings. Candidate contract unchanged (100 chunks → fold by ACN → 50
+  reports per leg).
+- Fusion families:
+  1. **Weighted RRF**: score = w_d/(60 + rank_d) + w_l/(60 + rank_l), k fixed
+     at 60, report-level, ACN tie-break.
+  2. **Normalized score fusion (CombSUM-style)**: per-query min-max normalize
+     each leg's report scores to [0, 1], combine with the same weights.
+- **Pre-registered weight grid** (dense:lexical): 1:0 (dense-only reference),
+  10:1, 5:1, 3:1, 2:1, 1:1, 1:2, 0:1 (BM25-only reference). No additional
+  weights may be tried after seeing results; if a boundary of the grid wins,
+  report that fact instead of extending the grid.
+- Selection rule (fixed in advance): highest Layer-1 Category P@10 wins;
+  tie-break by Hit@10, then by the SMALLER lexical weight.
+
+Reporting (all in `docs/STEP6B_NOTES.md` plus a labeled section in
+`eval/results.md` and a versioned `eval/experiment_step6b.json`):
+- The FULL grid table for both families: Category P@10, Hit@10 per weight.
+  No cherry-picking the winner row alone.
+- For the best configuration: per-query win/loss/tie count vs dense-only on
+  Category P@10, and the margin. State plainly if the win rests on one or two
+  queries flipping.
+- Layer-2 partial-coverage signals (same protocol and caveats as Step 6:
+  judged pairs only, coverage % printed, never zero-filled, not for
+  selection) for the best configuration and for dense, using the qrels file
+  as it exists at run time.
+- A recommendation: adopt a fusion configuration as the flagship default, or
+  keep dense-only — with the numbers behind it. Adoption itself is a separate
+  change after Cynthia's decision; this step changes no defaults and no
+  production code paths (experiment code only, like Step 6).
+
+Acceptance: both families × full grid reported; weighted-RRF unit tests
+(1:1 reduces to the Step 6 hybrid ranking; lexical weight 0 reproduces the
+dense ranking exactly); prior tests still pass; protected assets (queries,
+qrels, manifests, production retrieval/generation) unchanged by hash.
