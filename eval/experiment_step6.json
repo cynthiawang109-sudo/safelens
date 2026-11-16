@@ -1,0 +1,2840 @@
+{
+  "timestamp": "2026-11-16T04:38:08.913983+00:00",
+  "split": "development",
+  "unfiltered": true,
+  "corpus": {
+    "reports": 20000,
+    "chunks": 28306,
+    "snapshot_sha256": "c47c73dae040d26dba7221e50c6cbeb457859632f6ef385e7fdf338b03db850b",
+    "manifest": "eval/corpus_manifest_20k.json"
+  },
+  "index": {
+    "id": 4,
+    "status": "ready",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dim": 384,
+    "embed_query_prefix": "Represent this sentence for searching relevant passages: ",
+    "chunk_config": {
+      "tokens": 500,
+      "overlap": 0.15,
+      "algorithm": "paragraph_offsets_v1",
+      "token_limit": "min(target, model_max_seq_length); includes synopsis and special tokens",
+      "lexical_config": "simple",
+      "overlap_policy": "configured fraction of previous narrative window tokens; synopsis repeated separately",
+      "text_construction": "synopsis+all_labeled_narratives; synopsis_per_chunk",
+      "embedding_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a"
+    },
+    "report_count": 20000,
+    "built_at": "2026-11-16T02:13:12.326784+00:00"
+  },
+  "retrieval_config": {
+    "candidate_chunks": 100,
+    "candidate_reports": 50,
+    "rrf_k": 60,
+    "aggregation": "max_chunk_score_then_report_rrf; ties=acn; chunk_ties=id"
+  },
+  "protected_sha256": {
+    "src/safelens/retrieve.py": "ceddf081e4c4db39d6a9f8dbd720c7ec52ea4398b5a7327828e9a0f671f381a8",
+    "src/safelens/generate.py": "da7bda452d136574555cfa149c9dbae030b47db0417e7351e92f887c047e02ca",
+    "src/safelens/llm.py": "117571404ada35d89bf1aa3bb08f647beee1824c9f319857197a1ff8c13c3c89",
+    "eval/queries.jsonl": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
+    "eval/qrels.jsonl": "b2fddd7fe61b348f66065d4958c05f78e36354f2fd83d6672cab1bc35c9794f1",
+    "eval/subset_manifest.json": "50800dd75b0e6c3e489232ca8a420e2fb68d052c60fe2fef96f98f7838fd7172",
+    "eval/corpus_manifest_20k.json": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+    "eval/judging_pool.csv": "32ab8ff368aff049e12662d62a18c43bea69822beaa482984c5388c9ec35ecd6"
+  },
+  "tokenization": "lowercase ASCII alphanumeric; sklearn English stoplist; no stemming",
+  "stopwords_sha256": "40e0a284c5b9a220efffd18d4d739fbd3270091d6ce2c75b6effe289d3be5487",
+  "bm25": {
+    "implementation": "rank-bm25 BM25Okapi",
+    "k1": 1.5,
+    "b": 0.75,
+    "epsilon": 0.25,
+    "indexing_ms": 6623.306099994807
+  },
+  "query_order": [
+    "ri-l1-1",
+    "ri-l1-2",
+    "ri-l1-3",
+    "ri-l1-4",
+    "ri-l1-5",
+    "alt-l1-1",
+    "alt-l1-2",
+    "alt-l1-3",
+    "alt-l1-4",
+    "alt-l1-5",
+    "nmac-l1-1",
+    "nmac-l1-2",
+    "nmac-l1-3",
+    "nmac-l1-4",
+    "nmac-l1-5",
+    "equip-l1-1",
+    "equip-l1-2",
+    "equip-l1-3",
+    "equip-l1-4",
+    "equip-l1-5",
+    "ri-l2-1",
+    "ri-l2-2",
+    "alt-l2-1",
+    "alt-l2-2",
+    "nmac-l2-1",
+    "nmac-l2-2",
+    "equip-l2-1",
+    "equip-l2-2",
+    "control-domain",
+    "control-time",
+    "control-acn"
+  ],
+  "method_order": [
+    "lexical-fts-and",
+    "hybrid-fts-and",
+    "lexical-fts-or",
+    "hybrid-fts-or",
+    "lexical-bm25-ref",
+    "hybrid-bm25-ref",
+    "dense"
+  ],
+  "summary": {
+    "lexical-fts-and": {
+      "category_precision_at_10": 0.08928571428571429,
+      "hit_at_10": 0.25
+    },
+    "hybrid-fts-and": {
+      "category_precision_at_10": 0.6107142857142858,
+      "hit_at_10": 0.9642857142857143
+    },
+    "lexical-fts-or": {
+      "category_precision_at_10": 0.43214285714285716,
+      "hit_at_10": 0.9642857142857143
+    },
+    "hybrid-fts-or": {
+      "category_precision_at_10": 0.5821428571428572,
+      "hit_at_10": 1
+    },
+    "lexical-bm25-ref": {
+      "category_precision_at_10": 0.5714285714285714,
+      "hit_at_10": 1
+    },
+    "hybrid-bm25-ref": {
+      "category_precision_at_10": 0.5785714285714286,
+      "hit_at_10": 1
+    },
+    "dense": {
+      "category_precision_at_10": 0.6285714285714286,
+      "hit_at_10": 0.9642857142857143
+    }
+  },
+  "layer1_per_query": [
+    {
+      "query_id": "ri-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-1",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-1",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-1",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 3,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-2",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-2",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-2",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "ri-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "ri-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-3",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-3",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-3",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "ri-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "ri-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-4",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-4",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-4",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 1,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-5",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-5",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l1-5",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 5,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-1",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-1",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-1",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 1,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "alt-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-2",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-2",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-2",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "alt-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-3",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-3",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-3",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "alt-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-4",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-4",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-4",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "alt-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-5",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-5",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l1-5",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 2,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-1",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-1",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-1",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "nmac-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-2",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-2",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-2",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 10,
+      "category_precision_at_10": 1.0,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "nmac-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "nmac-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-3",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-3",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-3",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "nmac-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-4",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-4",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-4",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "nmac-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-5",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-5",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l1-5",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-1",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-1",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-1",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-1",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-1",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "equip-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-2",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-2",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-2",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-2",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-2",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "equip-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-3",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-3",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-3",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-3",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-3",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "equip-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-4",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-4",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-4",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-4",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-4",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "equip-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-5",
+      "layer": 1,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-5",
+      "layer": 1,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-5",
+      "layer": 1,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-5",
+      "layer": 1,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l1-5",
+      "layer": 1,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "ri-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-1",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-1",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-1",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-2",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-2",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "ri-l2-2",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "alt-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 1,
+      "category_precision_at_10": 0.1,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-1",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 3,
+      "category_precision_at_10": 0.3,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-1",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-1",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "alt-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-2",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-2",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "alt-l2-2",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "equip-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-1",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-1",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 9,
+      "category_precision_at_10": 0.9,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-1",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-1",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 7,
+      "category_precision_at_10": 0.7,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-1",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 8,
+      "category_precision_at_10": 0.8,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-and",
+      "retrieved": 0,
+      "category_matches": 0,
+      "category_precision_at_10": 0.0,
+      "hit_at_10": 0
+    },
+    {
+      "query_id": "equip-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-and",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-2",
+      "layer": 2,
+      "method": "lexical-fts-or",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-2",
+      "layer": 2,
+      "method": "hybrid-fts-or",
+      "retrieved": 10,
+      "category_matches": 6,
+      "category_precision_at_10": 0.6,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-2",
+      "layer": 2,
+      "method": "lexical-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 2,
+      "category_precision_at_10": 0.2,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-2",
+      "layer": 2,
+      "method": "hybrid-bm25-ref",
+      "retrieved": 10,
+      "category_matches": 4,
+      "category_precision_at_10": 0.4,
+      "hit_at_10": 1
+    },
+    {
+      "query_id": "equip-l2-2",
+      "layer": 2,
+      "method": "dense",
+      "retrieved": 10,
+      "category_matches": 5,
+      "category_precision_at_10": 0.5,
+      "hit_at_10": 1
+    }
+  ],
+  "layer2_summary": {
+    "lexical-fts-and": {
+      "precision_at_10": 0.5,
+      "mrr": 0.3333333333333333,
+      "ndcg_at_10": 0.2657225487691429,
+      "coverage_at_10": 0.05,
+      "defined_queries": 1
+    },
+    "hybrid-fts-and": {
+      "precision_at_10": 0.975,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8461243718529596,
+      "coverage_at_10": 0.5,
+      "defined_queries": 8
+    },
+    "lexical-fts-or": {
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8333333333333334,
+      "coverage_at_10": 0.0625,
+      "defined_queries": 3
+    },
+    "hybrid-fts-or": {
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.835042928302703,
+      "coverage_at_10": 0.23750000000000002,
+      "defined_queries": 8
+    },
+    "lexical-bm25-ref": {
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.625,
+      "coverage_at_10": 0.0625,
+      "defined_queries": 4
+    },
+    "hybrid-bm25-ref": {
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8434708975212843,
+      "coverage_at_10": 0.225,
+      "defined_queries": 6
+    },
+    "dense": {
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.871020234971424,
+      "coverage_at_10": 0.5125,
+      "defined_queries": 8
+    }
+  },
+  "layer2_per_query": [
+    {
+      "query_id": "ri-l2-1",
+      "method": "lexical-fts-and",
+      "returned": 0,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": null,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "ri-l2-1",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 9,
+      "coverage_at_10": 0.9,
+      "coverage_of_returned": 0.9,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.852312561940246
+    },
+    {
+      "query_id": "ri-l2-1",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.5
+    },
+    {
+      "query_id": "ri-l2-1",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 4,
+      "coverage_at_10": 0.4,
+      "coverage_of_returned": 0.4,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6803434264216239
+    },
+    {
+      "query_id": "ri-l2-1",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.5
+    },
+    {
+      "query_id": "ri-l2-1",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 5,
+      "coverage_at_10": 0.5,
+      "coverage_of_returned": 0.5,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6652642201270017
+    },
+    {
+      "query_id": "ri-l2-1",
+      "method": "dense",
+      "returned": 10,
+      "judged": 9,
+      "coverage_at_10": 0.9,
+      "coverage_of_returned": 0.9,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.852312561940246
+    },
+    {
+      "query_id": "ri-l2-2",
+      "method": "lexical-fts-and",
+      "returned": 10,
+      "judged": 4,
+      "coverage_at_10": 0.4,
+      "coverage_of_returned": 0.4,
+      "precision_at_10": 0.5,
+      "mrr": 0.3333333333333333,
+      "ndcg_at_10": 0.2657225487691429
+    },
+    {
+      "query_id": "ri-l2-2",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 5,
+      "coverage_at_10": 0.5,
+      "coverage_of_returned": 0.5,
+      "precision_at_10": 0.8,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7469385177900298
+    },
+    {
+      "query_id": "ri-l2-2",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "ri-l2-2",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "ri-l2-2",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.5
+    },
+    {
+      "query_id": "ri-l2-2",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 4,
+      "coverage_at_10": 0.4,
+      "coverage_of_returned": 0.4,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "ri-l2-2",
+      "method": "dense",
+      "returned": 10,
+      "judged": 6,
+      "coverage_at_10": 0.6,
+      "coverage_of_returned": 0.6,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.9461054227377446
+    },
+    {
+      "query_id": "alt-l2-1",
+      "method": "lexical-fts-and",
+      "returned": 0,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": null,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "alt-l2-1",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 3,
+      "coverage_at_10": 0.3,
+      "coverage_of_returned": 0.3,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "alt-l2-1",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "alt-l2-1",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "alt-l2-1",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "alt-l2-1",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "alt-l2-1",
+      "method": "dense",
+      "returned": 10,
+      "judged": 3,
+      "coverage_at_10": 0.3,
+      "coverage_of_returned": 0.3,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "alt-l2-2",
+      "method": "lexical-fts-and",
+      "returned": 0,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": null,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "alt-l2-2",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 6,
+      "coverage_at_10": 0.6,
+      "coverage_of_returned": 0.6,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7893006655410245
+    },
+    {
+      "query_id": "alt-l2-2",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "alt-l2-2",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 3,
+      "coverage_at_10": 0.3,
+      "coverage_of_returned": 0.3,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "alt-l2-2",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "alt-l2-2",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 4,
+      "coverage_at_10": 0.4,
+      "coverage_of_returned": 0.4,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.9159362318644413
+    },
+    {
+      "query_id": "alt-l2-2",
+      "method": "dense",
+      "returned": 10,
+      "judged": 6,
+      "coverage_at_10": 0.6,
+      "coverage_of_returned": 0.6,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7893006655410245
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "method": "lexical-fts-and",
+      "returned": 0,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": null,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 6,
+      "coverage_at_10": 0.6,
+      "coverage_of_returned": 0.6,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7676939560659818
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.5
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.6199062332840657
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "method": "dense",
+      "returned": 10,
+      "judged": 6,
+      "coverage_at_10": 0.6,
+      "coverage_of_returned": 0.6,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7676939560659818
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "method": "lexical-fts-and",
+      "returned": 0,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": null,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 7,
+      "coverage_at_10": 0.7,
+      "coverage_of_returned": 0.7,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7724462451062948
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 3,
+      "coverage_at_10": 0.3,
+      "coverage_of_returned": 0.3,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.5
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "nmac-l2-2",
+      "method": "dense",
+      "returned": 10,
+      "judged": 7,
+      "coverage_at_10": 0.7,
+      "coverage_of_returned": 0.7,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.7724462451062948
+    },
+    {
+      "query_id": "equip-l2-1",
+      "method": "lexical-fts-and",
+      "returned": 0,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": null,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "equip-l2-1",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 3,
+      "coverage_at_10": 0.3,
+      "coverage_of_returned": 0.3,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8403030283801005
+    },
+    {
+      "query_id": "equip-l2-1",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "equip-l2-1",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "equip-l2-1",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.5
+    },
+    {
+      "query_id": "equip-l2-1",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8597186998521972
+    },
+    {
+      "query_id": "equip-l2-1",
+      "method": "dense",
+      "returned": 10,
+      "judged": 3,
+      "coverage_at_10": 0.3,
+      "coverage_of_returned": 0.3,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8403030283801005
+    },
+    {
+      "query_id": "equip-l2-2",
+      "method": "lexical-fts-and",
+      "returned": 0,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": null,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "equip-l2-2",
+      "method": "hybrid-fts-and",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "equip-l2-2",
+      "method": "lexical-fts-or",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "equip-l2-2",
+      "method": "hybrid-fts-or",
+      "returned": 10,
+      "judged": 2,
+      "coverage_at_10": 0.2,
+      "coverage_of_returned": 0.2,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    },
+    {
+      "query_id": "equip-l2-2",
+      "method": "lexical-bm25-ref",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "equip-l2-2",
+      "method": "hybrid-bm25-ref",
+      "returned": 10,
+      "judged": 0,
+      "coverage_at_10": 0.0,
+      "coverage_of_returned": 0.0,
+      "precision_at_10": null,
+      "mrr": null,
+      "ndcg_at_10": null
+    },
+    {
+      "query_id": "equip-l2-2",
+      "method": "dense",
+      "returned": 10,
+      "judged": 1,
+      "coverage_at_10": 0.1,
+      "coverage_of_returned": 0.1,
+      "precision_at_10": 1.0,
+      "mrr": 1.0,
+      "ndcg_at_10": 1.0
+    }
+  ],
+  "latency_ms": {
+    "lexical-fts-and": {
+      "mean": 15.80068709670506,
+      "p95": 33.024999996996485,
+      "samples": [
+        33.024999996996485,
+        21.37110000330722,
+        14.115000005404,
+        19.059199999901466,
+        10.48129999981029,
+        11.40319999831263,
+        16.31710000219755,
+        16.61220000096364,
+        11.428099998738617,
+        9.204800000588875,
+        13.240799999039154,
+        9.533799995551817,
+        14.5120000015595,
+        13.82299999386305,
+        11.683199998515192,
+        12.851899999077432,
+        12.46470000478439,
+        14.474199997493997,
+        19.540600005711894,
+        10.600800000247546,
+        15.965300000971183,
+        33.35069999593543,
+        12.263600001460873,
+        15.822200002730824,
+        16.876900001079775,
+        16.88809999905061,
+        13.721499999519438,
+        19.446099999186117,
+        17.610599999898113,
+        18.54779999848688,
+        13.586499997472856
+      ]
+    },
+    "hybrid-fts-and": {
+      "mean": 214.4368870966343,
+      "p95": 308.97140000161016,
+      "samples": [
+        1150.920000000042,
+        131.82170000072801,
+        130.2651000005426,
+        133.90410000283737,
+        136.55930000095395,
+        136.7272999996203,
+        148.78920000046492,
+        140.28590000089025,
+        128.94499999674736,
+        156.33250000246335,
+        130.64999999915017,
+        148.98769999854267,
+        208.44280000164872,
+        168.1313999943086,
+        155.6687000047532,
+        154.92909999738913,
+        168.82449999684468,
+        217.3292000006768,
+        248.55260000185808,
+        160.81420000409707,
+        174.07529999763938,
+        205.31539999501547,
+        256.2065999954939,
+        189.6223999938229,
+        188.67599999794038,
+        188.4483999965596,
+        308.97140000161016,
+        210.56569999927888,
+        273.2516000032774,
+        235.80150000634603,
+        259.7289000041201
+      ]
+    },
+    "lexical-fts-or": {
+      "mean": 687.6413129031143,
+      "p95": 1577.6425000003655,
+      "samples": [
+        565.8651999983704,
+        553.0545000001439,
+        421.18659999687225,
+        318.53509999928065,
+        382.64080000226386,
+        443.33250000636326,
+        775.4604000001564,
+        297.1730999997817,
+        498.4467999966,
+        563.9063999988139,
+        534.5224999982747,
+        182.93199999607168,
+        812.3147000005702,
+        560.3445000015199,
+        286.5328999978374,
+        384.7243999989587,
+        528.762200003257,
+        494.6041000002879,
+        940.6062999987626,
+        259.96650000161026,
+        711.7709000012837,
+        850.8832000006805,
+        1577.6425000003655,
+        907.5846999985515,
+        514.0649000022677,
+        1040.1945999983582,
+        929.2973999981768,
+        1019.1762000031304,
+        1385.3423000036855,
+        1816.6667999976198,
+        759.3456999966293
+      ]
+    },
+    "hybrid-fts-or": {
+      "mean": 816.1385419347602,
+      "p95": 1687.3210999983712,
+      "samples": [
+        641.5632000062033,
+        657.9792999982601,
+        543.2682000027853,
+        462.02220000122907,
+        557.2571999946376,
+        708.6264999961713,
+        960.1993999967817,
+        514.5222999999532,
+        684.9822999938624,
+        591.5431999965222,
+        680.6893000029959,
+        323.78630000312114,
+        1108.452499996929,
+        655.904899998859,
+        406.1318999956711,
+        555.8105000018259,
+        790.0385000029928,
+        608.7993999972241,
+        851.2055999963195,
+        554.0913000004366,
+        785.8628999965731,
+        876.0521000003791,
+        1189.8614000019734,
+        1068.9361999975517,
+        615.770500000508,
+        1231.7316999979084,
+        1080.939200001012,
+        1004.456200003915,
+        1687.3210999983712,
+        1996.7219999962253,
+        905.7675000003655
+      ]
+    },
+    "lexical-bm25-ref": {
+      "mean": 146.95554838685746,
+      "p95": 267.52639999904204,
+      "samples": [
+        124.49899999774061,
+        117.84759999864036,
+        136.91419999668142,
+        125.30310000147438,
+        113.49370000243653,
+        116.2149000010686,
+        156.44359999714652,
+        117.86089999804972,
+        132.64329999947222,
+        121.32820000260836,
+        111.77999999927124,
+        95.74170000269078,
+        168.64280000299914,
+        137.85070000449196,
+        113.24900000181515,
+        100.13469999830704,
+        139.55949999945005,
+        134.62629999412457,
+        158.42759999941336,
+        128.3774000039557,
+        139.0627000000677,
+        159.76609999779612,
+        168.64399999758461,
+        183.91220000194153,
+        135.2033000002848,
+        178.66179999691667,
+        176.8519999968703,
+        189.43389999913052,
+        267.52639999904204,
+        280.330599998706,
+        125.29080000240356
+      ]
+    },
+    "hybrid-bm25-ref": {
+      "mean": 318.72373870963554,
+      "p95": 529.9030000023777,
+      "samples": [
+        287.6269999978831,
+        266.90039999812143,
+        291.0819000026095,
+        250.71359999856213,
+        286.8994999953429,
+        271.6789999976754,
+        297.2141999998712,
+        249.91579999914393,
+        283.49639999942156,
+        291.21440000017174,
+        259.2078000016045,
+        245.14040000212844,
+        348.7139999997453,
+        289.8286999989068,
+        259.221799999068,
+        272.5168000033591,
+        303.6439999996219,
+        378.60250000085216,
+        306.35330000222893,
+        285.00789999816334,
+        292.4247999981162,
+        307.6179999989108,
+        326.7691000000923,
+        341.3375000018277,
+        290.57640000246465,
+        550.620699999854,
+        381.84629999886965,
+        361.35220000142,
+        529.9030000023777,
+        467.51129999756813,
+        305.4972000027192
+      ]
+    },
+    "dense": {
+      "mean": 175.56754838733468,
+      "p95": 270.63839999755146,
+      "samples": [
+        129.71989999641664,
+        145.74200000060955,
+        128.88869999733288,
+        130.92090000282042,
+        130.3771000020788,
+        130.27729999885196,
+        124.31760000617942,
+        132.27009999536676,
+        149.01839999947697,
+        164.75000000355067,
+        131.72789999953238,
+        171.50330000004033,
+        172.66790000576293,
+        151.365400000941,
+        153.32889999990584,
+        158.40249999746447,
+        188.8933000009274,
+        222.06159999768715,
+        153.24349999718834,
+        161.9871000002604,
+        157.63110000261804,
+        174.5392000011634,
+        168.2509000020218,
+        165.5460000038147,
+        174.69169999822043,
+        398.16569999675266,
+        270.63839999755146,
+        204.0536999993492,
+        223.76490000169724,
+        238.21209999732673,
+        235.63690000446513
+      ]
+    }
+  },
+  "recommendation": "Recommend **lexical-bm25-ref** as the lexical leg on the primary metric. Its hybrid **hybrid-bm25-ref** changes Category P@10 versus dense by **-0.0500** (does not beat dense). Adoption is a separate decision; BM25 production integration is not implemented. BM25 improves lexical Category P@10 over OR by +0.1393, but the measured fusion does not justify replacing dense alone. Defer a pg_search integration until a production lexical/fusion change is justified.",
+  "winning_lexical": "lexical-bm25-ref",
+  "winning_configuration": "lexical-bm25-ref",
+  "winner_pool": {
+    "path": "eval\\judging_pool_step6_additions.csv",
+    "rows": 75,
+    "shuffle_seed": 20261121
+  },
+  "hardware": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.16",
+  "software": {
+    "rank-bm25": "0.2.2",
+    "scikit-learn": "1.9.1",
+    "psycopg": "3.3.9",
+    "sentence-transformers": "5.7.0",
+    "torch": "2.15.0"
+  }
+}
