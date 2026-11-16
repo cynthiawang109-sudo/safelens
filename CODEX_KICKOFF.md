@@ -265,3 +265,75 @@ Acceptance: both families × full grid reported; weighted-RRF unit tests
 (1:1 reduces to the Step 6 hybrid ranking; lexical weight 0 reproduces the
 dense ranking exactly); prior tests still pass; protected assets (queries,
 qrels, manifests, production retrieval/generation) unchanged by hash.
+
+## Step 7 — Adopt weighted-RRF 10:1 as default + LangGraph agentic layer (flagship M4)
+
+*(Issued by Sunny on 2026-11-16. Cynthia's decision: adopt weighted RRF
+10:1 (dense:BM25) as the flagship retrieval default. Step 6B caveat stands:
+the margin over dense is fragile on the development set; the Part 3 ablation
+re-tests it on judged data. Spec v1.4 gates apply throughout.)*
+
+### Part 1 — Productionize the adopted default
+
+- Implement BM25 as a production lexical leg behind the existing retriever
+  interface (same preprocessing and BM25Okapi parameters as the Step 6
+  reference). In-memory index over the ready build's chunk texts, built once
+  per index build id and invalidated when the ready build changes; measure
+  and report index build time and memory.
+- Production hybrid = weighted RRF, weights dense 10 : BM25 1, k=60,
+  report-level, ACN tie-break. Weights live in configuration. The legacy FTS
+  leg stays available as a config option (documented baseline); the default
+  hybrid no longer uses it. Dense-only remains selectable.
+- Equivalence gate: on the 31 development queries, production hybrid-10:1
+  top-10 ACN orders must match the Step 6B best-configuration rankings.
+  Rerun `eval/run_eval.py`: Layer-1 hybrid must read 0.6429 (rounding aside).
+  For Layer-2, the new hybrid's top-10s contain a few pairs absent from
+  qrels — export exactly those to `eval/judging_pool_step7_additions.csv`
+  (blinded, blank) and mark the hybrid Layer-2 row pending those judgments.
+  Never zero-fill. The dense and lexical rows must be unchanged.
+
+### Part 2 — Agentic layer (LangGraph)
+
+Graph over the Part 1 retriever, preserving every existing generation rule
+(citation validation fail-closed, reporter-account framing, per-report and
+total chunk caps):
+1. **Retrieve** with the production default.
+2. **Grade**: an LLM grader scores the retrieved reports for relevance and
+   sufficiency against the question (structured output; grades recorded in
+   the trace).
+3. **Rewrite loop**: if evidence is insufficient and retries remain (max 2),
+   rewrite the query (one distinct strategy per retry — e.g. term-focused,
+   then synonym/expansion) and re-retrieve. Each attempt is graded.
+4. **Generate or abstain**: answer with validated citations, or abstain.
+   `/ask` responses carry the v1.4 status field:
+   `answered | partial | insufficient_evidence`.
+5. **Aggregate routing**: count-style questions ("how many reports…") route
+   to an auditable SQL count over report metadata (year and anomaly-category
+   filters) that reports its filters and denominator; the LLM never counts.
+   If the question's filters cannot be mapped, fall back to the normal path
+   and mark the answer `partial`.
+- The trace is part of the API response: stages executed, queries tried,
+  grades, retries, and per-stage token/latency cost (v1.4: advanced stages
+  are conditional, capped, and costed individually).
+- The three abstention controls must pass through the full agentic path.
+- Gradio calls the same HTTP API; no logic duplication.
+
+### Part 3 — Ablation (v1.4 P2)
+
+Configurations: **Dense-only**, **Hybrid-10:1**, **Hybrid + Rerank**
+(cross-encoder reranker, local model, over fused candidates, as a config
+flag), **Hybrid + Rewrite** (agentic loop without rerank), **Full Agentic**
+(rerank + rewrite + grading). Run over the 8 judged queries + 3 controls and
+report per configuration: judged retrieval metrics where coverage allows
+(coverage printed; new pairs exported, never zero-filled), abstention
+correctness on the 3 controls, mean retries, mean per-question cost
+(tokens and latency). Table in `docs/STEP7_NOTES.md` and `eval/results.md`,
+with a plain statement of what each added stage buys and costs.
+
+Acceptance: Part 1 equivalence gate passes and run_eval reproduces the
+expected Layer-1; Part 2 controls pass end-to-end and traces are complete;
+Part 3 table complete for all five configurations; prior tests pass plus new
+tests for the weighted-RRF production path (1:1 equals legacy equal-weight
+behavior on a fixture; lexical weight 0 equals dense), the BM25 index
+build-id invalidation, the rewrite cap, and the aggregate SQL routing.
+No final-test queries are created in this step; no Step 8 work.
