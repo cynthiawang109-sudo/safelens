@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-11-16T12:37:48.761949+00:00",
+  "input": "eval\\judging_pool_20k_additions.csv",
+  "input_sha256": "ef30f84974c88767530f6014978fbb60c07bb484890172c88697ea9331ee669c",
+  "manifest": "eval/corpus_manifest_20k.json",
+  "manifest_sha256": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+  "rankings": "data/eval_rankings_20k.json",
+  "rankings_sha256": "6142cb3e2bcba5255fc62171d1b9bb895128d6ecbabdf0c7b723984b1b9bc64a",
+  "import_tool": "eval/import_judgments.py",
+  "validation_pool_rows": 92,
+  "original_rows": 88,
+  "added_rows": 46,
+  "total_rows": 134,
+  "duplicate_pairs": 0,
+  "original_bytes_preserved": true,
+  "original_sha256": "b2fddd7fe61b348f66065d4958c05f78e36354f2fd83d6672cab1bc35c9794f1",
+  "merged_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+  "local_backup_directory": "data\\judgments20k_ok43cts2",
+  "evaluation_status": "ready",
+  "top10_pool_pairs": 92,
+  "unjudged_top10_pairs": 0,
+  "averages": {
+    "lexical": {
+      "precision_at_10": 0.05,
+      "mrr": 0.03125,
+      "ndcg_at_10": 0.024960048405214076
+    },
+    "dense": {
+      "precision_at_10": 0.95,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8456998925591415
+    },
+    "hybrid": {
+      "precision_at_10": 0.925,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8093308222668413
+    }
+  },
+  "deltas_vs_5k": {
+    "lexical": {
+      "precision_at_10": {
+        "5000": 0.05,
+        "20000": 0.05,
+        "delta": 0.0
+      },
+      "mrr": {
+        "5000": 0.041666666666666664,
+        "20000": 0.03125,
+        "delta": -0.010416666666666664
+      },
+      "ndcg_at_10": {
+        "5000": 0.03677631656666301,
+        "20000": 0.024960048405214076,
+        "delta": -0.011816268161448935
+      }
+    },
+    "dense": {
+      "precision_at_10": {
+        "5000": 0.9625,
+        "20000": 0.95,
+        "delta": -0.012500000000000067
+      },
+      "mrr": {
+        "5000": 1.0,
+        "20000": 1.0,
+        "delta": 0.0
+      },
+      "ndcg_at_10": {
+        "5000": 0.9140051228047227,
+        "20000": 0.8456998925591415,
+        "delta": -0.06830523024558122
+      }
+    },
+    "hybrid": {
+      "precision_at_10": {
+        "5000": 0.9375,
+        "20000": 0.925,
+        "delta": -0.012499999999999956
+      },
+      "mrr": {
+        "5000": 1.0,
+        "20000": 1.0,
+        "delta": 0.0
+      },
+      "ndcg_at_10": {
+        "5000": 0.889338154362902,
+        "20000": 0.8093308222668413,
+        "delta": -0.0800073320960607
+      }
+    }
+  },
+  "step6_section_preserved": true
+}

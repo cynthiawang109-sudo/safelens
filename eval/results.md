@@ -208,7 +208,7 @@ No generation or human judging is performed by this evaluator.
 
 Ready build **4**: **20,000 reports**, **28,306 embedded chunks**. All 5,000 Mini ACNs retained; 15,000 year-stratified additions, seed 20261120.
 Only corpus size changed. Retrieval, queries, prompts, generation, chunking, model/revision, and scoring definitions are unchanged. These are development results, not a frozen final test.
-The original Mini manifest, judging pool, and qrels are preserved. `current_corpus.json` designates `corpus_manifest_20k.json`; experiment.json records that switch and the archived `experiment_5k.json` baseline.
+The original Mini manifest and judging pool are preserved; the original 88 qrel rows are unchanged and 46 human-graded additions have been appended. `current_corpus.json` designates `corpus_manifest_20k.json`; experiment.json records that switch and the archived `experiment_5k.json` baseline.
 
 ### Layer-1 category agreement — all 28 category queries
 
@@ -225,21 +225,17 @@ Unfiltered retrieval. Category agreement is coarse topical alignment, not judged
 
 ### Layer-2 judged relevance — eight development queries
 
-**Not yet computable:** 46 unique top-ten (query_id, ACN) pairs lack judgments. Retaining all Mini reports preserves existing labels but does not judge newly retrieved candidates.
-No unjudged report is assumed irrelevant. The 20k scores and deltas remain pending; treating these rows as zero would invalidate the comparison.
-`judging_pool_20k_additions.csv` is a blinded, shuffled export of only the missing pairs, with blank grades/notes. The original pool and qrels are untouched.
-
 | Retriever | Metric | 5,000 | 20,000 | Delta |
 |---|---|---:|---:|---:|
-| lexical | precision_at_10 | 0.050 | pending judgments | N/A |
-| lexical | mrr | 0.042 | pending judgments | N/A |
-| lexical | ndcg_at_10 | 0.037 | pending judgments | N/A |
-| dense | precision_at_10 | 0.963 | pending judgments | N/A |
-| dense | mrr | 1.000 | pending judgments | N/A |
-| dense | ndcg_at_10 | 0.914 | pending judgments | N/A |
-| hybrid | precision_at_10 | 0.938 | pending judgments | N/A |
-| hybrid | mrr | 1.000 | pending judgments | N/A |
-| hybrid | ndcg_at_10 | 0.889 | pending judgments | N/A |
+| lexical | precision_at_10 | 0.050 | 0.050 | +0.000 |
+| lexical | mrr | 0.042 | 0.031 | -0.010 |
+| lexical | ndcg_at_10 | 0.037 | 0.025 | -0.012 |
+| dense | precision_at_10 | 0.963 | 0.950 | -0.013 |
+| dense | mrr | 1.000 | 1.000 | +0.000 |
+| dense | ndcg_at_10 | 0.914 | 0.846 | -0.068 |
+| hybrid | precision_at_10 | 0.938 | 0.925 | -0.012 |
+| hybrid | mrr | 1.000 | 1.000 | +0.000 |
+| hybrid | ndcg_at_10 | 0.889 | 0.809 | -0.080 |
 
 ### Per-query Layer-1 metrics
 
@@ -330,16 +326,62 @@ No unjudged report is assumed irrelevant. The 20k scores and deltas remain pendi
 | equip-l2-2 | 2 | dense | 10 | 0.500 | 1 |
 | equip-l2-2 | 2 | hybrid | 10 | 0.500 | 1 |
 
+### Per-query Layer-2 metrics
+
+| Query | Retriever | Precision@10 | MRR | nDCG@10 |
+|---|---|---:|---:|---:|
+| ri-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| ri-l2-1 | dense | 1.000 | 1.000 | 0.849 |
+| ri-l2-1 | hybrid | 1.000 | 1.000 | 0.849 |
+| ri-l2-2 | lexical | 0.400 | 0.250 | 0.200 |
+| ri-l2-2 | dense | 0.900 | 1.000 | 0.855 |
+| ri-l2-2 | hybrid | 0.700 | 1.000 | 0.564 |
+| alt-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| alt-l2-1 | dense | 1.000 | 1.000 | 0.933 |
+| alt-l2-1 | hybrid | 1.000 | 1.000 | 0.933 |
+| alt-l2-2 | lexical | 0.000 | 0.000 | 0.000 |
+| alt-l2-2 | dense | 0.900 | 1.000 | 0.826 |
+| alt-l2-2 | hybrid | 0.900 | 1.000 | 0.826 |
+| nmac-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| nmac-l2-1 | dense | 0.900 | 1.000 | 0.763 |
+| nmac-l2-1 | hybrid | 0.900 | 1.000 | 0.763 |
+| nmac-l2-2 | lexical | 0.000 | 0.000 | 0.000 |
+| nmac-l2-2 | dense | 0.900 | 1.000 | 0.746 |
+| nmac-l2-2 | hybrid | 0.900 | 1.000 | 0.746 |
+| equip-l2-1 | lexical | 0.000 | 0.000 | 0.000 |
+| equip-l2-1 | dense | 1.000 | 1.000 | 0.938 |
+| equip-l2-1 | hybrid | 1.000 | 1.000 | 0.938 |
+| equip-l2-2 | lexical | 0.000 | 0.000 | 0.000 |
+| equip-l2-2 | dense | 1.000 | 1.000 | 0.855 |
+| equip-l2-2 | hybrid | 1.000 | 1.000 | 0.855 |
+
 ### Latency and candidate-depth sensitivity
 
 | Retriever | Mean ms | p95 ms | Top-ten changes at 200 candidate chunks |
 |---|---:|---:|---:|
-| lexical | 8.79 | 22.84 | 0/28 |
-| dense | 139.29 | 170.87 | 0/28 |
-| hybrid | 136.38 | 155.17 | 0/28 |
+| lexical | 10.46 | 31.30 | 0/28 |
+| dense | 154.63 | 274.33 | 0/28 |
+| hybrid | 146.52 | 203.35 | 0/28 |
 
 Default candidate depths remain 100 chunks / 50 reports, report-level RRF k=60, ties by ACN. All controls were reverified absent; this evaluator makes no generation calls.
-Full corpus/query/qrels hashes, per-query measurements, sensitivity records, configuration, software, hardware, and timestamp are in `experiment.json`. No Step 6 retrieval variant was started.
+Full corpus/query/qrels hashes, per-query measurements, sensitivity records, configuration, software, hardware, and timestamp are in `experiment.json`. This run uses the unchanged production retrievers, not the Step 6 experimental variants.
+
+### Human-judgment completion (2026-11-16)
+
+Cynthia graded all 46 rows in `judging_pool_20k_additions.csv`. The existing importer validated the combined 92-pair top-ten pool against `corpus_manifest_20k.json` and `data/eval_rankings_20k.json`; only the 46 new pairs were appended to `qrels.jsonl`. The original 88 rows are preserved byte-for-byte: 134 total unique query/ACN pairs, zero duplicates. Import provenance is in `eval/judgments_20k_import.json`.
+
+All 92 unique pooled top-ten pairs now have human labels (100% returned-result coverage for all three retrievers). These are full-coverage **development** metrics for eight queries, not Step 6 partial-coverage signals or final-test scores. Precision@10 uses denominator 10 (including underfill); MRR uses the top ten; nDCG uses linear gains 2/1/0 and the pooled ideal.
+
+Deltas use the archived 5k experiment with its original 88 judgments. The current 20k experiment uses 134 judgments, including the 46 new pairs; nDCG ideal gains therefore use the expanded known pool. The 5k baseline was not rescored, and this judgment-pool change should be considered when interpreting nDCG deltas.
+
+| Retriever | P@10 | Delta vs 5k | MRR | Delta vs 5k | nDCG@10 | Delta vs 5k |
+|---|---:|---:|---:|---:|---:|---:|
+| lexical | 0.0500 | +0.0000 | 0.0312 | -0.0104 | 0.0250 | -0.0118 |
+| dense | 0.9500 | -0.0125 | 1.0000 | +0.0000 | 0.8457 | -0.0683 |
+| hybrid | 0.9250 | -0.0125 | 1.0000 | +0.0000 | 0.8093 | -0.0800 |
+
+Retrieval, corpus, query, prompt, and generation configurations are unchanged. Step 6 artifacts and its historical qrels version are preserved; this follow-up does not rerun or rescore that bake-off. Step 7 has not started.
+
 
 <!-- lexical-bakeoff-step6 -->
 # Step 6: lexical bake-off (development)

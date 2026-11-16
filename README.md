@@ -5,12 +5,12 @@ aviation safety reporter accounts. The Mini milestone will compare PostgreSQL
 full-text search, dense retrieval, and hybrid retrieval with report-level
 evaluation.
 
-Current corpus: **20,000 reports**, retaining every Mini report. Step 5 indexing
-and Layer-1 evaluation pass; its full Layer-2 acceptance awaits 46 additional
-human query/report judgments. See [Step 5 notes](docs/STEP5_NOTES.md).
+Current corpus: **20,000 reports**, retaining every Mini report. Step 5 indexing,
+Layer-1 evaluation, and full-coverage Layer-2 evaluation pass after importing
+46 additional human judgments (134 total qrels). See [Step 5 notes](docs/STEP5_NOTES.md).
 The Mini generation API, citation validation, and Gradio client remain unchanged;
 their completed smoke validation is recorded in [Step 4 notes](docs/STEP4_NOTES.md).
-Step 6 has not started.
+The Step 6 lexical bake-off is complete; see [Step 6 notes](docs/STEP6_NOTES.md). Step 7 has not started.
 
 ## Scaffold quickstart
 

@@ -18,6 +18,17 @@
   },
   "protected_assets_unchanged": true,
   "deterministic_manifest": true,
-  "layer2_status": "needs_judgments",
-  "unjudged_top10_pairs": 46
+  "layer2_status": "ready",
+  "unjudged_top10_pairs": 0,
+  "human_judgment_followup": {
+    "date": "2026-11-16",
+    "qrels_rows": 134,
+    "original_rows_unchanged": 88,
+    "added_human_rows": 46,
+    "pooled_top10_pairs": 92,
+    "all_returned_top10_judged": true,
+    "qrels_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+    "import_provenance": "eval/judgments_20k_import.json",
+    "original_protected_asset_checks": "Historical pre-import checks; authorized qrels extension preserves original 88 rows."
+  }
 }

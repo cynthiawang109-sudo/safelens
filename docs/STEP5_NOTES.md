@@ -1,7 +1,25 @@
 # Step 5 — 20,000-report scale-up
 
-**Corpus/index and Layer-1 evaluation completed. Full Layer-2 acceptance is
-pending 46 additional human judgments. No Step 6 work was started.**
+**Completed: corpus/index, Layer-1, and full-coverage Layer-2 evaluation.
+The human-judgment blocker was resolved on 2026-11-16; completion details and
+real scores follow below. The original Step 5 evidence is retained as history.**
+
+### Human-judgment completion (2026-11-16)
+
+Cynthia graded all 46 rows in `judging_pool_20k_additions.csv`. The existing importer validated the combined 92-pair top-ten pool against `corpus_manifest_20k.json` and `data/eval_rankings_20k.json`; only the 46 new pairs were appended to `qrels.jsonl`. The original 88 rows are preserved byte-for-byte: 134 total unique query/ACN pairs, zero duplicates. Import provenance is in `eval/judgments_20k_import.json`.
+
+All 92 unique pooled top-ten pairs now have human labels (100% returned-result coverage for all three retrievers). These are full-coverage **development** metrics for eight queries, not Step 6 partial-coverage signals or final-test scores. Precision@10 uses denominator 10 (including underfill); MRR uses the top ten; nDCG uses linear gains 2/1/0 and the pooled ideal.
+
+Deltas use the archived 5k experiment with its original 88 judgments. The current 20k experiment uses 134 judgments, including the 46 new pairs; nDCG ideal gains therefore use the expanded known pool. The 5k baseline was not rescored, and this judgment-pool change should be considered when interpreting nDCG deltas.
+
+| Retriever | P@10 | Delta vs 5k | MRR | Delta vs 5k | nDCG@10 | Delta vs 5k |
+|---|---:|---:|---:|---:|---:|---:|
+| lexical | 0.0500 | +0.0000 | 0.0312 | -0.0104 | 0.0250 | -0.0118 |
+| dense | 0.9500 | -0.0125 | 1.0000 | +0.0000 | 0.8457 | -0.0683 |
+| hybrid | 0.9250 | -0.0125 | 1.0000 | +0.0000 | 0.8093 | -0.0800 |
+
+Retrieval, corpus, query, prompt, and generation configurations are unchanged. Step 6 artifacts and its historical qrels version are preserved; this follow-up does not rerun or rescore that bake-off. Step 7 has not started.
+
 
 ## Corpus and index acceptance
 
@@ -50,7 +68,9 @@ Observed local retrieval p95 (31 requests, including controls; excludes model
 initialization and generation): lexical **22.84 ms**, dense **170.87 ms**,
 hybrid **155.17 ms**. Full samples/configuration are in the experiment record.
 
-## Layer-2 judgment coverage blocker
+## Initial Layer-2 judgment coverage blocker (historical; resolved 2026-11-16)
+
+The paragraphs below describe the initial run before Cynthia supplied the 46 missing grades; they are superseded by the completion section above.
 
 All original qrels remain valid and every judged report remains in the corpus.
 However, the new top-ten union contains **92 query/report pairs**, of which
