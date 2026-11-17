@@ -452,3 +452,47 @@ Aggregate counts (kind="count"):
 5. Acceptance: queries file matches the wording above byte-for-byte;
    fake ACN verified absent; count ground truths recorded; pool exported
    with all grades blank; freeze doc written; all prior tests still pass.
+
+## Step 7D — The single frozen final-test evaluation run
+
+*(Issued by Sunny on 2026-11-16. Cynthia has completed the human judgments
+for the frozen pool: 89 pairs, grades 2/1/0 = 32/52/5, pool identity verified
+unchanged against docs/FINAL_TEST_FREEZE.md. Per the freeze rules this is
+the ONE evaluation run. No tuning before, during, or after; no second run
+to "double-check" a score. If the run errors midway, stop and report —
+never retry with changed code or prompts.)*
+
+1. **Pre-flight integrity**: verify the SHA-256 of
+   `eval/queries_final.jsonl` against the freeze doc, verify the graded
+   pool's identity hash (query/ACN/synopsis tuples) matches the frozen
+   pool identity, and verify production code/config hashes match the
+   sealed freeze record. Any mismatch: stop and report, do not run.
+2. **Import**: convert the graded pool to `eval/qrels_final.jsonl` (89
+   rows) using the existing judgment-import validation. This file stays
+   strictly separate from the development `eval/qrels.jsonl`, which must
+   not change.
+3. **The run** (20,000-report corpus, production configuration as frozen):
+   - Retrieval: dense and production hybrid-10:1 on the 8 mechanism
+     queries — strict P@10 / MRR / nDCG@10 against qrels_final (the pool
+     covers both top-10s by construction, so coverage is complete; state
+     it explicitly), plus per-query rows.
+   - Production Ask path on all 12 queries: report the status of each
+     mechanism query (answered / partial / insufficient_evidence);
+     controls ft-ctl-1 and ft-ctl-2 must end `insufficient_evidence` with
+     zero invented citations; counts ft-cnt-1 and ft-cnt-2 are compared
+     against the sealed ground truths from the freeze record (exact
+     match or not, with the system's stated filters and denominator).
+   - Citation precision for answered/partial responses against
+     qrels_final: cited pairs inside the pool are scored (grade ≥ 1 =
+     supporting); cited pairs outside the pool are reported as unknown
+     with a coverage figure, never scored as wrong.
+   - Cost: mean provider tokens and latency per query for the Ask path.
+4. **Publish**: a "Final test (frozen)" section in `eval/results.md` and
+   `docs/STEP7D_NOTES.md` with all tables above, the freeze commit and
+   query-file hash, the run date, and a plain statement that these are
+   single-run frozen results, not development numbers. Versioned
+   experiment record `eval/experiment_step7d.json`.
+5. Acceptance: pre-flight hashes all match; qrels_final has exactly 89
+   rows; every number above is reported (including any that disappoint);
+   development assets byte-unchanged; prior tests still pass. No Step 8
+   work.
