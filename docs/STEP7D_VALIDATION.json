@@ -1,0 +1,23 @@
+{
+  "single_run_id": "af504c7f-fddf-41c6-a2b3-f01652449552",
+  "single_invocation_completed": true,
+  "retrieval_calls": 16,
+  "ask_requests": 12,
+  "no_duplicate_final_requests": true,
+  "no_second_run_or_resume": true,
+  "preflight_all_matched": true,
+  "final_qrels_rows": 89,
+  "development_assets_unchanged": true,
+  "historical_results_bytes_preserved": true,
+  "production_code_config_unchanged": true,
+  "all_citation_passages_match_db": true,
+  "citation_passages_checked": 17,
+  "prior_tests": {
+    "result": "60 passed",
+    "includes_all_57_prior_tests": true,
+    "timing": "before final run; synthetic/development fixtures only"
+  },
+  "ruff": "passed",
+  "git_diff_check": "passed",
+  "step8_started": false
+}

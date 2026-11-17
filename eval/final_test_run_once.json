@@ -1,0 +1,7 @@
+{
+  "run_id": "af504c7f-fddf-41c6-a2b3-f01652449552",
+  "started_at_utc": "2026-11-17T03:22:23.626873+00:00",
+  "policy": "one execution only; failed/partial runs are not resumed",
+  "query_sha256": "2160adf50cb818fce182c8c431e1005587acecd63261005241bef3a90a4ec2de",
+  "evaluator_source_sha256": "9533f5670da0fd0412a78bf094e265d4f32cdec0375f48c4d16537d38a0ce017"
+}

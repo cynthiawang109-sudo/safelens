@@ -1,0 +1,3159 @@
+{
+  "status": "completed",
+  "run_id": "af504c7f-fddf-41c6-a2b3-f01652449552",
+  "run_count": 1,
+  "run_date": "2026-11-16",
+  "run_date_timezone": "America/New_York",
+  "preflight": {
+    "passed": true,
+    "query_sha256": "2160adf50cb818fce182c8c431e1005587acecd63261005241bef3a90a4ec2de",
+    "pool_identity_sha256": "d0ddb3dcb8d26c938064856f477cf2b864d343f7335f4d9e5c5f9c661080321c",
+    "graded_pool_sha256": "512d92cd3b0fd946fe250ba5b626099f298bb76373bd24ba739c929424322e88",
+    "freeze_record_sha256": "a61e9a107b28f2d97548a9e007dc2f87ee19b1e9156ae3353b32ffbdd5583e53",
+    "freeze_commit": "1b8d294bba143dec42b7e76b63787dc1f334fec1",
+    "production_design_commit": "67a80ab230da8e32d4cf384215b34c8e596dce17",
+    "protected_sha256": {
+      "db/migrations/0001_init.sql": "54cf3da8035fe84f8badfda7bec16c820dcb3278eef18476522df013eba00441",
+      "db/migrations/0002_ingest_state.sql": "3f9d5106d16be48f79c397bbe507247c3403086654acf904c76be4ded8f98682",
+      "eval/corpus_manifest_20k.json": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+      "eval/current_corpus.json": "8ce220818e5749fd810139a9adf33739cf0bd57a5bece3c60e949e74af8f47db",
+      "eval/judging_pool_step7_ablation_additions.csv": "cf81e62f30a680a855a6489950b54fd753948f012bd16ad1f397dc4455a6c016",
+      "eval/qrels.jsonl": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+      "eval/queries.jsonl": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
+      "eval/results.md": "2796b2b36c25af8547982d74db29f687ff313df1f1f42a0e7e49575127ac2c96",
+      "eval/subset_manifest.json": "50800dd75b0e6c3e489232ca8a420e2fb68d052c60fe2fef96f98f7838fd7172",
+      "pyproject.toml": "d7a637c00f400f1f2fecd5d65f2adaaf08e757e119da7ee21f3987b6633e3d13",
+      "src/safelens/__init__.py": "3340002dd9bd260fa3200cf807788d625cdd6ab145616a2cd55629b52b9488fc",
+      "src/safelens/agent.py": "97c0f573311c3612c23183736f2a5558b6721954532e8183327070c333129994",
+      "src/safelens/aggregate.py": "a540da2b97e28bec5da21f0f05538ad34ddbbf44f87664e5cc99ebc7dde29bc8",
+      "src/safelens/app.py": "8e035ce524b536b69466a6a1f194eb3463224d6e91802e24ba795782fde8a6c4",
+      "src/safelens/bm25.py": "e8d02fefe093ccef33f6e21f3453579d5f792b8ceb5813e44a6bfea98d962cf0",
+      "src/safelens/chunk.py": "2bcb25eb897160db042fa5ae676cc10889a3472ef45dc4267ce8d9203a53fde9",
+      "src/safelens/cli.py": "cb28adc0f8af0b6f7c2850a26cd838d7b251079640686254a07ccdcac7c4a84c",
+      "src/safelens/config.py": "eb69e3305c31af4cb6a61dddeee03279f6a315ad3de75bf19edc34053a77fad2",
+      "src/safelens/corpus.py": "6c08abc16db36a3b2d9e3c0f078db0299e85e21c676ccd1032ad17c51a11879d",
+      "src/safelens/embed.py": "0c9517e98c13f0e2bd2222b0c99f74ec869fbf58a18e1cbaa48626136c4e935c",
+      "src/safelens/evaluation.py": "51d9915ddb2100ef20a94e0d8e6971542c544a15dad69fa26148937753ec59c3",
+      "src/safelens/fusion_experiment.py": "93a1557cfe41f4bc590b74330bcb45422d84c0232fe1f9c77db7883829d28d9b",
+      "src/safelens/generate.py": "a4466617721174bf14f263a772e1ec3e3ec32f452f9dce46b0660d56f4cbb24b",
+      "src/safelens/ingest.py": "33842d8afdf4addb997da9d3efbd243d576d867fe11930661a4fef39bbedcaf8",
+      "src/safelens/lexical_bakeoff.py": "97e558305a1016e89afd6c0bf571d7ce3af858b5df012af4f3dadf9dff95e9dd",
+      "src/safelens/llm.py": "ab488a97f2f6f33d33e7d15e79d304af126bb9637f824909f0788d2f23a15a4e",
+      "src/safelens/migrate.py": "bd5a7a8f77c9c6a5d537f5ab670b500eb213833a053e5bbe01fbd0dff75e45b1",
+      "src/safelens/providers.py": "2aa0f7852192a5240eca3e8938bd92ec261d0bda5a74b6e4da3123200d5d7a97",
+      "src/safelens/reindex.py": "7f416f11d1625f986d1201022aaae77961da953073ad7cac023115f2689ab3dd",
+      "src/safelens/rerank.py": "bcbae8f429812752c84379c7b4de48cf9a2a6ba6e7ccab033d64afba7f2838e7",
+      "src/safelens/retrieve.py": "a466ff131681849e980fb46df25800f587e78b7b742bb1cab715eda9b3b6076a",
+      "src/safelens/scale_report.py": "714c65b0c8da28a116e500cd27fad6106abf00a64c842004412d7db8c19004e0",
+      "src/safelens/step7_report.py": "c2ca3f506de9c4a5b0e4e8a48e52e0776d1e1f3cb35786b7d5fabbf19b99b496",
+      "src/safelens/subset.py": "9a164b1d580874107ff855f34f5d2887f38204aad9cab831fa038740d800681d",
+      "src/safelens/ui.py": "4334f0041067ee0ddf167fcb052e37b21582e5ee2ccc37993b259ffee18dc0d2",
+      "uv.lock": "d0b1104a84ffd619e471abc82655bf259c12358b284a3359920f5120a96782df"
+    },
+    "public_runtime_configuration": {
+      "lexical_backend": "bm25",
+      "retrieval_mode": "hybrid",
+      "rrf_dense_weight": 10.0,
+      "rrf_lexical_weight": 1.0,
+      "agent_enabled": true,
+      "agent_max_retries": 2,
+      "agent_max_calls": 6,
+      "rerank_enabled": false,
+      "rerank_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "rerank_revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a",
+      "llm_provider": "openai",
+      "llm_model": "gpt-4o-mini",
+      "llm_temperature": 0.0,
+      "llm_max_output_tokens": 800,
+      "llm_timeout": 30.0,
+      "index": {
+        "embedding_model": "BAAI/bge-small-en-v1.5",
+        "embedding_dim": 384,
+        "embed_query_prefix": "Represent this sentence for searching relevant passages: ",
+        "chunk_config": {
+          "tokens": 500,
+          "overlap": 0.15,
+          "text_construction": "synopsis+all_labeled_narratives; synopsis_per_chunk",
+          "lexical_config": "simple",
+          "embedding_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+          "algorithm": "paragraph_offsets_v1",
+          "token_limit": "min(target, model_max_seq_length); includes synopsis and special tokens",
+          "overlap_policy": "configured fraction of previous narrative window tokens; synopsis repeated separately"
+        }
+      },
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75,
+        "epsilon": 0.25,
+        "preprocessing": "lowercase ASCII alphanumeric terms minus fixed sklearn English stoplist"
+      }
+    },
+    "software": {
+      "python": "3.12.16",
+      "sentence-transformers": "5.7.0",
+      "torch": "2.15.0",
+      "rank-bm25": "0.2.2",
+      "scikit-learn": "1.9.1",
+      "psycopg": "3.3.9",
+      "langgraph": "1.2.22",
+      "openai": "3.51.0"
+    },
+    "corpus_snapshot_sha256": "c47c73dae040d26dba7221e50c6cbeb457859632f6ef385e7fdf338b03db850b",
+    "ready_index_id": 4,
+    "human_grade_histogram": {
+      "2": 32,
+      "1": 52,
+      "0": 5
+    },
+    "post_freeze_production_changes": []
+  },
+  "qrels_import": {
+    "rows": 89,
+    "sha256": "b7288db09abe8525168a49a1f717900a06d89797309b8355d058e296424d62f3",
+    "tool": "safelens.evaluation.import_judgments (unchanged)",
+    "path": "eval/qrels_final.jsonl",
+    "legacy_layer_adapter": "data/final_judgment_import_adapter.jsonl",
+    "development_qrels_changed": false
+  },
+  "evaluator_source_sha256": "9533f5670da0fd0412a78bf094e265d4f32cdec0375f48c4d16537d38a0ce017",
+  "reporting_source_sha256": "ab475c4bed6cf39df00c5c995d39c05f5bd9fc818e92f2b0b638c5a1a6d7c06e",
+  "transport": "FastAPI TestClient HTTP; frozen production app; real OpenAI provider",
+  "operations": [
+    {
+      "stage": "retrieval",
+      "query_id": "ft-ri-1",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-ri-1",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-ri-2",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-ri-2",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-alt-1",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-alt-1",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-alt-2",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-alt-2",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-nmac-1",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-nmac-1",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-nmac-2",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-nmac-2",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-eq-1",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-eq-1",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-eq-2",
+      "method": "dense",
+      "status": "completed"
+    },
+    {
+      "stage": "retrieval",
+      "query_id": "ft-eq-2",
+      "method": "hybrid",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-ri-1",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-ri-2",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-alt-1",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-alt-2",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-nmac-1",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-nmac-2",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-eq-1",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-eq-2",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-ctl-1",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-ctl-2",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-cnt-1",
+      "status": "completed"
+    },
+    {
+      "stage": "ask",
+      "query_id": "ft-cnt-2",
+      "status": "completed"
+    }
+  ],
+  "raw_checkpoint": "data/final_test_raw.json",
+  "nonfinal_warmup_ms": 7744.26689997199,
+  "started_at_utc": "2026-11-17T03:22:23.626873+00:00",
+  "completed_at_utc": "2026-11-17T03:24:12.880808+00:00",
+  "retrieval_metrics": {
+    "status": "ready",
+    "queries": 8,
+    "per_query": [
+      {
+        "query_id": "ft-ri-1",
+        "method": "dense",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8569160714919175
+      },
+      {
+        "query_id": "ft-ri-1",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.9484535814404208
+      },
+      {
+        "query_id": "ft-ri-2",
+        "method": "dense",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8477901190425441
+      },
+      {
+        "query_id": "ft-ri-2",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.960390115566696
+      },
+      {
+        "query_id": "ft-alt-1",
+        "method": "dense",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.9959095642512709
+      },
+      {
+        "query_id": "ft-alt-1",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.9578932061369471
+      },
+      {
+        "query_id": "ft-alt-2",
+        "method": "dense",
+        "precision_at_10": 0.9,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.7653078254750617
+      },
+      {
+        "query_id": "ft-alt-2",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8797403209728135
+      },
+      {
+        "query_id": "ft-nmac-1",
+        "method": "dense",
+        "precision_at_10": 0.9,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8836038952986209
+      },
+      {
+        "query_id": "ft-nmac-1",
+        "method": "hybrid",
+        "precision_at_10": 0.9,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8736718763614737
+      },
+      {
+        "query_id": "ft-nmac-2",
+        "method": "dense",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.9171728490273101
+      },
+      {
+        "query_id": "ft-nmac-2",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.882957328094938
+      },
+      {
+        "query_id": "ft-eq-1",
+        "method": "dense",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8689096204055674
+      },
+      {
+        "query_id": "ft-eq-1",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8610741634490249
+      },
+      {
+        "query_id": "ft-eq-2",
+        "method": "dense",
+        "precision_at_10": 0.7,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.6541000544892503
+      },
+      {
+        "query_id": "ft-eq-2",
+        "method": "hybrid",
+        "precision_at_10": 0.8,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.7918843746418692
+      }
+    ],
+    "averages": {
+      "dense": {
+        "precision_at_10": 0.9375,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8487137499351929
+      },
+      "hybrid": {
+        "precision_at_10": 0.9625,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8945081208330229
+      }
+    },
+    "definitions": "P@10 denominator=10; relevant=grade>=1; MRR over retrieved top ten; nDCG linear gains 2/1/0, pooled ideal; unjudged top-ten fails"
+  },
+  "retrieval_judgment_coverage": {
+    "dense": 1.0,
+    "hybrid": 1.0
+  },
+  "ask": {
+    "ft-ri-1": {
+      "kind": "mechanism",
+      "question": "A flight crew crossed a runway without clearance after accepting a taxi instruction that was meant for another aircraft with a similar call sign. Describe what happened in reports like this.",
+      "status": "partial",
+      "answer": "In one account, a flight crew reported crossing a runway after receiving clearance instructions that were muffled and possibly meant for another aircraft with a similar call sign. The crew hesitated but assumed the instructions were for them, leading to a runway incursion. They later realized the Tower had used the wrong callsign, which contributed to their confusion and the incident [1767507].\n\nAnother report described a situation where a crew received clearance to cross a runway, but a company aircraft behind them mistakenly transmitted the same clearance with their call sign, adding to the confusion on a congested frequency [1661568]. However, the exact conditions leading to the miscommunication and the role of crew fatigue remain unclear.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.22999997599981725,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 467.45860000373796,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "A flight crew crossed a runway without clearance after accepting a taxi instruction that was meant for another aircraft with a similar call sign. Describe what happened in reports like this.",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1767507",
+              "1661568",
+              "1307582",
+              "1650001",
+              "1471141",
+              "1662585",
+              "1642795",
+              "1340681",
+              "1189703",
+              "1755915"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 6245.888900011778,
+          "input_tokens": 2769,
+          "output_tokens": 196,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1767507",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Crew crossed runway due to miscommunication about clearance meant for another aircraft."
+                },
+                {
+                  "acn": "1661568",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Confusion over clearance led to crossing runway without proper identification."
+                },
+                {
+                  "acn": "1307582",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report discusses avoiding conflict, not crossing without clearance."
+                },
+                {
+                  "acn": "1650001",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Misinterpretation of instructions for similar call sign caused runway incursion."
+                },
+                {
+                  "acn": "1471141",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Followed another aircraft onto runway; communication failure noted."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "Multiple relevant reports address crossing runway without clearance due to call sign confusion."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2249.1751999768894,
+          "input_tokens": 2125,
+          "output_tokens": 151,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "partial",
+              "answer": "In one account, a flight crew reported crossing a runway after receiving clearance instructions that were muffled and possibly meant for another aircraft with a similar call sign. The crew hesitated but assumed the instructions were for them, leading to a runway incursion. They later realized the Tower had used the wrong callsign, which contributed to their confusion and the incident [1767507].\n\nAnother report described a situation where a crew received clearance to cross a runway, but a company aircraft behind them mistakenly transmitted the same clearance with their call sign, adding to the confusion on a congested frequency [1661568]. However, the exact conditions leading to the miscommunication and the role of crew fatigue remain unclear."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.008400005754083395,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "partial",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 4894,
+        "output_tokens": 347,
+        "model_calls": 2,
+        "retries": 0,
+        "latency_ms": 8979.213499987964,
+        "query_attempts": [
+          "A flight crew crossed a runway without clearance after accepting a taxi instruction that was meant for another aircraft with a similar call sign. Describe what happened in reports like this."
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 9060.267099994235,
+      "citation_acns": [
+        "1661568",
+        "1767507"
+      ]
+    },
+    "ft-ri-2": {
+      "kind": "mechanism",
+      "question": "In blowing snow, a crew taxied past a runway hold line because the surface markings and signs were obscured. What do reports like this describe?",
+      "status": "answered",
+      "answer": "Two reports describe incidents where crews taxied past runway hold lines due to obscured markings from snow. In one case at JAC airport, the pilot noted that the hold-short line was completely obscured by packed snow, leading them to stop approximately 60 feet past the line. They also mentioned that the positioning of the Holding Position sign contributed to the confusion, as it was difficult to see from their perspective [1780435].\n\nSimilarly, at PIT airport, the crew reported crossing a non-standard hold short line that was obscured by snow during active snowfall. The visibility had dropped significantly, and the captain inadvertently taxied slightly past the line while the crew was distracted by checklist duties [1613565].",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.018300022929906845,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 428.230599995004,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "In blowing snow, a crew taxied past a runway hold line because the surface markings and signs were obscured. What do reports like this describe?",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1780435",
+              "1033623",
+              "1068059",
+              "1613565",
+              "1828505",
+              "1745865",
+              "1871978",
+              "1734025",
+              "1847619",
+              "1014880"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 2504.395399999339,
+          "input_tokens": 2493,
+          "output_tokens": 208,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1780435",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes obscured hold short line due to snow, directly addressing the question."
+                },
+                {
+                  "acn": "1033623",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions misidentifying markings but lacks specific snow-related context."
+                },
+                {
+                  "acn": "1068059",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Discusses faded markings but does not mention snow obscuring them."
+                },
+                {
+                  "acn": "1613565",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details obscured hold short line due to snow, directly relevant to the question."
+                },
+                {
+                  "acn": "1828505",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Focuses on communication issues, not related to snow or markings."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "At least two relevant reports address the mechanism of obscured markings due to snow."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2847.5425000069663,
+          "input_tokens": 1741,
+          "output_tokens": 153,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "answered",
+              "answer": "Two reports describe incidents where crews taxied past runway hold lines due to obscured markings from snow. In one case at JAC airport, the pilot noted that the hold-short line was completely obscured by packed snow, leading them to stop approximately 60 feet past the line. They also mentioned that the positioning of the Holding Position sign contributed to the confusion, as it was difficult to see from their perspective [1780435].\n\nSimilarly, at PIT airport, the crew reported crossing a non-standard hold short line that was obscured by snow during active snowfall. The visibility had dropped significantly, and the captain inadvertently taxied slightly past the line while the crew was distracted by checklist duties [1613565]."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.004499976057559252,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "answered",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 4234,
+        "output_tokens": 361,
+        "model_calls": 2,
+        "retries": 0,
+        "latency_ms": 5784.8612999951,
+        "query_attempts": [
+          "In blowing snow, a crew taxied past a runway hold line because the surface markings and signs were obscured. What do reports like this describe?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 5830.120500002522,
+      "citation_acns": [
+        "1613565",
+        "1780435"
+      ]
+    },
+    "ft-alt-1": {
+      "kind": "mechanism",
+      "question": "A crew descended below a published crossing restriction because the FMS was programmed with the wrong arrival procedure. Describe what happened in reports like this.",
+      "status": "partial",
+      "answer": "In one account, a B737 flight crew missed a crossing restriction of 12,000 feet because the FMS was programmed with '12000A' instead of a hard altitude of 12,000 feet. They recognized the error during descent but had already begun to descend high at the waypoint, leading them to request altitude relief from ATC [1437501].\n\nAnother report describes an MD88 crew that failed to set the intersection crossing altitude into the FMS, resulting in a missed restriction by 6,000 feet [1062974]. However, the specific circumstances of how the FMS was programmed incorrectly or the crew's awareness of the error before descent are not fully established.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.02719997428357601,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 481.6796999948565,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "A crew descended below a published crossing restriction because the FMS was programmed with the wrong arrival procedure. Describe what happened in reports like this.",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1437501",
+              "1057642",
+              "1062974",
+              "1576732",
+              "1027155",
+              "1056553",
+              "1330603",
+              "1482868",
+              "1805557",
+              "1287597"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3235.1094000041485,
+          "input_tokens": 2842,
+          "output_tokens": 208,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1437501",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Directly describes missing a crossing restriction due to FMS programming error."
+                },
+                {
+                  "acn": "1057642",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions programming error but lacks specific details on crossing restriction."
+                },
+                {
+                  "acn": "1062974",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Clearly states failure to set crossing altitude in FMS, leading to missed restriction."
+                },
+                {
+                  "acn": "1576732",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details FMS programming error causing missed crossing restriction during descent."
+                },
+                {
+                  "acn": "1027155",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes failure to program crossing restriction in FMS, resulting in inability to comply."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "Multiple reports directly address the mechanism of FMS programming errors leading to missed restrictions."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2677.489899971988,
+          "input_tokens": 2673,
+          "output_tokens": 150,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "partial",
+              "answer": "In one account, a B737 flight crew missed a crossing restriction of 12,000 feet because the FMS was programmed with '12000A' instead of a hard altitude of 12,000 feet. They recognized the error during descent but had already begun to descend high at the waypoint, leading them to request altitude relief from ATC [1437501].\n\nAnother report describes an MD88 crew that failed to set the intersection crossing altitude into the FMS, resulting in a missed restriction by 6,000 feet [1062974]. However, the specific circumstances of how the FMS was programmed incorrectly or the crew's awareness of the error before descent are not fully established."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.006499991286545992,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "partial",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 5515,
+        "output_tokens": 358,
+        "model_calls": 2,
+        "retries": 0,
+        "latency_ms": 6400.945300003514,
+        "query_attempts": [
+          "A crew descended below a published crossing restriction because the FMS was programmed with the wrong arrival procedure. Describe what happened in reports like this."
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 6456.452099984745,
+      "citation_acns": [
+        "1062974",
+        "1437501"
+      ]
+    },
+    "ft-alt-2": {
+      "kind": "mechanism",
+      "question": "After a late runway change, a crew flew the wrong departure profile and climbed through their assigned altitude. What do reports like this describe?",
+      "status": "partial",
+      "answer": "Two reports describe incidents where crews deviated from their assigned altitudes following late runway changes. In the first account, a B737 crew received an unexpected runway change and became distracted while trying to comply with ATC instructions, leading to a descent below their assigned altitude of 4,000 feet [1280935]. In the second account, a crew experienced a late runway change that caused them to descend through 3,000 feet towards a set altitude of 2,000 feet, which was caught at 2,600 feet [1800917]. \n\nHowever, both reports highlight distractions and confusion due to late changes, but do not establish a direct causal link between the runway change and the altitude deviations.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.020500010577961802,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 410.4059999808669,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "After a late runway change, a crew flew the wrong departure profile and climbed through their assigned altitude. What do reports like this describe?",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1280935",
+              "1717383",
+              "1090315",
+              "1800917",
+              "1780264",
+              "1731959",
+              "1312438",
+              "1771397",
+              "1799646",
+              "1768161"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 5038.251099991612,
+          "input_tokens": 3104,
+          "output_tokens": 197,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1280935",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes distraction and descent below assigned altitude due to runway change."
+                },
+                {
+                  "acn": "1717383",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions altitude deviation but lacks direct connection to runway change."
+                },
+                {
+                  "acn": "1090315",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Discusses misunderstanding of clearance but not a late runway change."
+                },
+                {
+                  "acn": "1800917",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details altitude deviation caused by late runway change and distraction."
+                },
+                {
+                  "acn": "1780264",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions altitude deviation but not related to a runway change."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "At least one relevant report addresses the mechanism of altitude deviation due to runway change."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2518.42820001184,
+          "input_tokens": 1736,
+          "output_tokens": 153,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "partial",
+              "answer": "Two reports describe incidents where crews deviated from their assigned altitudes following late runway changes. In the first account, a B737 crew received an unexpected runway change and became distracted while trying to comply with ATC instructions, leading to a descent below their assigned altitude of 4,000 feet [1280935]. In the second account, a crew experienced a late runway change that caused them to descend through 3,000 feet towards a set altitude of 2,000 feet, which was caught at 2,600 feet [1800917]. \n\nHowever, both reports highlight distractions and confusion due to late changes, but do not establish a direct causal link between the runway change and the altitude deviations."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.0032999960239976645,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "partial",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 4840,
+        "output_tokens": 350,
+        "model_calls": 2,
+        "retries": 0,
+        "latency_ms": 7974.158400000306,
+        "query_attempts": [
+          "After a late runway change, a crew flew the wrong departure profile and climbed through their assigned altitude. What do reports like this describe?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 8079.060999996727,
+      "citation_acns": [
+        "1280935",
+        "1800917"
+      ]
+    },
+    "ft-nmac-1": {
+      "kind": "mechanism",
+      "question": "Two aircraft on converging courses at the same altitude received no warning from ATC until a pilot spotted the traffic visually at the last moment. Describe what happened in reports like this.",
+      "status": "partial",
+      "answer": "In several reports, pilots described near-misses with other aircraft at the same altitude without timely warnings from ATC. For instance, one report details two helicopters in Class D airspace where ATC initially pointed out mutual traffic but provided no updates, leading to a near-miss as neither pilot visually identified the other aircraft [1072539]. Another account involved a multi-engine aircraft where the pilot spotted another aircraft only moments before taking evasive action, while ATC reported no traffic on radar [1214769].\n\nHowever, the exact timing of ATC warnings and the visual identification of traffic varied across reports, leaving uncertainty about the effectiveness of ATC communication and the pilots' situational awareness.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.01990000600926578,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 604.5551999995951,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "Two aircraft on converging courses at the same altitude received no warning from ATC until a pilot spotted the traffic visually at the last moment. Describe what happened in reports like this.",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1072539",
+              "1214769",
+              "1084217",
+              "1766132",
+              "1478720",
+              "1472127",
+              "1594301",
+              "1754275",
+              "1483885",
+              "1282372"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 2477.731599996332,
+          "input_tokens": 2378,
+          "output_tokens": 214,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1072539",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes a near-miss with no ATC updates and no visual contact."
+                },
+                {
+                  "acn": "1214769",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Pilot spotted another aircraft visually at the last moment, with no ATC awareness."
+                },
+                {
+                  "acn": "1084217",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details a near-miss with ATC unaware and no visual contact until late."
+                },
+                {
+                  "acn": "1766132",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Instructor took evasive action due to conflicting traffic, no ATC information."
+                },
+                {
+                  "acn": "1478720",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Reports a near miss with ATC coordination but no visual contact until after."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "All reports detail near-misses with no ATC warnings until last moment."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2376.316699985182,
+          "input_tokens": 2697,
+          "output_tokens": 150,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "partial",
+              "answer": "In several reports, pilots described near-misses with other aircraft at the same altitude without timely warnings from ATC. For instance, one report details two helicopters in Class D airspace where ATC initially pointed out mutual traffic but provided no updates, leading to a near-miss as neither pilot visually identified the other aircraft [1072539]. Another account involved a multi-engine aircraft where the pilot spotted another aircraft only moments before taking evasive action, while ATC reported no traffic on radar [1214769].\n\nHowever, the exact timing of ATC warnings and the visual identification of traffic varied across reports, leaving uncertainty about the effectiveness of ATC communication and the pilots' situational awareness."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.006099988240748644,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "partial",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 5075,
+        "output_tokens": 364,
+        "model_calls": 2,
+        "retries": 0,
+        "latency_ms": 5464.15960000013,
+        "query_attempts": [
+          "Two aircraft on converging courses at the same altitude received no warning from ATC until a pilot spotted the traffic visually at the last moment. Describe what happened in reports like this."
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 5513.566100009484,
+      "citation_acns": [
+        "1072539",
+        "1214769"
+      ]
+    },
+    "ft-nmac-2": {
+      "kind": "mechanism",
+      "question": "A drone passed close to an airliner on final approach and the crew went around. What do reports like this describe?",
+      "status": "partial",
+      "answer": "Several reports describe near misses with drones during final approaches. For instance, a Light Jet Air crew reported a drone passing less than 300 feet off their starboard side at 7,000 feet while on approach to SBY [1364983]. Another account from an Airbus Captain noted a drone passing less than 100 feet below their aircraft at 1,200 feet on approach to SAN, with no evasive action taken due to the rapid nature of the encounter [1470315]. However, the reports do not confirm whether these encounters led to go-arounds, leaving that aspect unresolved.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.013699987903237343,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 344.2007999983616,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "A drone passed close to an airliner on final approach and the crew went around. What do reports like this describe?",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1364983",
+              "1684213",
+              "1470315",
+              "1346224",
+              "1616730",
+              "1851392",
+              "1829611",
+              "1860591",
+              "1695942",
+              "1748192"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 2979.647100000875,
+          "input_tokens": 2158,
+          "output_tokens": 194,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1364983",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes a near miss with a drone during final approach."
+                },
+                {
+                  "acn": "1684213",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details a drone sighting on final approach, including ATC notification."
+                },
+                {
+                  "acn": "1470315",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Reports a near miss with a drone on final approach to SAN."
+                },
+                {
+                  "acn": "1346224",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Mentions a near miss with a UAV during approach, with pilot confirmation."
+                },
+                {
+                  "acn": "1616730",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Reports drone sightings but lacks direct encounter details."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "All relevant reports describe drone encounters during final approach."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2268.483699997887,
+          "input_tokens": 2185,
+          "output_tokens": 128,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "partial",
+              "answer": "Several reports describe near misses with drones during final approaches. For instance, a Light Jet Air crew reported a drone passing less than 300 feet off their starboard side at 7,000 feet while on approach to SBY [1364983]. Another account from an Airbus Captain noted a drone passing less than 100 feet below their aircraft at 1,200 feet on approach to SAN, with no evasive action taken due to the rapid nature of the encounter [1470315]. However, the reports do not confirm whether these encounters led to go-arounds, leaving that aspect unresolved."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.0036999990697950125,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "partial",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 4343,
+        "output_tokens": 322,
+        "model_calls": 2,
+        "retries": 0,
+        "latency_ms": 5598.463699978311,
+        "query_attempts": [
+          "A drone passed close to an airliner on final approach and the crew went around. What do reports like this describe?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 5641.199699981371,
+      "citation_acns": [
+        "1364983",
+        "1470315"
+      ]
+    },
+    "ft-eq-1": {
+      "kind": "mechanism",
+      "question": "Smoke in the cockpit traced to an overheating galley oven led a crew to declare an emergency and land at the nearest suitable airport. Describe what happened in reports like this.",
+      "status": "partial",
+      "answer": "In one account, a B-757 flight crew declared an emergency due to smoke from the aft galley, which was traced to an oven producing persistent smoke. The crew diverted to LAS for an uneventful landing after confirming the situation with flight attendants [1694496]. Another report described a galley oven that overheated and caught fire during climb, leading to a return to the departure airport after the fire was extinguished with a Halon extinguisher [1288413]. However, the exact cause of the smoke or fire in these incidents remains uncertain, as multiple factors could contribute.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.040700018871575594,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 454.61499999510124,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "Smoke in the cockpit traced to an overheating galley oven led a crew to declare an emergency and land at the nearest suitable airport. Describe what happened in reports like this.",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1288413",
+              "1012923",
+              "1066950",
+              "1694496",
+              "1197255",
+              "1839461",
+              "1492802",
+              "1825419",
+              "1745749",
+              "1003534"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 5057.579399988754,
+          "input_tokens": 3006,
+          "output_tokens": 233,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1288413",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes an overheating galley oven causing smoke and emergency landing."
+                },
+                {
+                  "acn": "1012923",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions a galley oven fire but lacks details on emergency declaration."
+                },
+                {
+                  "acn": "1066950",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Smoke in cockpit unrelated to galley oven incident."
+                },
+                {
+                  "acn": "1694496",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details smoke from aft galley oven leading to emergency declaration."
+                },
+                {
+                  "acn": "1197255",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Reports smoke from oven, use of extinguishers, and emergency landing."
+                },
+                {
+                  "acn": "1694496",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes persistent smoke from aft galley oven prompting emergency diversion."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "Multiple relevant reports detail smoke from galley ovens leading to emergency actions."
+            },
+            "validation_error": "Invalid grader ACN coverage; fail closed"
+          }
+        },
+        {
+          "stage": "rewrite",
+          "latency_ms": 960.9628999896813,
+          "input_tokens": 223,
+          "output_tokens": 27,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "query": "Smoke in the cockpit traced to an overheating galley oven; crew declared emergency; landed at nearest suitable airport."
+            },
+            "strategy": "term-focused: retain exact identifiers, remove conversational phrasing; do not add facts",
+            "retry": 1
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 582.4112999835052,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "Smoke in the cockpit traced to an overheating galley oven; crew declared emergency; landed at nearest suitable airport.",
+            "attempt": 1,
+            "reports": 50,
+            "top10_acns": [
+              "1694496",
+              "1066950",
+              "1288413",
+              "1012923",
+              "1197255",
+              "1156868",
+              "1839461",
+              "1003534",
+              "1825419",
+              "1745749"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 4045.6453999795485,
+          "input_tokens": 2425,
+          "output_tokens": 200,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1694496",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Directly describes smoke from aft galley oven leading to emergency declaration."
+                },
+                {
+                  "acn": "1066950",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Smoke detected in cockpit, unrelated to galley oven."
+                },
+                {
+                  "acn": "1288413",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details fire from galley oven causing smoke and emergency landing."
+                },
+                {
+                  "acn": "1012923",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Describes galley oven smoke leading to emergency return and maintenance action."
+                },
+                {
+                  "acn": "1197255",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Reports smoke from aft galley oven, leading to diversion and emergency response."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "Multiple reports directly address smoke from galley ovens leading to emergencies."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2111.574600014137,
+          "input_tokens": 2564,
+          "output_tokens": 128,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "partial",
+              "answer": "In one account, a B-757 flight crew declared an emergency due to smoke from the aft galley, which was traced to an oven producing persistent smoke. The crew diverted to LAS for an uneventful landing after confirming the situation with flight attendants [1694496]. Another report described a galley oven that overheated and caught fire during climb, leading to a return to the departure airport after the fire was extinguished with a Halon extinguisher [1288413]. However, the exact cause of the smoke or fire in these incidents remains uncertain, as multiple factors could contribute."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.006599992047995329,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "partial",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 8218,
+        "output_tokens": 588,
+        "model_calls": 4,
+        "retries": 1,
+        "latency_ms": 13225.315199990291,
+        "query_attempts": [
+          "Smoke in the cockpit traced to an overheating galley oven led a crew to declare an emergency and land at the nearest suitable airport. Describe what happened in reports like this.",
+          "Smoke in the cockpit traced to an overheating galley oven; crew declared emergency; landed at nearest suitable airport."
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 13295.068199979141,
+      "citation_acns": [
+        "1288413",
+        "1694496"
+      ]
+    },
+    "ft-eq-2": {
+      "kind": "mechanism",
+      "question": "After extension, a landing gear indication showed unsafe and the crew made a low pass so the gear could be checked visually before landing. What do reports like this describe?",
+      "status": "answered",
+      "answer": "The BE-400XP flight crew reported an abnormal landing gear indication during approach, prompting them to divert to a tower-controlled airport for visual confirmation of the gear status. They executed a low pass at ZZZ1, where the tower confirmed that the gear was down and locked, despite the crew's initial concerns about the gear indication [1286823].\n\nWhile the crew followed an unusual procedure and consulted maintenance, they ultimately landed uneventfully after using the emergency gear door retraction handle, which extinguished the warning light. However, the initial abnormal indication and the necessity for a low pass indicate uncertainty in the gear's status prior to landing.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.0171000137925148,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 440.3803000168409,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "After extension, a landing gear indication showed unsafe and the crew made a low pass so the gear could be checked visually before landing. What do reports like this describe?",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1010329",
+              "1448219",
+              "1296780",
+              "1118574",
+              "1015244",
+              "1063497",
+              "1068770",
+              "1658992",
+              "1820768",
+              "995392"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3145.5739999946672,
+          "input_tokens": 2534,
+          "output_tokens": 200,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1010329",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Describes unsafe gear indication but lacks visual check before landing."
+                },
+                {
+                  "acn": "1448219",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions gear issue but does not detail a visual check before landing."
+                },
+                {
+                  "acn": "1296780",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details a low approach for visual inspection of landing gear condition."
+                },
+                {
+                  "acn": "1118574",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Discusses go-around due to gear failure but no visual check mentioned."
+                },
+                {
+                  "acn": "1015244",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions gear malfunction and go-around but lacks visual inspection details."
+                }
+              ],
+              "sufficiency": "partial",
+              "reason": "Some reports address gear issues, but only one explicitly supports visual check mechanism."
+            }
+          }
+        },
+        {
+          "stage": "rewrite",
+          "latency_ms": 893.6881999834441,
+          "input_tokens": 228,
+          "output_tokens": 17,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "query": "landing gear indication unsafe low pass visual check before landing reports description"
+            },
+            "strategy": "term-focused: retain exact identifiers, remove conversational phrasing; do not add facts",
+            "retry": 1
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 332.11749998736195,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "landing gear indication unsafe low pass visual check before landing reports description",
+            "attempt": 1,
+            "reports": 50,
+            "top10_acns": [
+              "1010329",
+              "1764873",
+              "1286823",
+              "1063497",
+              "1670928",
+              "1451229",
+              "1269857",
+              "1296780",
+              "1827641",
+              "1015244"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3124.463099986315,
+          "input_tokens": 2622,
+          "output_tokens": 193,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1010329",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Describes unsafe gear indication but lacks visual check before landing."
+                },
+                {
+                  "acn": "1764873",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Reports unsafe indication but does not mention a visual check before landing."
+                },
+                {
+                  "acn": "1286823",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Details a low pass for visual gear confirmation before landing."
+                },
+                {
+                  "acn": "1063497",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Describes a gear-up landing, not related to the requested mechanism."
+                },
+                {
+                  "acn": "1670928",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Mentions gear indication issues but no visual check before landing."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "At least one report directly addresses the requested mechanism."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2292.8022999840323,
+          "input_tokens": 1296,
+          "output_tokens": 140,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "answered",
+              "answer": "The BE-400XP flight crew reported an abnormal landing gear indication during approach, prompting them to divert to a tower-controlled airport for visual confirmation of the gear status. They executed a low pass at ZZZ1, where the tower confirmed that the gear was down and locked, despite the crew's initial concerns about the gear indication [1286823].\n\nWhile the crew followed an unusual procedure and consulted maintenance, they ultimately landed uneventfully after using the emergency gear door retraction handle, which extinguished the warning light. However, the initial abnormal indication and the necessity for a low pass indicate uncertainty in the gear's status prior to landing."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.0045000051613897085,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "answered",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 6680,
+        "output_tokens": 550,
+        "model_calls": 4,
+        "retries": 1,
+        "latency_ms": 10238.849399989704,
+        "query_attempts": [
+          "After extension, a landing gear indication showed unsafe and the crew made a low pass so the gear could be checked visually before landing. What do reports like this describe?",
+          "landing gear indication unsafe low pass visual check before landing reports description"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 10306.432600016706,
+      "citation_acns": [
+        "1286823"
+      ]
+    },
+    "ft-ctl-1": {
+      "kind": "control",
+      "question": "Describe the runway incursion that occurred at Denver International on the morning of October 9, 2017, including the exact time it happened.",
+      "status": "insufficient_evidence",
+      "answer": "insufficient evidence.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.018200022168457508,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 418.3959999936633,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "Describe the runway incursion that occurred at Denver International on the morning of October 9, 2017, including the exact time it happened.",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "989221",
+              "1683278",
+              "1814641",
+              "1306756",
+              "1707142",
+              "1626623",
+              "1631442",
+              "1692674",
+              "1160105",
+              "1808147"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 2941.2959000037517,
+          "input_tokens": 1900,
+          "output_tokens": 183,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "989221",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "No mention of Denver International or October 9, 2017."
+                },
+                {
+                  "acn": "1683278",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "No relevant details about the incident at Denver International."
+                },
+                {
+                  "acn": "1814641",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Incident unrelated to Denver International or specified date."
+                },
+                {
+                  "acn": "1306756",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "No connection to Denver International or the requested date."
+                },
+                {
+                  "acn": "1707142",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "No relevant information regarding the incident at Denver International."
+                }
+              ],
+              "sufficiency": "insufficient",
+              "reason": "No accounts address the requested mechanism for the incident."
+            }
+          }
+        },
+        {
+          "stage": "rewrite",
+          "latency_ms": 997.6004000054672,
+          "input_tokens": 215,
+          "output_tokens": 20,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "query": "runway incursion Denver International October 9, 2017 exact time"
+            },
+            "strategy": "term-focused: retain exact identifiers, remove conversational phrasing; do not add facts",
+            "retry": 1
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 414.46289999294095,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "runway incursion Denver International October 9, 2017 exact time",
+            "attempt": 1,
+            "reports": 50,
+            "top10_acns": [
+              "1276240",
+              "1814641",
+              "1626623",
+              "1631442",
+              "989221",
+              "1594673",
+              "1683278",
+              "1277366",
+              "1306756",
+              "1808147"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3344.9479000119027,
+          "input_tokens": 2422,
+          "output_tokens": 233,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1276240",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "No mention of a runway incursion at Denver on October 9, 2017."
+                },
+                {
+                  "acn": "1814641",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Incident reported occurred at STL, not Denver on October 9, 2017."
+                },
+                {
+                  "acn": "1626623",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Runway incursion reported at MSP, unrelated to Denver on October 9, 2017."
+                },
+                {
+                  "acn": "1631442",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Incident involved a runway change, not an incursion at Denver on October 9, 2017."
+                },
+                {
+                  "acn": "989221",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Incident occurred at an unspecified location, not Denver on October 9, 2017."
+                }
+              ],
+              "sufficiency": "insufficient",
+              "reason": "No reports address the requested runway incursion at Denver on October 9, 2017."
+            }
+          }
+        },
+        {
+          "stage": "rewrite",
+          "latency_ms": 1009.3791999970563,
+          "input_tokens": 248,
+          "output_tokens": 34,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "query": "Detail the runway breach that took place at Denver International on the morning of October 9, 2017, specifying the precise time it occurred."
+            },
+            "strategy": "synonym/expansion: use aviation synonyms for the same request, preserve all constraints and negation; do not invent facts",
+            "retry": 2
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 500.5319000047166,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "Detail the runway breach that took place at Denver International on the morning of October 9, 2017, specifying the precise time it occurred.",
+            "attempt": 2,
+            "reports": 50,
+            "top10_acns": [
+              "1809567",
+              "1060226",
+              "1276240",
+              "1631442",
+              "1365788",
+              "1307627",
+              "1485449",
+              "1306756",
+              "1443003",
+              "1760778"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3853.024900017772,
+          "input_tokens": 2729,
+          "output_tokens": 205,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1809567",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "No mention of a runway incursion or specific incident."
+                },
+                {
+                  "acn": "1060226",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Describes a conflict but not a runway incursion at Denver."
+                },
+                {
+                  "acn": "1276240",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Highlights runway changes but lacks details on a specific incursion."
+                },
+                {
+                  "acn": "1631442",
+                  "relevance": 1,
+                  "supports_requested_fact": false,
+                  "reason": "Describes a track deviation due to a runway change, not an incursion."
+                },
+                {
+                  "acn": "1365788",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Reports a potential collision but not related to a runway incursion."
+                }
+              ],
+              "sufficiency": "insufficient",
+              "reason": "No accounts directly address the runway incursion at Denver on October 9, 2017."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.00200001522898674,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "insufficient_evidence",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 7514,
+        "output_tokens": 675,
+        "model_calls": 5,
+        "retries": 2,
+        "latency_ms": 13493.9206999843,
+        "query_attempts": [
+          "Describe the runway incursion that occurred at Denver International on the morning of October 9, 2017, including the exact time it happened.",
+          "runway incursion Denver International October 9, 2017 exact time",
+          "Detail the runway breach that took place at Denver International on the morning of October 9, 2017, specifying the precise time it occurred."
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 13540.933599986602,
+      "citation_acns": []
+    },
+    "ft-ctl-2": {
+      "kind": "control",
+      "question": "Summarize the events in ASRS report ACN 777777777777777 involving a cargo aircraft.",
+      "status": "insufficient_evidence",
+      "answer": "insufficient evidence.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.013200013199821115,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": false,
+            "mapped_filters": null,
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 371.8135000090115,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "Summarize the events in ASRS report ACN 777777777777777 involving a cargo aircraft.",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1257038",
+              "1101562",
+              "1599079",
+              "1500579",
+              "1310039",
+              "1015377",
+              "1463507",
+              "1056880",
+              "1753029",
+              "1843408"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3709.834800014505,
+          "input_tokens": 2285,
+          "output_tokens": 183,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1257038",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report involves a B737, not a cargo aircraft."
+                },
+                {
+                  "acn": "1101562",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report discusses dispatch chaos, not cargo aircraft events."
+                },
+                {
+                  "acn": "1599079",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report involves a B777, not a cargo aircraft."
+                },
+                {
+                  "acn": "1500579",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report pertains to tower control, not cargo aircraft."
+                },
+                {
+                  "acn": "1310039",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report describes an NMAC, unrelated to cargo aircraft."
+                }
+              ],
+              "sufficiency": "insufficient",
+              "reason": "No reports address events involving a cargo aircraft."
+            }
+          }
+        },
+        {
+          "stage": "rewrite",
+          "latency_ms": 809.760100004496,
+          "input_tokens": 200,
+          "output_tokens": 19,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "query": "ASRS report ACN 777777777777777 events cargo aircraft"
+            },
+            "strategy": "term-focused: retain exact identifiers, remove conversational phrasing; do not add facts",
+            "retry": 1
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 340.8600000257138,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "ASRS report ACN 777777777777777 events cargo aircraft",
+            "attempt": 1,
+            "reports": 50,
+            "top10_acns": [
+              "1309600",
+              "1693316",
+              "1611578",
+              "1500579",
+              "1599022",
+              "1101562",
+              "1615251",
+              "1015377",
+              "1014934",
+              "1773882"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3954.819899983704,
+          "input_tokens": 2374,
+          "output_tokens": 192,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1309600",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report involves a helicopter and UAS, not a cargo aircraft."
+                },
+                {
+                  "acn": "1693316",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report discusses flight cancellation, unrelated to cargo aircraft events."
+                },
+                {
+                  "acn": "1611578",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report details a runway excursion, not related to cargo aircraft."
+                },
+                {
+                  "acn": "1500579",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report involves an aircraft go-around, unrelated to cargo aircraft."
+                },
+                {
+                  "acn": "1599022",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report focuses on ACARS issues, not related to cargo aircraft events."
+                }
+              ],
+              "sufficiency": "insufficient",
+              "reason": "No reports address events involving a cargo aircraft."
+            }
+          }
+        },
+        {
+          "stage": "rewrite",
+          "latency_ms": 981.6091999819037,
+          "input_tokens": 223,
+          "output_tokens": 27,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "query": "Summarize the occurrences in ASRS report ACN 777777777777777 involving a freight plane."
+            },
+            "strategy": "synonym/expansion: use aviation synonyms for the same request, preserve all constraints and negation; do not invent facts",
+            "retry": 2
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 426.7124000180047,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "Summarize the occurrences in ASRS report ACN 777777777777777 involving a freight plane.",
+            "attempt": 2,
+            "reports": 50,
+            "top10_acns": [
+              "1015377",
+              "1843408",
+              "1486038",
+              "1500579",
+              "1583372",
+              "1037667",
+              "1417212",
+              "1037072",
+              "1786222",
+              "1599079"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 3726.166500011459,
+          "input_tokens": 1966,
+          "output_tokens": 187,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1015377",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report involves a B757, not a cargo aircraft."
+                },
+                {
+                  "acn": "1843408",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report discusses ground conflict, unrelated to cargo aircraft."
+                },
+                {
+                  "acn": "1486038",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report focuses on ATC communication issues, not cargo aircraft."
+                },
+                {
+                  "acn": "1500579",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report pertains to go-around instruction, not cargo aircraft."
+                },
+                {
+                  "acn": "1583372",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report about dangerous goods, not related to cargo aircraft."
+                }
+              ],
+              "sufficiency": "insufficient",
+              "reason": "No reports address the requested mechanism regarding a cargo aircraft."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.0033999967854470015,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "insufficient_evidence",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 7048,
+        "output_tokens": 608,
+        "model_calls": 5,
+        "retries": 2,
+        "latency_ms": 14334.521000011591,
+        "query_attempts": [
+          "Summarize the events in ASRS report ACN 777777777777777 involving a cargo aircraft.",
+          "ASRS report ACN 777777777777777 events cargo aircraft",
+          "Summarize the occurrences in ASRS report ACN 777777777777777 involving a freight plane."
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 14400.352700002259,
+      "citation_acns": []
+    },
+    "ft-cnt-1": {
+      "kind": "count",
+      "question": "How many reports in the corpus involve NMAC conflicts in 2019?",
+      "status": "partial",
+      "answer": "The count filters could not be mapped; no count was estimated. Two reports from October 2019 involve NMAC conflicts. In one account, a pilot described obstructed visibility and a communication breakdown at a non-towered field leading to a near miss with another aircraft during takeoff [1692218]. In another account, a flight instructor reported a communication breakdown and language barrier at a non-towered airport, which contributed to an NMAC while on final approach [1691217]. \n\nWhile both reports detail NMAC incidents, the exact number of reports in the corpus for 2019 cannot be determined from the provided data.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.3316999936942011,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": true,
+            "mapped_filters": null,
+            "unmapped_aggregate": true
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 265.0005999894347,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "How many reports in the corpus involve NMAC conflicts in 2019?",
+            "attempt": 0,
+            "reports": 50,
+            "top10_acns": [
+              "1872948",
+              "1748652",
+              "1692218",
+              "1691217",
+              "1795210",
+              "1804512",
+              "1574545",
+              "1796851",
+              "1761906",
+              "1753029"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 4124.4332999922335,
+          "input_tokens": 2407,
+          "output_tokens": 190,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1872948",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report is from 2022, not 2019."
+                },
+                {
+                  "acn": "1748652",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report is from 2020, not 2019."
+                },
+                {
+                  "acn": "1692218",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Report describes a NMAC incident in 2019."
+                },
+                {
+                  "acn": "1691217",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Report describes a NMAC incident in 2019."
+                },
+                {
+                  "acn": "1795210",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report is from 2021, not 2019."
+                }
+              ],
+              "sufficiency": "partial",
+              "reason": "Two relevant reports from 2019 address NMAC incidents."
+            }
+          }
+        },
+        {
+          "stage": "rewrite",
+          "latency_ms": 724.9596000183374,
+          "input_tokens": 189,
+          "output_tokens": 13,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "query": "reports corpus NMAC conflicts 2019"
+            },
+            "strategy": "term-focused: retain exact identifiers, remove conversational phrasing; do not add facts",
+            "retry": 1
+          }
+        },
+        {
+          "stage": "retrieve",
+          "latency_ms": 272.11290001287125,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "query": "reports corpus NMAC conflicts 2019",
+            "attempt": 1,
+            "reports": 50,
+            "top10_acns": [
+              "1872948",
+              "1748652",
+              "1692218",
+              "1691217",
+              "1796851",
+              "1681982",
+              "1795210",
+              "1804512",
+              "1761906",
+              "1806477"
+            ]
+          }
+        },
+        {
+          "stage": "grade",
+          "latency_ms": 2563.145899999654,
+          "input_tokens": 2645,
+          "output_tokens": 192,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "reports": [
+                {
+                  "acn": "1872948",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report is from 2022, not 2019."
+                },
+                {
+                  "acn": "1748652",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report is from 2020, not 2019."
+                },
+                {
+                  "acn": "1692218",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Directly describes an NMAC event in 2019."
+                },
+                {
+                  "acn": "1691217",
+                  "relevance": 2,
+                  "supports_requested_fact": true,
+                  "reason": "Directly describes an NMAC event in 2019."
+                },
+                {
+                  "acn": "1796851",
+                  "relevance": 0,
+                  "supports_requested_fact": false,
+                  "reason": "Report is from 2021, not 2019."
+                }
+              ],
+              "sufficiency": "sufficient",
+              "reason": "Two reports from 2019 detail NMAC events."
+            }
+          }
+        },
+        {
+          "stage": "generate",
+          "latency_ms": 2400.6866000127047,
+          "input_tokens": 1810,
+          "output_tokens": 124,
+          "model_calls": 1,
+          "model": "gpt-4o-mini",
+          "detail": {
+            "output": {
+              "status": "answered",
+              "answer": "Two reports from October 2019 involve NMAC conflicts. In one account, a pilot described obstructed visibility and a communication breakdown at a non-towered field leading to a near miss with another aircraft during takeoff [1692218]. In another account, a flight instructor reported a communication breakdown and language barrier at a non-towered airport, which contributed to an NMAC while on final approach [1691217]. \n\nWhile both reports detail NMAC incidents, the exact number of reports in the corpus for 2019 cannot be determined from the provided data."
+            }
+          }
+        },
+        {
+          "stage": "finalize",
+          "latency_ms": 0.008100003469735384,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "status": "partial",
+            "citation_validation": {
+              "flagged": false,
+              "invalid_acns": [],
+              "missing_citations": false
+            }
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 7051,
+        "output_tokens": 519,
+        "model_calls": 4,
+        "retries": 1,
+        "latency_ms": 10362.107699998887,
+        "query_attempts": [
+          "How many reports in the corpus involve NMAC conflicts in 2019?",
+          "reports corpus NMAC conflicts 2019"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null,
+      "http_latency_ms": 10407.110900006955,
+      "citation_acns": [
+        "1691217",
+        "1692218"
+      ]
+    },
+    "ft-cnt-2": {
+      "kind": "count",
+      "question": "How many reports in the corpus are from 2015?",
+      "status": "answered",
+      "answer": "2469 of 20000 indexed ASRS reports match metadata filters {\"year_start\": 2015, \"year_end\": 2015, \"anomaly_category\": null}. Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision.",
+      "validation": {
+        "flagged": false,
+        "invalid_acns": [],
+        "missing_citations": false
+      },
+      "trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.059999991208314896,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": true,
+            "mapped_filters": {
+              "year_start": 2015,
+              "year_end": 2015,
+              "anomaly_category": null
+            },
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "aggregate_sql",
+          "latency_ms": 30.10760000324808,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count": 2469,
+            "denominator": 20000,
+            "denominator_definition": "all reports in the active indexed corpus",
+            "filters": {
+              "year_start": 2015,
+              "year_end": 2015,
+              "anomaly_category": null
+            },
+            "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+            "parameters": [
+              2015,
+              2015,
+              2015,
+              2015,
+              null,
+              null
+            ],
+            "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "model_calls": 0,
+        "retries": 0,
+        "latency_ms": 32.311399991158396,
+        "query_attempts": [
+          "How many reports in the corpus are from 2015?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": {
+        "count": 2469,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2015,
+          "year_end": 2015,
+          "anomaly_category": null
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2015,
+          2015,
+          2015,
+          2015,
+          null,
+          null
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "http_latency_ms": 75.43190001160838,
+      "citation_acns": []
+    }
+  },
+  "ask_mean_cost": {
+    "questions": 12,
+    "input_tokens": 5451,
+    "output_tokens": 420.1666666666667,
+    "model_calls": 2.8333333333333335,
+    "retries": 0.5833333333333334,
+    "latency_ms": 8550.499699997696,
+    "graph_latency_ms": 8490.735599994272
+  },
+  "controls": [
+    {
+      "query_id": "ft-ctl-1",
+      "status": "insufficient_evidence",
+      "invalid_acns": [],
+      "passed": true
+    },
+    {
+      "query_id": "ft-ctl-2",
+      "status": "insufficient_evidence",
+      "invalid_acns": [],
+      "passed": true
+    }
+  ],
+  "counts": [
+    {
+      "query_id": "ft-cnt-1",
+      "status": "partial",
+      "expected": {
+        "count": 272,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2019,
+          "year_end": 2019,
+          "anomaly_category": "Conflict NMAC"
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2019,
+          2019,
+          2019,
+          2019,
+          "Conflict NMAC",
+          "Conflict NMAC"
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "system_aggregate": null,
+      "numeric_exact_match": false,
+      "filters_match": false,
+      "denominator_match": false,
+      "exact_match": false,
+      "answer": "The count filters could not be mapped; no count was estimated. Two reports from October 2019 involve NMAC conflicts. In one account, a pilot described obstructed visibility and a communication breakdown at a non-towered field leading to a near miss with another aircraft during takeoff [1692218]. In another account, a flight instructor reported a communication breakdown and language barrier at a non-towered airport, which contributed to an NMAC while on final approach [1691217]. \n\nWhile both reports detail NMAC incidents, the exact number of reports in the corpus for 2019 cannot be determined from the provided data.",
+      "routing_trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.3316999936942011,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": true,
+            "mapped_filters": null,
+            "unmapped_aggregate": true
+          }
+        }
+      ]
+    },
+    {
+      "query_id": "ft-cnt-2",
+      "status": "answered",
+      "expected": {
+        "count": 2469,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2015,
+          "year_end": 2015,
+          "anomaly_category": null
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2015,
+          2015,
+          2015,
+          2015,
+          null,
+          null
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "system_aggregate": {
+        "count": 2469,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2015,
+          "year_end": 2015,
+          "anomaly_category": null
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2015,
+          2015,
+          2015,
+          2015,
+          null,
+          null
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "numeric_exact_match": true,
+      "filters_match": true,
+      "denominator_match": true,
+      "exact_match": true,
+      "answer": "2469 of 20000 indexed ASRS reports match metadata filters {\"year_start\": 2015, \"year_end\": 2015, \"anomaly_category\": null}. Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision.",
+      "routing_trace": [
+        {
+          "stage": "route",
+          "latency_ms": 0.059999991208314896,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count_intent": true,
+            "mapped_filters": {
+              "year_start": 2015,
+              "year_end": 2015,
+              "anomaly_category": null
+            },
+            "unmapped_aggregate": false
+          }
+        },
+        {
+          "stage": "aggregate_sql",
+          "latency_ms": 30.10760000324808,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "model_calls": 0,
+          "model": null,
+          "detail": {
+            "count": 2469,
+            "denominator": 20000,
+            "denominator_definition": "all reports in the active indexed corpus",
+            "filters": {
+              "year_start": 2015,
+              "year_end": 2015,
+              "anomaly_category": null
+            },
+            "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+            "parameters": [
+              2015,
+              2015,
+              2015,
+              2015,
+              null,
+              null
+            ],
+            "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+          }
+        }
+      ]
+    }
+  ],
+  "citation_per_query": [
+    {
+      "query_id": "ft-ri-1",
+      "status": "partial",
+      "cited_acns": [
+        "1661568",
+        "1767507"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 2,
+      "relevant_cited_reports": 2,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": 1.0,
+      "judged_coverage": 1.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-ri-2",
+      "status": "answered",
+      "cited_acns": [
+        "1613565",
+        "1780435"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 2,
+      "relevant_cited_reports": 2,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": 1.0,
+      "judged_coverage": 1.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-alt-1",
+      "status": "partial",
+      "cited_acns": [
+        "1062974",
+        "1437501"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 2,
+      "relevant_cited_reports": 2,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": 1.0,
+      "judged_coverage": 1.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-alt-2",
+      "status": "partial",
+      "cited_acns": [
+        "1280935",
+        "1800917"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 2,
+      "relevant_cited_reports": 2,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": 1.0,
+      "judged_coverage": 1.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-nmac-1",
+      "status": "partial",
+      "cited_acns": [
+        "1072539",
+        "1214769"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 2,
+      "relevant_cited_reports": 2,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": 1.0,
+      "judged_coverage": 1.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-nmac-2",
+      "status": "partial",
+      "cited_acns": [
+        "1364983",
+        "1470315"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 2,
+      "relevant_cited_reports": 2,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": 1.0,
+      "judged_coverage": 1.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-eq-1",
+      "status": "partial",
+      "cited_acns": [
+        "1288413",
+        "1694496"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 2,
+      "relevant_cited_reports": 2,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": 1.0,
+      "judged_coverage": 1.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-eq-2",
+      "status": "answered",
+      "cited_acns": [
+        "1286823"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 0,
+      "relevant_cited_reports": 0,
+      "grade_zero_acns": [],
+      "unknown_acns": [
+        "1286823"
+      ],
+      "precision_on_judged": null,
+      "judged_coverage": 0.0,
+      "kind": "mechanism"
+    },
+    {
+      "query_id": "ft-ctl-1",
+      "status": "insufficient_evidence",
+      "cited_acns": [],
+      "eligible": false,
+      "judged_cited_reports": 0,
+      "relevant_cited_reports": 0,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": null,
+      "judged_coverage": null,
+      "kind": "control"
+    },
+    {
+      "query_id": "ft-ctl-2",
+      "status": "insufficient_evidence",
+      "cited_acns": [],
+      "eligible": false,
+      "judged_cited_reports": 0,
+      "relevant_cited_reports": 0,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": null,
+      "judged_coverage": null,
+      "kind": "control"
+    },
+    {
+      "query_id": "ft-cnt-1",
+      "status": "partial",
+      "cited_acns": [
+        "1691217",
+        "1692218"
+      ],
+      "eligible": true,
+      "judged_cited_reports": 0,
+      "relevant_cited_reports": 0,
+      "grade_zero_acns": [],
+      "unknown_acns": [
+        "1691217",
+        "1692218"
+      ],
+      "precision_on_judged": null,
+      "judged_coverage": 0.0,
+      "kind": "count"
+    },
+    {
+      "query_id": "ft-cnt-2",
+      "status": "answered",
+      "cited_acns": [],
+      "eligible": true,
+      "judged_cited_reports": 0,
+      "relevant_cited_reports": 0,
+      "grade_zero_acns": [],
+      "unknown_acns": [],
+      "precision_on_judged": null,
+      "judged_coverage": null,
+      "kind": "count"
+    }
+  ],
+  "citation_summary": {
+    "all answered/partial": {
+      "eligible_responses": 10,
+      "cited_report_pairs": 17,
+      "judged_report_pairs": 14,
+      "relevant_report_pairs": 14,
+      "precision_on_judged": 1.0,
+      "judged_coverage": 0.8235294117647058,
+      "unknown_report_pairs": 3,
+      "known_grade_zero_citations": 0
+    },
+    "mechanism answered/partial": {
+      "eligible_responses": 8,
+      "cited_report_pairs": 15,
+      "judged_report_pairs": 14,
+      "relevant_report_pairs": 14,
+      "precision_on_judged": 1.0,
+      "judged_coverage": 0.9333333333333333,
+      "unknown_report_pairs": 1,
+      "known_grade_zero_citations": 0
+    }
+  },
+  "observations": [
+    "- Mechanism responses: {'partial': 6, 'answered': 2}. These statuses are observed outputs, not independent claim-level faithfulness judgments.",
+    "- Controls: 2/2 passed; aggregate counts: 1/2 exact matches. Failures were not corrected or retried.",
+    "- Both strict retrieval tables have complete frozen judgment coverage. Citation coverage can be lower because the production workflow can rewrite queries or cite reports outside the original frozen pool; those pairs remain unknown.",
+    "- Eight authored mechanism questions and two controls are a small single frozen sample; no broad superiority or safety conclusions follow.",
+    "- ft-cnt-1 did not return the sealed aggregate result. System aggregate payload: None. The unchanged routing behavior is disclosed, not patched."
+  ],
+  "post_run_protected_hashes": {
+    "db/migrations/0001_init.sql": "54cf3da8035fe84f8badfda7bec16c820dcb3278eef18476522df013eba00441",
+    "db/migrations/0002_ingest_state.sql": "3f9d5106d16be48f79c397bbe507247c3403086654acf904c76be4ded8f98682",
+    "eval/corpus_manifest_20k.json": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+    "eval/current_corpus.json": "8ce220818e5749fd810139a9adf33739cf0bd57a5bece3c60e949e74af8f47db",
+    "eval/judging_pool_step7_ablation_additions.csv": "cf81e62f30a680a855a6489950b54fd753948f012bd16ad1f397dc4455a6c016",
+    "eval/qrels.jsonl": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+    "eval/queries.jsonl": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
+    "eval/results.md": "2796b2b36c25af8547982d74db29f687ff313df1f1f42a0e7e49575127ac2c96",
+    "eval/subset_manifest.json": "50800dd75b0e6c3e489232ca8a420e2fb68d052c60fe2fef96f98f7838fd7172",
+    "pyproject.toml": "d7a637c00f400f1f2fecd5d65f2adaaf08e757e119da7ee21f3987b6633e3d13",
+    "src/safelens/__init__.py": "3340002dd9bd260fa3200cf807788d625cdd6ab145616a2cd55629b52b9488fc",
+    "src/safelens/agent.py": "97c0f573311c3612c23183736f2a5558b6721954532e8183327070c333129994",
+    "src/safelens/aggregate.py": "a540da2b97e28bec5da21f0f05538ad34ddbbf44f87664e5cc99ebc7dde29bc8",
+    "src/safelens/app.py": "8e035ce524b536b69466a6a1f194eb3463224d6e91802e24ba795782fde8a6c4",
+    "src/safelens/bm25.py": "e8d02fefe093ccef33f6e21f3453579d5f792b8ceb5813e44a6bfea98d962cf0",
+    "src/safelens/chunk.py": "2bcb25eb897160db042fa5ae676cc10889a3472ef45dc4267ce8d9203a53fde9",
+    "src/safelens/cli.py": "cb28adc0f8af0b6f7c2850a26cd838d7b251079640686254a07ccdcac7c4a84c",
+    "src/safelens/config.py": "eb69e3305c31af4cb6a61dddeee03279f6a315ad3de75bf19edc34053a77fad2",
+    "src/safelens/corpus.py": "6c08abc16db36a3b2d9e3c0f078db0299e85e21c676ccd1032ad17c51a11879d",
+    "src/safelens/embed.py": "0c9517e98c13f0e2bd2222b0c99f74ec869fbf58a18e1cbaa48626136c4e935c",
+    "src/safelens/evaluation.py": "51d9915ddb2100ef20a94e0d8e6971542c544a15dad69fa26148937753ec59c3",
+    "src/safelens/fusion_experiment.py": "93a1557cfe41f4bc590b74330bcb45422d84c0232fe1f9c77db7883829d28d9b",
+    "src/safelens/generate.py": "a4466617721174bf14f263a772e1ec3e3ec32f452f9dce46b0660d56f4cbb24b",
+    "src/safelens/ingest.py": "33842d8afdf4addb997da9d3efbd243d576d867fe11930661a4fef39bbedcaf8",
+    "src/safelens/lexical_bakeoff.py": "97e558305a1016e89afd6c0bf571d7ce3af858b5df012af4f3dadf9dff95e9dd",
+    "src/safelens/llm.py": "ab488a97f2f6f33d33e7d15e79d304af126bb9637f824909f0788d2f23a15a4e",
+    "src/safelens/migrate.py": "bd5a7a8f77c9c6a5d537f5ab670b500eb213833a053e5bbe01fbd0dff75e45b1",
+    "src/safelens/providers.py": "2aa0f7852192a5240eca3e8938bd92ec261d0bda5a74b6e4da3123200d5d7a97",
+    "src/safelens/reindex.py": "7f416f11d1625f986d1201022aaae77961da953073ad7cac023115f2689ab3dd",
+    "src/safelens/rerank.py": "bcbae8f429812752c84379c7b4de48cf9a2a6ba6e7ccab033d64afba7f2838e7",
+    "src/safelens/retrieve.py": "a466ff131681849e980fb46df25800f587e78b7b742bb1cab715eda9b3b6076a",
+    "src/safelens/scale_report.py": "714c65b0c8da28a116e500cd27fad6106abf00a64c842004412d7db8c19004e0",
+    "src/safelens/step7_report.py": "c2ca3f506de9c4a5b0e4e8a48e52e0776d1e1f3cb35786b7d5fabbf19b99b496",
+    "src/safelens/subset.py": "9a164b1d580874107ff855f34f5d2887f38204aad9cab831fa038740d800681d",
+    "src/safelens/ui.py": "4334f0041067ee0ddf167fcb052e37b21582e5ee2ccc37993b259ffee18dc0d2",
+    "uv.lock": "d0b1104a84ffd619e471abc82655bf259c12358b284a3359920f5120a96782df"
+  },
+  "frozen_assets_unchanged": true,
+  "step8_started": false,
+  "acceptance": {
+    "single_run_id": "af504c7f-fddf-41c6-a2b3-f01652449552",
+    "single_invocation_completed": true,
+    "retrieval_calls": 16,
+    "ask_requests": 12,
+    "no_duplicate_final_requests": true,
+    "no_second_run_or_resume": true,
+    "preflight_all_matched": true,
+    "final_qrels_rows": 89,
+    "development_assets_unchanged": true,
+    "historical_results_bytes_preserved": true,
+    "production_code_config_unchanged": true,
+    "all_citation_passages_match_db": true,
+    "citation_passages_checked": 17,
+    "prior_tests": {
+      "result": "60 passed",
+      "includes_all_57_prior_tests": true,
+      "timing": "before final run; synthetic/development fixtures only"
+    },
+    "ruff": "passed",
+    "git_diff_check": "passed",
+    "step8_started": false
+  }
+}
