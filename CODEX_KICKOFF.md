@@ -496,3 +496,53 @@ never retry with changed code or prompts.)*
    rows; every number above is reported (including any that disappoint);
    development assets byte-unchanged; prior tests still pass. No Step 8
    work.
+
+## Step 8 — Next.js web UI (flagship M5)
+
+*(Issued by Sunny on 2026-11-16, at Cynthia's direction. The backend is
+frozen-tested and finished; this step is frontend only. No changes to
+retrieval, generation, grader, aggregate, or any backend behavior — the
+ft-cnt-1 routing gap stays as documented until a separate disclosed patch.
+The frozen final-test questions must not appear anywhere in the UI,
+including presets.)*
+
+Build a Next.js (App Router) + TypeScript app in `web/` that talks only to
+the existing FastAPI HTTP API (base URL from `NEXT_PUBLIC_API_BASE_URL`,
+default `http://localhost:8000`). Tailwind CSS for styling. Pages:
+
+1. **Ask** (`/`): question input with preset example chips (use development
+   queries and fresh examples only — never final-test questions; include
+   one count question and one question the system should refuse). On
+   submit, render:
+   - the status badge (`answered` / `partial` / `insufficient_evidence`);
+   - the answer with citations as clickable ACN chips; clicking one opens
+     the report view (from `GET /report/{acn}`) with synopsis, narrative,
+     and metadata;
+   - for aggregate answers, the count with its filters and denominator;
+   - a **trace panel** (the signature view): the `/ask` trace as a stage
+     timeline — route, retrieve, grade verdicts, each rewrite attempt with
+     the query tried, generate — with per-stage latency and token costs
+     from the trace/usage fields.
+2. **Results** (`/results`): the evaluation story from committed records —
+   development Layer-1/Layer-2 summary, the Step 7 ablation highlights,
+   the Step 7B calibration before/after, and the frozen final-test table
+   (including the ft-cnt-1 failure, shown as-is). Source the numbers from a
+   JSON snapshot generated from the eval experiment records and committed
+   under `web/`; do not hand-type numbers that disagree with the records.
+3. **Report** view (drawer or `/report/[acn]`): as above.
+
+Platform work:
+- Add a `web` service to docker-compose (Node image, port 3000) so the
+  whole stack starts with one command; document it in the README with a
+  short "run the full stack" section. Gradio stays untouched as the
+  internal prototype.
+- Loading and error states for every API call (backend down, long agent
+  runs with retries can take ~15s — show progress, never a dead spinner).
+
+Acceptance: `npm run build` and `npx tsc --noEmit` pass in `web/`; a
+scripted smoke (documented in `docs/STEP8_NOTES.md`) loads the built app
+against the running API, submits one mechanism question and one count
+question, and records the rendered statuses; screenshots of the Ask page
+with an opened trace panel saved under `docs/`; backend source hashes
+unchanged (frontend, compose, README, and docs files excepted); prior
+Python tests still pass. No Step 9 work.
