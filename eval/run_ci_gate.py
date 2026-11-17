@@ -2,11 +2,16 @@
 
 import argparse
 import hashlib
+import importlib.metadata
 import json
+import math
 import os
+import platform
+from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
 from statistics import mean
+from time import perf_counter
 
 import httpx
 import psycopg
@@ -18,7 +23,7 @@ from safelens.embed import LocalEmbeddingProvider
 from safelens.evaluation import load_qrels
 from safelens.ingest import require_active_index
 from safelens.reindex import LOCK
-from safelens.retrieve import search_dense, search_hybrid
+from safelens.retrieve import RetrievalConfig, search_dense, search_hybrid
 
 
 def judged_precision(query_id, hits, qrels):
@@ -55,10 +60,17 @@ def run(config, base_url, result=None):
     settings = Settings.from_env()
     result = result if result is not None else {}
     result.update({"split": "development", "started_at": datetime.now(UTC).isoformat(),
-              "github_run_id": os.getenv("GITHUB_RUN_ID"), "checks": [], "layer1": {}, "layer2": {},
+              "github_run_id": os.getenv("GITHUB_RUN_ID"), "github_sha": os.getenv("GITHUB_SHA"),
+              "checks": [], "layer1": {}, "layer2": {},
               "aggregate": [], "ask": [], "provenance": {
                   p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
                   for p in (config["queries"], config["qrels"], config["corpus_manifest"], "eval/gates.json")}})
+    result["retrieval_config"] = {**asdict(RetrievalConfig()), "lexical_backend": settings.lexical_backend,
+                                  "dense_weight": settings.rrf_dense_weight, "lexical_weight": settings.rrf_lexical_weight,
+                                  "aggregation": "best chunk per ACN before report-level RRF; ACN tie-break",
+                                  "category_filter": None}
+    result["runtime"] = {"python": platform.python_version(), "platform": platform.platform(), "logical_cpus": os.cpu_count(),
+                         "software": {name: importlib.metadata.version(name) for name in ("torch", "sentence-transformers", "psycopg", "rank-bm25")}}
 
     def check(name, passed, **details):
         result["checks"].append({"name": name, "passed": bool(passed), **details})
@@ -67,6 +79,12 @@ def run(config, base_url, result=None):
         if not conn.execute("SELECT pg_try_advisory_lock_shared(%s)", (LOCK,)).fetchone()[0]:
             raise RuntimeError("Offline index operation active")
         require_active_index(conn, settings)
+        with conn.cursor(row_factory=dict_row) as cursor:
+            result["index"] = cursor.execute(
+                "SELECT id,status,embedding_model,embedding_dim,embed_query_prefix,chunk_config,report_count "
+                "FROM index_meta WHERE status='ready'"
+            ).fetchone()
+        result["index"]["chunk_count"] = conn.execute("SELECT count(*) FROM chunks").fetchone()[0]
         with conn.cursor(row_factory=dict_row) as cursor:
             corpus = cursor.execute("SELECT acn,content_hash,anomaly_codes FROM reports ORDER BY acn").fetchall()
         digest = hashlib.sha256("".join(f"{r['acn']}:{r['content_hash']}\n" for r in corpus).encode("utf-8")).hexdigest()
@@ -80,16 +98,21 @@ def run(config, base_url, result=None):
             if query["layer"] not in (1, 2):
                 continue
             for method, search in (("dense", search_dense), ("hybrid", search_hybrid)):
+                started = perf_counter()
                 hits = search(query["query"], 10, conn=conn, settings=settings, provider=provider)
+                elapsed_ms = (perf_counter() - started) * 1000
                 if len({h["acn"] for h in hits}) != len(hits):
                     raise ValueError("Duplicate report in ranking")
                 score = sum(query["category"] in labels[h["acn"]] for h in hits) / 10
-                category[method].append({"query_id": query["id"], "category_precision_at_10": score})
+                category[method].append({"query_id": query["id"], "category_precision_at_10": score, "latency_ms": elapsed_ms})
                 if method == "dense" and query["layer"] == 2:
                     judged.append(judged_precision(query["id"], hits, qrels))
         for method, rows in category.items():
             score = mean(r["category_precision_at_10"] for r in rows)
-            result["layer1"][method] = {"category_precision_at_10": score, "queries": len(rows), "per_query": rows}
+            timings = sorted(r["latency_ms"] for r in rows)
+            result["layer1"][method] = {"category_precision_at_10": score, "queries": len(rows), "per_query": rows,
+                                        "latency_ms": {"mean": mean(timings), "p95": timings[math.ceil(.95 * len(timings)) - 1]},
+                                        "timing_scope": "query embedding + retrieval; includes first BM25 cache build; excludes LLM"}
             check(f"layer1_{method}", score >= config["layer1"][method]["minimum"], actual=score, **config["layer1"][method])
         complete = all(r["precision_on_judged"] is not None for r in judged)
         score = mean(r["precision_on_judged"] for r in judged) if complete else None
