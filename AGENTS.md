@@ -9,7 +9,8 @@ Use English for code, comments, and documentation.
   exact; defer ANN indexes and other flagship features.
 - Rank, fuse, evaluate, and assemble generation context at report level only.
   Collapse chunk hits to unique ACNs using each report's best chunk score before
-  RRF. Defaults: 100 candidate chunks, 50 candidate reports, RRF k=60; break
+  RRF. Defaults: 100 candidate chunks, 50 candidate reports, RRF k=60,
+  dense:BM25 weights 10:1 (Step 7 adoption); legacy FTS remains selectable. Break
   ties deterministically by ACN and retain winning chunks and component ranks.
 - Benchmark runs never apply the category filter. Query categories are labels
   for evaluation; separately label any filtered experiment.
@@ -34,6 +35,11 @@ Use English for code, comments, and documentation.
 - Ground answers in reporter accounts, with exact evidence passages and validated
   ACN citations. Missing evidence requires a qualified refusal. RRF scores are
   not confidence estimates; do not use a score threshold for refusal.
+- Ask uses bounded LangGraph stages: at most two rewrites and six provider LLM
+  requests (SDK retries disabled). Preserve reporter-account framing, five
+  reports / two passages per report / eight total passages, trace token/latency
+  costs, and fail-closed citations. Aggregate counts use parameterized metadata
+  SQL with filters and denominator, never narrative-based LLM estimation.
 - Use Python 3.12 and uv. Set `PYTHONUTF8=1` and `PYTHONIOENCODING=utf-8`
   before Python entry points, locally and in Compose. Specify `encoding="utf-8"`
   explicitly for text file I/O.

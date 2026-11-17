@@ -2,19 +2,20 @@
 
 import threading
 from contextlib import asynccontextmanager, contextmanager
+from typing import Literal
 
 import psycopg
 from fastapi import FastAPI, HTTPException
 from psycopg.rows import dict_row
 from pydantic import BaseModel, Field, field_validator
 
+from safelens.agent import AgentEngine
 from safelens.config import Settings
 from safelens.embed import LocalEmbeddingProvider
-from safelens.generate import generate_answer
 from safelens.ingest import require_active_index
 from safelens.llm import GenerationUnavailable, OpenAILLMProvider
 from safelens.reindex import LOCK
-from safelens.retrieve import search_hybrid
+from safelens.retrieve import search_dense, search_hybrid
 from safelens.subset import CATEGORIES
 
 
@@ -64,6 +65,10 @@ class AskResponse(BaseModel):
     results: list[ReportHit]
     validation: CitationValidation
     index_id: int
+    status: Literal["answered", "partial", "insufficient_evidence"]
+    trace: list[dict]
+    usage: dict
+    aggregate: dict | None = None
 
 
 class SourceChunk(BaseModel):
@@ -159,19 +164,16 @@ def create_app(settings=None, embedding_factory=LocalEmbeddingProvider, llm_fact
     @api.post("/ask", response_model=AskResponse)
     def ask(body: AskRequest):
         with indexed_connection(settings) as conn:
-            with api.state.embedding_lock:
-                results = search_hybrid(body.question, 5, conn=conn, settings=settings,
-                                        provider=api.state.embedding, category=body.category)
-            with conn.cursor(row_factory=dict_row) as cursor:
-                reports = {row["acn"]: row for row in cursor.execute(
-                    "SELECT acn, report_month, source_dataset, source_revision FROM reports WHERE acn=ANY(%s)",
-                    ([hit["acn"] for hit in results],),
-                ).fetchall()}
+            def locked_retrieve(*args, **kwargs):
+                with api.state.embedding_lock:
+                    search = search_dense if settings.retrieval_mode == "dense" else search_hybrid
+                    return search(*args, **kwargs)
             try:
-                generated = generate_answer(body.question, results, reports, api.state.llm)
+                generated = AgentEngine(conn, settings, api.state.embedding, api.state.llm,
+                                        category=body.category, retrieval=locked_retrieve).run(body.question)
             except GenerationUnavailable as error:
                 raise HTTPException(502, {"message": "LLM generation unavailable", "code": error.code}) from None
-            return {**generated, "results": results,
+            return {**generated,
                     "index_id": conn.execute("SELECT id FROM index_meta WHERE status='ready'").fetchone()[0]}
 
     return api

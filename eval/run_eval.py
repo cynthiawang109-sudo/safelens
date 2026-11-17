@@ -15,6 +15,7 @@ import re
 from collections import Counter
 from dataclasses import asdict, replace
 from datetime import UTC, datetime
+from functools import partial
 from pathlib import Path
 from statistics import mean
 from time import perf_counter
@@ -34,9 +35,10 @@ from safelens.retrieve import (
     search_lexical,
 )
 from safelens.scale_report import comparison, missing_judgments, render_scaleup
+from safelens.step7_report import render_part1
 from safelens.subset import CATEGORIES
 
-METHODS = {"lexical": search_lexical, "dense": search_dense, "hybrid": search_hybrid}
+METHODS = {"lexical": partial(search_lexical, backend="fts"), "dense": search_dense, "hybrid": search_hybrid}
 POOL_COLUMNS = ["query_id", "acn", "synopsis", "grade", "note"]
 
 
@@ -249,6 +251,9 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
     queries = load_queries(queries_path)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     scaleup = manifest.get("manifest_type") == "flagship_year_stratified_v1"
+    production = scaleup and settings.lexical_backend == "bm25"
+    if production:
+        rankings_path = Path("data/eval_rankings_step7.json")
     if scaleup and rankings_path == Path("data/eval_rankings.json"):
         rankings_path = Path("data/eval_rankings_20k.json")
     if not conn.execute("SELECT pg_try_advisory_lock_shared(%s)", (LOCK,)).fetchone()[0]:
@@ -281,14 +286,20 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             if scaleup and missing:
                 relevance = {"status": "needs_judgments", "missing_pairs": missing,
                              "reason": "Expanded corpus top-ten coverage incomplete; unjudged documents are not irrelevant"}
+                if production:
+                    complete = [m for m in METHODS if not missing_judgments(
+                        queries, {qid: {m: hits[m]} for qid, hits in rankings.items()}, qrels)]
+                    scored = judged_metrics(queries, {qid: {m: hits[m] for m in complete}
+                                                      for qid, hits in rankings.items()}, qrels)
+                    relevance.update(averages=scored["averages"], per_query=scored["per_query"])
             else:
                 relevance = judged_metrics(queries, rankings, qrels)
         output.mkdir(parents=True, exist_ok=True)
-        pool_path = output / ("judging_pool_20k.csv" if scaleup else "judging_pool.csv")
+        pool_path = output / ("judging_pool_step7.csv" if production else "judging_pool_20k.csv" if scaleup else "judging_pool.csv")
         write_pool(pool_path, pool, preserve_judgments=True)
         if scaleup and relevance["status"] == "needs_judgments":
             missing_set = set(map(tuple, relevance["missing_pairs"]))
-            write_pool(output / "judging_pool_20k_additions.csv",
+            write_pool(output / ("judging_pool_step7_additions.csv" if production else "judging_pool_20k_additions.csv"),
                        [r for r in pool if (r["query_id"], r["acn"]) in missing_set], preserve_judgments=True)
         with pool_path.open(encoding="utf-8", newline="") as source:
             saved_pool = list(csv.DictReader(source))
@@ -329,7 +340,28 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             "postgres_version": conn.execute("SHOW server_version").fetchone()[0],
             "pgvector_version": conn.execute("SELECT extversion FROM pg_extension WHERE extname='vector'").fetchone()[0],
         }
-        if scaleup:
+        if production:
+            from safelens.bm25 import ready_index
+            reference_path = Path("eval/step6b_best_acn_orders.json")
+            reference = json.loads(reference_path.read_text(encoding="utf-8"))
+            if reference["query_sha256"] != file_hash(queries_path) or reference["snapshot_sha256"] != snapshot:
+                raise ValueError("Step 6B equivalence reference snapshot/query mismatch")
+            matches = 0
+            for query in queries:
+                qid = query["id"]
+                if [h["acn"] for h in rankings[qid]["hybrid"]] != reference["rankings"][qid]:
+                    raise ValueError(f"Step 6B production equivalence failed: {qid}")
+                matches += 1
+            record.update(equivalence_queries=matches, bm25_cache=ready_index(conn)[1],
+                          equivalence_reference={"path": str(reference_path), "sha256": file_hash(reference_path)},
+                          production_retrieval={"lexical_backend": settings.lexical_backend,
+                                                "dense_weight": settings.rrf_dense_weight, "lexical_weight": settings.rrf_lexical_weight},
+                          lexical_evaluation_baseline="legacy FTS; production standalone lexical is BM25")
+            text = (output / "results.md").read_text(encoding="utf-8")
+            previous = text.split("<!-- production-step7-part1 -->")[0]
+            later = "<!-- agent-ablation-step7 -->" + text.split("<!-- agent-ablation-step7 -->", 1)[1] if "<!-- agent-ablation-step7 -->" in text else ""
+            (output / "results.md").write_text(previous.rstrip() + "\n\n" + render_part1(record) + "\n" + later, encoding="utf-8")
+        elif scaleup:
             baseline = json.loads((output / "experiment_5k.json").read_text(encoding="utf-8"))
             record["comparison_to_5k"] = comparison(record, baseline)
             record["manifest_switch"] = {"previous": "eval/subset_manifest.json", "current": str(manifest_path),
@@ -340,7 +372,7 @@ def run(conn, settings, provider, queries_path, manifest_path, output, pool_seed
             (output / "results.md").write_text(previous.rstrip() + "\n\n" + render_scaleup(record), encoding="utf-8")
         else:
             (output / "results.md").write_text(render_results(record), encoding="utf-8")
-        (output / "experiment.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        (output / ("experiment_step7_part1.json" if production else "experiment.json")).write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         rankings_path.write_text(json.dumps(rankings, ensure_ascii=False), encoding="utf-8")
         print(json.dumps({"corpus": record["corpus"], "layer1_primary": record["layer1_primary"],
                           "judging_pool": record["judging_pool"], "controls_verified": list(controls)}, indent=2))

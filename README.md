@@ -1,16 +1,78 @@
 # SafeLens
 
-SafeLens is a planned retrieval and grounded-answer system over NASA ASRS
-aviation safety reporter accounts. The Mini milestone will compare PostgreSQL
-full-text search, dense retrieval, and hybrid retrieval with report-level
-evaluation.
+SafeLens retrieves NASA ASRS aviation reporter accounts and generates grounded
+answers with validated citations. Production retrieval uses local BGE embeddings
+and BM25 with report-level weighted RRF (dense:BM25 10:1, k=60). A bounded
+LangGraph workflow grades evidence, conditionally rewrites the query, and answers
+or abstains; metadata count questions use auditable SQL.
 
 Current corpus: **20,000 reports**, retaining every Mini report. Step 5 indexing,
 Layer-1 evaluation, and full-coverage Layer-2 evaluation pass after importing
 46 additional human judgments (134 total qrels). See [Step 5 notes](docs/STEP5_NOTES.md).
-The Mini generation API, citation validation, and Gradio client remain unchanged;
-their completed smoke validation is recorded in [Step 4 notes](docs/STEP4_NOTES.md).
-The Step 6 lexical bake-off is complete; see [Step 6 notes](docs/STEP6_NOTES.md). Step 7 has not started.
+The production fusion matches the Step 6B winner on all 31 development queries;
+all-28 Category P@10 is 0.6429. Its five unjudged top-ten pairs remain pending
+human grades. See [Step 7 notes](docs/STEP7_NOTES.md) for the full adoption gate,
+real-provider agent smoke checks, and five-configuration ablation. Step 8 has
+not started. Earlier experiments remain historical development records.
+
+## Production retrieval and Ask configuration
+
+The BM25Okapi index uses the Step 6 preprocessing and parameters (lowercase
+ASCII alphanumeric content terms, fixed sklearn English stoplist; k1=1.5,
+b=0.75, epsilon=0.25). It loads ready-build chunk text once per database/schema
+and invalidates on a new ready build ID. The initial cold build measured 5.90 s
+with about 381 MiB process RSS growth; allocator-dependent memory figures and
+the initial and repeated measurements are in `eval/experiment_step7_part1.json`. The vector index
+and corpus are unchanged; no re-embedding is needed for fusion-weight changes.
+
+| Setting | Default | Alternatives |
+|---|---|---|
+| `LEXICAL_BACKEND` | `bm25` | `fts` retains conjunctive PostgreSQL FTS |
+| `RETRIEVAL_MODE` | `hybrid` | `dense` selects dense-only |
+| `RRF_DENSE_WEIGHT` / `RRF_LEXICAL_WEIGHT` | `10` / `1` | `1` / `1` reproduces equal-weight fusion |
+| `AGENT_ENABLED` | `true` | `false` bypasses grading/rewrite while retaining citation validation and count routing |
+| `AGENT_MAX_RETRIES` / `AGENT_MAX_CALLS` | `2` / `6` | Lower caps allowed; calls count provider LLM requests, with SDK retries disabled |
+| `RERANK_ENABLED` | `false` | `true` enables the pinned local cross-encoder over up to 50 fused reports |
+
+For the historical hybrid baseline, set `LEXICAL_BACKEND=fts` and both weights
+to 1. The evaluator keeps its standalone lexical row explicitly labeled as
+the legacy FTS baseline so that old lexical/dense scores remain comparable.
+Production standalone lexical search uses BM25 by default.
+
+`POST /ask` retains `answer`, `citations`, `results`, and citation validation,
+and adds `status` (`answered`, `partial`, `insufficient_evidence`), `trace`,
+`usage`, and optional `aggregate`. Trace events include query attempts,
+structured relevance/sufficiency grades, retry strategy, actual provider
+tokens, and stage latency. Rewrites occur only after an insufficient/partial
+grade, use distinct term-focused and synonym strategies, and stop after two
+retries. Three retrieval attempts also bound local embedding/rerank stages;
+these local stages report latency rather than LLM tokens.
+
+Evidence remains at most five reports, two passages per report, eight passages
+total. Citations fail closed against the actual supplied passages. The graph
+does not turn LLM relevance grades into human qrels or claims of confirmed
+findings. Gradio uses this same HTTP contract and displays status and traces.
+
+Count routing supports the four published anomaly-category labels/aliases and
+single-year, since/after, before/until, and inclusive year-range filters.
+Unrecognized filters use the normal evidence path with `partial` status and
+no estimated count. Mapped answers show the parameterized SQL, filters, count,
+and full indexed-corpus denominator. ASRS report counts are not incident rates.
+
+Reproduce each Step 7 part with UTF-8 variables set:
+
+```powershell
+uv run python eval/run_eval.py
+uv run python scripts/smoke_step7.py
+uv run python eval/run_agent_ablation.py
+uv run pytest -q
+```
+
+The ablation is a development experiment, not a final test. New unjudged pairs
+are exported blind with blank grades; strict relevance scores remain pending
+where coverage is incomplete. The local reranker is
+`cross-encoder/ms-marco-MiniLM-L6-v2` at revision
+`233902d25c440f23af6f7d6e94d2946bac0bee0a`, downloaded into ignored model caches.
 
 ## Scaffold quickstart
 

@@ -1,0 +1,253 @@
+{
+  "timestamp": "2026-11-16T23:05:39.889402+00:00",
+  "transport": "FastAPI TestClient HTTP; real OpenAI and indexed PostgreSQL corpus",
+  "reused_original_real_provider_responses": true,
+  "normal_policy": "validated supported citation or qualified refusal; no forced answer to unsupported premise",
+  "checks": [
+    {
+      "query_id": "control-domain",
+      "passed": true,
+      "status": "insufficient_evidence",
+      "answer": "insufficient evidence.",
+      "citations": 0,
+      "usage": {
+        "input_tokens": 8029,
+        "output_tokens": 617,
+        "model_calls": 5,
+        "retries": 2,
+        "latency_ms": 21639.209499990102,
+        "query_attempts": [
+          "What maintenance findings caused the ballast pump failure aboard the research vessel Pelagic Meridian on voyage MARINE-CONTROL-20261115-X?",
+          "maintenance findings ballast pump failure research vessel Pelagic Meridian voyage MARINE-CONTROL-20261115-X",
+          "What upkeep discoveries led to the ballast pump malfunction aboard the research vessel Pelagic Meridian on voyage MARINE-CONTROL-20261115-X?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "stages": [
+        "route",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "finalize"
+      ],
+      "invalid_acns": []
+    },
+    {
+      "query_id": "control-time",
+      "passed": true,
+      "status": "insufficient_evidence",
+      "answer": "insufficient evidence.",
+      "citations": 0,
+      "usage": {
+        "input_tokens": 6026,
+        "output_tokens": 638,
+        "model_calls": 5,
+        "retries": 2,
+        "latency_ms": 13540.098500001477,
+        "query_attempts": [
+          "What exact calendar day and clock time did the EGPWS event in ASRS report 1857031 occur?",
+          "EGPWS event ASRS report 1857031 calendar day clock time",
+          "What precise calendar date and hour did the Enhanced Ground Proximity Warning System incident in ASRS report 1857031 take place?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "stages": [
+        "route",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "finalize"
+      ],
+      "invalid_acns": []
+    },
+    {
+      "query_id": "control-acn",
+      "passed": true,
+      "status": "insufficient_evidence",
+      "answer": "insufficient evidence.",
+      "citations": 0,
+      "usage": {
+        "input_tokens": 7009,
+        "output_tokens": 663,
+        "model_calls": 5,
+        "retries": 2,
+        "latency_ms": 11882.449500000803,
+        "query_attempts": [
+          "What happened in ASRS report 999999999999999, and what were its findings?",
+          "ASRS report 999999999999999 findings",
+          "What occurred in ASRS document 999999999999999, and what were its conclusions?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "stages": [
+        "route",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "finalize"
+      ],
+      "invalid_acns": []
+    },
+    {
+      "query_id": "alt-l2-1",
+      "passed": true,
+      "status": "insufficient_evidence",
+      "answer": "Insufficient evidence. The account describes a situation where the flight crew inadvertently set a lower altitude than assigned, resulting in leveling off at 10,000 feet instead of the intended 11,000 feet. However, it does not explicitly state that the incorrectly set altitude selector was the cause of passing through the cleared level. The reporter mentions high workload and distractions but does not confirm the altitude selector's incorrect setting as the definitive cause of the altitude deviation. \n\nFor example, the crew noted, \"I believe I set 11;000 for MSSLE intersection; but either set the wrong altitude; or bumped the setting down\" [1229263].",
+      "citations": 1,
+      "usage": {
+        "input_tokens": 9926,
+        "output_tokens": 729,
+        "model_calls": 6,
+        "retries": 2,
+        "latency_ms": 13770.734400008223,
+        "query_attempts": [
+          "an incorrectly set altitude selector caused the aircraft to pass through the cleared level",
+          "incorrectly set altitude selector aircraft pass cleared level",
+          "an inaccurately adjusted altitude selector led the airplane to exceed the authorized altitude"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "stages": [
+        "route",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "generate",
+        "finalize"
+      ],
+      "invalid_acns": []
+    },
+    {
+      "query_id": "equip-l2-1",
+      "passed": true,
+      "status": "partial",
+      "answer": "The first report describes a B757 flight crew experiencing a hydraulic system malfunction that resulted in a diversion. They noted a significant loss of fluid in the left hydraulic system, which caused caution messages and slight feedback through the flight controls. The crew managed the situation effectively, although they were uncertain about the root cause of the hydraulic issue [1780335].\n\nIn a separate account, a B767-300ER First Officer reported diverting due to the rapid loss of the Center Hydraulic System. The crew followed emergency procedures and successfully landed the aircraft safely after configuring for landing [1610719]. \n\nBoth accounts indicate hydraulic failures leading to diversions, but they do not confirm a direct cause or detail the specific degradation of flight controls.",
+      "citations": 2,
+      "usage": {
+        "input_tokens": 9787,
+        "output_tokens": 760,
+        "model_calls": 6,
+        "retries": 2,
+        "latency_ms": 16931.211200004327,
+        "query_attempts": [
+          "hydraulic failure degraded flight controls and forced an emergency diversion",
+          "hydraulic failure degraded flight controls emergency diversion",
+          "hydraulic malfunction impaired flight management systems and necessitated an urgent diversion"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "stages": [
+        "route",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "generate",
+        "finalize"
+      ],
+      "invalid_acns": []
+    },
+    {
+      "query_id": "count-mapped",
+      "passed": true,
+      "status": "answered",
+      "answer": "98 of 20000 indexed ASRS reports match metadata filters {\"year_start\": 2020, \"year_end\": 2020, \"anomaly_category\": \"Ground Incursion Runway\"}. Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision.",
+      "citations": 0,
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "model_calls": 0,
+        "retries": 0,
+        "latency_ms": 41.7481000040425,
+        "query_attempts": [
+          "How many reports in 2020 about runway incursions?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "stages": [
+        "route",
+        "aggregate_sql"
+      ],
+      "invalid_acns": []
+    },
+    {
+      "query_id": "count-unmapped",
+      "passed": true,
+      "status": "partial",
+      "answer": "The count filters could not be mapped; no count was estimated. Insufficient evidence. The provided passages do not specify the number of reports from Toronto in 2020. They include reports from September and October 2020, but do not indicate their origin or confirm any reports specifically from Toronto. For example, one report discusses a frequency issue related to CIU Airport [1762128], while another addresses dispatcher workload without mentioning Toronto [1765691].",
+      "citations": 2,
+      "usage": {
+        "input_tokens": 7500,
+        "output_tokens": 674,
+        "model_calls": 6,
+        "retries": 2,
+        "latency_ms": 12950.653299994883,
+        "query_attempts": [
+          "How many reports from Toronto in 2020?",
+          "reports Toronto 2020",
+          "How many documents from Toronto in 2020?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "stages": [
+        "route",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "rewrite",
+        "retrieve",
+        "grade",
+        "generate",
+        "finalize"
+      ],
+      "invalid_acns": []
+    }
+  ]
+}

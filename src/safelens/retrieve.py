@@ -51,7 +51,14 @@ def aggregate(rows, name, depth):
     return reports
 
 
-def fuse(lexical, dense, config):
+def fuse(lexical, dense, config, dense_weight=1.0, lexical_weight=1.0):
+    if (not all(math.isfinite(w) and w >= 0 for w in (dense_weight, lexical_weight))
+            or dense_weight + lexical_weight <= 0):
+        raise ValueError("RRF weights must be finite, nonnegative, and not both zero")
+    if lexical_weight == 0:
+        return dense
+    if dense_weight == 0:
+        return lexical
     by_acn = {}
     for name, reports in (("lexical", lexical), ("dense", dense)):
         for rank, hit in enumerate(reports, 1):
@@ -61,8 +68,9 @@ def fuse(lexical, dense, config):
             record["ranks"][name] = rank
             record["components"][name] = hit["components"][name]
     for hit in by_acn.values():
-        hit["score"] = math.fsum(1 / (config.rrf_k + rank)
-                                 for rank in hit["ranks"].values() if rank is not None)
+        weights = {"lexical": lexical_weight, "dense": dense_weight}
+        hit["score"] = math.fsum(weights[name] / (config.rrf_k + rank)
+                                 for name, rank in hit["ranks"].items() if rank is not None)
         # Representative evidence: better component rank; lexical wins equal rank.
         winner = min(hit["components"], key=lambda name: (hit["ranks"][name], name != "lexical"))
         hit["chunk_id"] = hit["components"][winner]["chunk_id"]
@@ -101,10 +109,19 @@ def _validate(q, k):
         raise ValueError("Query must be nonempty and k positive")
 
 
-def search_lexical(q, k=10, *, conn, settings, category=None, config=RetrievalConfig()):
+def _production_lexical(conn, q, category, config, backend):
+    if backend == "fts":
+        return _lexical(conn, q, category, config)
+    if backend != "bm25":
+        raise ValueError("Unknown lexical backend")
+    from safelens.bm25 import search_bm25
+    return search_bm25(conn, q, category, config)
+
+
+def search_lexical(q, k=10, *, conn, settings, category=None, config=RetrievalConfig(), backend=None):
     _validate(q, k)
     with _snapshot(conn, settings):
-        return _lexical(conn, q, category, config)[:k]
+        return _production_lexical(conn, q, category, config, backend or settings.lexical_backend)[:k]
 
 
 def search_dense(q, k=10, *, conn, settings, provider, category=None, config=RetrievalConfig()):
@@ -116,6 +133,10 @@ def search_dense(q, k=10, *, conn, settings, provider, category=None, config=Ret
 def search_hybrid(q, k=10, *, conn, settings, provider, category=None, config=RetrievalConfig()):
     _validate(q, k)
     with _snapshot(conn, settings):
-        lexical = _lexical(conn, q, category, config)
+        if settings.retrieval_mode == "dense" or settings.rrf_lexical_weight == 0:
+            return _dense(conn, q, category, config, provider, settings.embedding_dim)[:k]
+        lexical = _production_lexical(conn, q, category, config, settings.lexical_backend)
+        if settings.rrf_dense_weight == 0:
+            return lexical[:k]
         dense = _dense(conn, q, category, config, provider, settings.embedding_dim)
-        return fuse(lexical, dense, config)[:k]
+        return fuse(lexical, dense, config, settings.rrf_dense_weight, settings.rrf_lexical_weight)[:k]

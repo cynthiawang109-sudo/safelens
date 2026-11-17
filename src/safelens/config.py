@@ -1,5 +1,6 @@
 """Environment-driven configuration; no model initialization at import time."""
 
+import math
 import os
 from dataclasses import dataclass, field
 
@@ -23,6 +24,16 @@ class Settings:
     openai_api_key: str = field(default="", repr=False)
     chunk_tokens: int = 500
     chunk_overlap: float = 0.15
+    lexical_backend: str = "bm25"
+    retrieval_mode: str = "hybrid"
+    rrf_dense_weight: float = 10.0
+    rrf_lexical_weight: float = 1.0
+    agent_enabled: bool = True
+    agent_max_retries: int = 2
+    agent_max_calls: int = 6
+    rerank_enabled: bool = False
+    rerank_model: str = "cross-encoder/ms-marco-MiniLM-L6-v2"
+    rerank_revision: str = "233902d25c440f23af6f7d6e94d2946bac0bee0a"
 
     def __post_init__(self):
         if self.embedding_dim <= 0 or not 400 <= self.chunk_tokens <= 600:
@@ -35,6 +46,14 @@ class Settings:
             raise ValueError("LLM output limit and timeout must be positive")
         if not 0 <= self.llm_temperature <= 2:
             raise ValueError("LLM temperature must be in [0, 2]")
+        if self.lexical_backend not in ("bm25", "fts") or self.retrieval_mode not in ("hybrid", "dense"):
+            raise ValueError("Unknown retrieval backend/mode")
+        if (not all(math.isfinite(w) for w in (self.rrf_dense_weight, self.rrf_lexical_weight))
+                or min(self.rrf_dense_weight, self.rrf_lexical_weight) < 0
+                or self.rrf_dense_weight + self.rrf_lexical_weight <= 0):
+            raise ValueError("RRF weights must be nonnegative and not both zero")
+        if not 0 <= self.agent_max_retries <= 2 or not 1 <= self.agent_max_calls <= 6:
+            raise ValueError("Agent caps: at most two retries and six model calls")
 
     @property
     def chunk_config(self) -> dict:
@@ -78,4 +97,14 @@ class Settings:
             openai_api_key=os.getenv("OPENAI_API_KEY", ""),
             chunk_tokens=int(os.getenv("CHUNK_TOKENS", defaults.chunk_tokens)),
             chunk_overlap=float(os.getenv("CHUNK_OVERLAP", defaults.chunk_overlap)),
+            lexical_backend=os.getenv("LEXICAL_BACKEND", defaults.lexical_backend),
+            retrieval_mode=os.getenv("RETRIEVAL_MODE", defaults.retrieval_mode),
+            rrf_dense_weight=float(os.getenv("RRF_DENSE_WEIGHT", defaults.rrf_dense_weight)),
+            rrf_lexical_weight=float(os.getenv("RRF_LEXICAL_WEIGHT", defaults.rrf_lexical_weight)),
+            agent_enabled=os.getenv("AGENT_ENABLED", "true").lower() == "true",
+            agent_max_retries=int(os.getenv("AGENT_MAX_RETRIES", defaults.agent_max_retries)),
+            agent_max_calls=int(os.getenv("AGENT_MAX_CALLS", defaults.agent_max_calls)),
+            rerank_enabled=os.getenv("RERANK_ENABLED", "false").lower() == "true",
+            rerank_model=os.getenv("RERANK_MODEL", defaults.rerank_model),
+            rerank_revision=os.getenv("RERANK_REVISION", defaults.rerank_revision),
         )

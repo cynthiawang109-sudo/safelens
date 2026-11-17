@@ -1,0 +1,19 @@
+{
+  "split": "development",
+  "queries": "eight existing judged queries plus three existing abstention controls",
+  "configurations": [
+    {"name": "Dense-only", "dense_only": true, "rerank": false, "rewrite": false, "grading": false},
+    {"name": "Hybrid-10:1", "dense_only": false, "rerank": false, "rewrite": false, "grading": false},
+    {"name": "Hybrid + Rerank", "dense_only": false, "rerank": true, "rewrite": false, "grading": false},
+    {"name": "Hybrid + Rewrite", "dense_only": false, "rerank": false, "rewrite": true, "grading": true},
+    {"name": "Full Agentic", "dense_only": false, "rerank": true, "rewrite": true, "grading": true}
+  ],
+  "retrieval": "100 chunks per leg, max-score report aggregation, 50 reports per leg; dense:BM25 weighted report RRF 10:1, k=60",
+  "rerank": "pinned cross-encoder/ms-marco-MiniLM-L6-v2, CPU, top 50 fused report candidates, representative chunk, 512 pair tokens",
+  "rewrite_cap": 2,
+  "model_call_cap": 6,
+  "retrieval_metrics": "final-attempt report top ten before generation filtering; strict metrics only for fully judged query subsets, with subset size and coverage; eight-query full scores pending if any top-ten pair unjudged",
+  "partial_signals": "same condensed judged-only Step 6 protocol, separately labeled; never select stages on missing-as-zero scores",
+  "cost": "actual provider input/output tokens and wall latency, per-stage totals per question; excludes initialization, warmup, generation counted in all configurations",
+  "judgments": "no grades assigned or altered; all new final top-ten pairs exported blinded and blank"
+}

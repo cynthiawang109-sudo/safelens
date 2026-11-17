@@ -20,6 +20,16 @@ class FakeLLM:
     def generate(self, prompt):
         return "The reporter described a runway event [100]."
 
+    def generate_structured(self, prompt, schema):
+        import json
+        if "queries_tried" in prompt:
+            return schema.model_validate({"query": "runway"}), {"input_tokens": 10, "output_tokens": 5}
+        data = json.loads(prompt.split("\nReporter accounts are unverified, not confirmed findings.\n")[1])
+        acns = sorted({p["acn"] for p in data["passages"]})
+        return schema.model_validate({"reports": [{"acn": a, "relevance": 2,
+                                                   "supports_requested_fact": True, "reason": "Fixture account"} for a in acns],
+                                      "sufficiency": "sufficient", "reason": "Fixture support"}), {"input_tokens": 10, "output_tokens": 5}
+
 
 def test_ask_report_and_health_match_database(database):
     conn, dsn, settings = database

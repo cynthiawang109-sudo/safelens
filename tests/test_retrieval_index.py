@@ -37,7 +37,7 @@ def test_report_aggregation_before_rrf_and_ties():
 
 def test_build_search_unique_acns_filters_and_candidate_order(database):
     conn, _, settings = database
-    settings = replace(settings, embedding_dim=3)
+    settings = replace(settings, embedding_dim=3, lexical_backend="fts", rrf_dense_weight=1)
     populate(conn, settings)
     built = reindex(conn, settings, FakeProvider)
     assert (built["reports"], built["chunks"]) == (3, 3)
