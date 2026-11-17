@@ -1,0 +1,545 @@
+{
+  "split": "development",
+  "started_at": "2026-11-17T05:42:43.695768+00:00",
+  "github_run_id": "44020105195",
+  "github_sha": "4d7101f89db580a9a1db6892982976d395cb9e75",
+  "checks": [
+    {
+      "name": "layer1_dense",
+      "passed": true,
+      "actual": 0.6285714285714286,
+      "minimum": 0.6,
+      "baseline": 0.6285714285714286,
+      "source": "eval/experiment.json"
+    },
+    {
+      "name": "layer1_hybrid",
+      "passed": true,
+      "actual": 0.6428571428571429,
+      "minimum": 0.62,
+      "baseline": 0.6428571428571429,
+      "source": "eval/experiment_step7_part1.json"
+    },
+    {
+      "name": "layer2_dense",
+      "passed": true,
+      "actual": 0.95,
+      "minimum": 0.9
+    },
+    {
+      "name": "dev-count-runway-2020",
+      "passed": true
+    },
+    {
+      "name": "dev-count-total",
+      "passed": true
+    },
+    {
+      "name": "ask_smoke",
+      "passed": false,
+      "blocked": "Repository secret OPENAI_API_KEY is missing; no Ask requests attempted"
+    }
+  ],
+  "layer1": {
+    "dense": {
+      "category_precision_at_10": 0.6285714285714286,
+      "queries": 28,
+      "per_query": [
+        {
+          "query_id": "ri-l1-1",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 68.77048500018645
+        },
+        {
+          "query_id": "ri-l1-2",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 56.29784800021298
+        },
+        {
+          "query_id": "ri-l1-3",
+          "category_precision_at_10": 0.0,
+          "latency_ms": 54.93484899989198
+        },
+        {
+          "query_id": "ri-l1-4",
+          "category_precision_at_10": 0.2,
+          "latency_ms": 54.90346800024781
+        },
+        {
+          "query_id": "ri-l1-5",
+          "category_precision_at_10": 1.0,
+          "latency_ms": 53.34382099999857
+        },
+        {
+          "query_id": "alt-l1-1",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 53.580307999709476
+        },
+        {
+          "query_id": "alt-l1-2",
+          "category_precision_at_10": 0.2,
+          "latency_ms": 54.13860199996634
+        },
+        {
+          "query_id": "alt-l1-3",
+          "category_precision_at_10": 0.6,
+          "latency_ms": 56.90140999968207
+        },
+        {
+          "query_id": "alt-l1-4",
+          "category_precision_at_10": 0.4,
+          "latency_ms": 57.31297100010124
+        },
+        {
+          "query_id": "alt-l1-5",
+          "category_precision_at_10": 0.2,
+          "latency_ms": 58.07882299995981
+        },
+        {
+          "query_id": "nmac-l1-1",
+          "category_precision_at_10": 1.0,
+          "latency_ms": 62.764844999946945
+        },
+        {
+          "query_id": "nmac-l1-2",
+          "category_precision_at_10": 1.0,
+          "latency_ms": 59.13828799975818
+        },
+        {
+          "query_id": "nmac-l1-3",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 57.47970800030089
+        },
+        {
+          "query_id": "nmac-l1-4",
+          "category_precision_at_10": 0.4,
+          "latency_ms": 57.388250999792945
+        },
+        {
+          "query_id": "nmac-l1-5",
+          "category_precision_at_10": 0.8,
+          "latency_ms": 58.83519000008164
+        },
+        {
+          "query_id": "equip-l1-1",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 56.763486999898305
+        },
+        {
+          "query_id": "equip-l1-2",
+          "category_precision_at_10": 0.5,
+          "latency_ms": 62.26843000013105
+        },
+        {
+          "query_id": "equip-l1-3",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 58.5782919997655
+        },
+        {
+          "query_id": "equip-l1-4",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 56.79142799999681
+        },
+        {
+          "query_id": "equip-l1-5",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 58.198038000227825
+        },
+        {
+          "query_id": "ri-l2-1",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 56.19937899973593
+        },
+        {
+          "query_id": "ri-l2-2",
+          "category_precision_at_10": 0.6,
+          "latency_ms": 56.52801999985968
+        },
+        {
+          "query_id": "alt-l2-1",
+          "category_precision_at_10": 0.4,
+          "latency_ms": 57.05734499997561
+        },
+        {
+          "query_id": "alt-l2-2",
+          "category_precision_at_10": 0.6,
+          "latency_ms": 57.60201299972323
+        },
+        {
+          "query_id": "nmac-l2-1",
+          "category_precision_at_10": 0.5,
+          "latency_ms": 58.046959999956016
+        },
+        {
+          "query_id": "nmac-l2-2",
+          "category_precision_at_10": 0.6,
+          "latency_ms": 61.79694299999028
+        },
+        {
+          "query_id": "equip-l2-1",
+          "category_precision_at_10": 0.8,
+          "latency_ms": 57.7376579999509
+        },
+        {
+          "query_id": "equip-l2-2",
+          "category_precision_at_10": 0.5,
+          "latency_ms": 58.82294999992155
+        }
+      ],
+      "latency_ms": {
+        "mean": 57.8664217856775,
+        "p95": 62.764844999946945
+      },
+      "timing_scope": "query embedding + retrieval; includes first BM25 cache build; excludes LLM"
+    },
+    "hybrid": {
+      "category_precision_at_10": 0.6428571428571429,
+      "queries": 28,
+      "per_query": [
+        {
+          "query_id": "ri-l1-1",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 2053.810295999938
+        },
+        {
+          "query_id": "ri-l1-2",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 133.24894899960782
+        },
+        {
+          "query_id": "ri-l1-3",
+          "category_precision_at_10": 0.1,
+          "latency_ms": 129.31324900000618
+        },
+        {
+          "query_id": "ri-l1-4",
+          "category_precision_at_10": 0.2,
+          "latency_ms": 119.097461000365
+        },
+        {
+          "query_id": "ri-l1-5",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 120.10331500005123
+        },
+        {
+          "query_id": "alt-l1-1",
+          "category_precision_at_10": 0.8,
+          "latency_ms": 111.26880199981315
+        },
+        {
+          "query_id": "alt-l1-2",
+          "category_precision_at_10": 0.3,
+          "latency_ms": 145.18856599988794
+        },
+        {
+          "query_id": "alt-l1-3",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 114.53160499968362
+        },
+        {
+          "query_id": "alt-l1-4",
+          "category_precision_at_10": 0.4,
+          "latency_ms": 144.27713000031872
+        },
+        {
+          "query_id": "alt-l1-5",
+          "category_precision_at_10": 0.2,
+          "latency_ms": 168.56426599997576
+        },
+        {
+          "query_id": "nmac-l1-1",
+          "category_precision_at_10": 1.0,
+          "latency_ms": 140.07754199974443
+        },
+        {
+          "query_id": "nmac-l1-2",
+          "category_precision_at_10": 1.0,
+          "latency_ms": 106.64200400015034
+        },
+        {
+          "query_id": "nmac-l1-3",
+          "category_precision_at_10": 0.8,
+          "latency_ms": 136.49001300018426
+        },
+        {
+          "query_id": "nmac-l1-4",
+          "category_precision_at_10": 0.4,
+          "latency_ms": 138.11373599992294
+        },
+        {
+          "query_id": "nmac-l1-5",
+          "category_precision_at_10": 0.8,
+          "latency_ms": 115.92890400015676
+        },
+        {
+          "query_id": "equip-l1-1",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 124.89043399955335
+        },
+        {
+          "query_id": "equip-l1-2",
+          "category_precision_at_10": 0.5,
+          "latency_ms": 135.99487100009355
+        },
+        {
+          "query_id": "equip-l1-3",
+          "category_precision_at_10": 0.8,
+          "latency_ms": 119.95937700021386
+        },
+        {
+          "query_id": "equip-l1-4",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 162.56522100002258
+        },
+        {
+          "query_id": "equip-l1-5",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 115.2481210001497
+        },
+        {
+          "query_id": "ri-l2-1",
+          "category_precision_at_10": 0.9,
+          "latency_ms": 141.7975800000022
+        },
+        {
+          "query_id": "ri-l2-2",
+          "category_precision_at_10": 0.5,
+          "latency_ms": 164.621501000056
+        },
+        {
+          "query_id": "alt-l2-1",
+          "category_precision_at_10": 0.3,
+          "latency_ms": 153.01138700033334
+        },
+        {
+          "query_id": "alt-l2-2",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 165.13799199992718
+        },
+        {
+          "query_id": "nmac-l2-1",
+          "category_precision_at_10": 0.3,
+          "latency_ms": 126.16509999998016
+        },
+        {
+          "query_id": "nmac-l2-2",
+          "category_precision_at_10": 0.6,
+          "latency_ms": 171.07623500032787
+        },
+        {
+          "query_id": "equip-l2-1",
+          "category_precision_at_10": 0.8,
+          "latency_ms": 157.02674199974354
+        },
+        {
+          "query_id": "equip-l2-2",
+          "category_precision_at_10": 0.7,
+          "latency_ms": 164.87180600006468
+        }
+      ],
+      "latency_ms": {
+        "mean": 206.39365017858123,
+        "p95": 171.07623500032787
+      },
+      "timing_scope": "query embedding + retrieval; includes first BM25 cache build; excludes LLM"
+    }
+  },
+  "layer2": {
+    "method": "dense",
+    "precision_on_judged": 0.95,
+    "coverage_at_10": 1.0,
+    "definition": "macro mean of relevant / judged in each development top ten; exclude unjudged pairs; always report coverage; no judged pairs fails",
+    "per_query": [
+      {
+        "query_id": "ri-l2-1",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 1,
+        "missing_acns": []
+      },
+      {
+        "query_id": "ri-l2-2",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 0.9,
+        "missing_acns": []
+      },
+      {
+        "query_id": "alt-l2-1",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 1,
+        "missing_acns": []
+      },
+      {
+        "query_id": "alt-l2-2",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 0.9,
+        "missing_acns": []
+      },
+      {
+        "query_id": "nmac-l2-1",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 0.9,
+        "missing_acns": []
+      },
+      {
+        "query_id": "nmac-l2-2",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 0.9,
+        "missing_acns": []
+      },
+      {
+        "query_id": "equip-l2-1",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 1,
+        "missing_acns": []
+      },
+      {
+        "query_id": "equip-l2-2",
+        "returned": 10,
+        "judged": 10,
+        "coverage_at_10": 1.0,
+        "precision_on_judged": 1,
+        "missing_acns": []
+      }
+    ]
+  },
+  "aggregate": [
+    {
+      "id": "dev-count-runway-2020",
+      "expected": {
+        "id": "dev-count-runway-2020",
+        "question": "How many reports in 2020 about runway incursions?",
+        "count": 98,
+        "denominator": 20000,
+        "filters": {
+          "year_start": 2020,
+          "year_end": 2020,
+          "anomaly_category": "Ground Incursion Runway"
+        },
+        "source": "docs/STEP8_SMOKE.json"
+      },
+      "actual": {
+        "count": 98,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2020,
+          "year_end": 2020,
+          "anomaly_category": "Ground Incursion Runway"
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2020,
+          2020,
+          2020,
+          2020,
+          "Ground Incursion Runway",
+          "Ground Incursion Runway"
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "passed": true
+    },
+    {
+      "id": "dev-count-total",
+      "expected": {
+        "id": "dev-count-total",
+        "question": "How many reports are in the corpus?",
+        "count": 20000,
+        "denominator": 20000,
+        "filters": {
+          "year_start": null,
+          "year_end": null,
+          "anomaly_category": null
+        },
+        "source": "eval/corpus_manifest_20k.json"
+      },
+      "actual": {
+        "count": 20000,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": null,
+          "year_end": null,
+          "anomaly_category": null
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "passed": true
+    }
+  ],
+  "ask": [],
+  "provenance": {
+    "eval/queries.jsonl": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
+    "eval/qrels.jsonl": "296057032f9ec61897f5b7ea095434e7f3a2022aa9faa9618ef6245ed7a66835",
+    "eval/corpus_manifest_20k.json": "1d48664eec49f5ed67decb7454cd5f15e78048204c689a00e2df008776e78d81",
+    "eval/gates.json": "0c29d0c472b23522eb0eb2ab7d72ef175dd3c9eb4df63910e087d0f91f8c3da3"
+  },
+  "retrieval_config": {
+    "candidate_chunks": 100,
+    "candidate_reports": 50,
+    "rrf_k": 60,
+    "aggregation": "best chunk per ACN before report-level RRF; ACN tie-break",
+    "lexical_backend": "bm25",
+    "dense_weight": 10.0,
+    "lexical_weight": 1.0,
+    "category_filter": null
+  },
+  "runtime": {
+    "python": "3.12.13",
+    "platform": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "logical_cpus": 4,
+    "software": {
+      "torch": "2.15.0",
+      "sentence-transformers": "5.7.0",
+      "psycopg": "3.3.9",
+      "rank-bm25": "0.2.2"
+    }
+  },
+  "index": {
+    "id": 1,
+    "status": "ready",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dim": 384,
+    "embed_query_prefix": "Represent this sentence for searching relevant passages: ",
+    "chunk_config": {
+      "tokens": 500,
+      "overlap": 0.15,
+      "algorithm": "paragraph_offsets_v1",
+      "token_limit": "min(target, model_max_seq_length); includes synopsis and special tokens",
+      "lexical_config": "simple",
+      "overlap_policy": "configured fraction of previous narrative window tokens; synopsis repeated separately",
+      "text_construction": "synopsis+all_labeled_narratives; synopsis_per_chunk",
+      "embedding_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a"
+    },
+    "report_count": 20000,
+    "chunk_count": 28306
+  },
+  "corpus": {
+    "reports": 20000,
+    "snapshot_sha256": "c47c73dae040d26dba7221e50c6cbeb457859632f6ef385e7fdf338b03db850b"
+  },
+  "passed": false
+}

@@ -7,6 +7,8 @@ CI gates and cloud deployment configuration are ready. See
 [deployment instructions and required operator decisions](docs/DEPLOYMENT.md)
 and [Step 9 evidence](docs/STEP9_NOTES.md). No live cloud deployment has been
 performed. The frozen final evaluation is never run by CI.
+The hosted retrieval/SQL gates pass; hosted Ask awaits the `OPENAI_API_KEY`
+repository secret. The full local development smoke passes.
 
 SafeLens retrieves NASA ASRS aviation reporter accounts and generates grounded
 answers with validated citations. Production retrieval uses local BGE embeddings

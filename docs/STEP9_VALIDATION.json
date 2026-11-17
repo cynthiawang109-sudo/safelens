@@ -1,0 +1,138 @@
+{
+  "local_gate": {
+    "passed": true,
+    "layer1": {
+      "dense": 0.6285714285714286,
+      "hybrid": 0.6428571428571429
+    },
+    "layer2": {
+      "method": "dense",
+      "precision_on_judged": 0.95,
+      "coverage_at_10": 1.0,
+      "definition": "macro mean of relevant / judged in each development top ten; exclude unjudged pairs; always report coverage; no judged pairs fails"
+    },
+    "ask": [
+      {
+        "query_id": "ri-l2-1",
+        "status": "partial",
+        "citations": 2,
+        "passed": true
+      },
+      {
+        "query_id": "alt-l2-1",
+        "status": "partial",
+        "citations": 2,
+        "passed": true
+      },
+      {
+        "query_id": "equip-l2-1",
+        "status": "partial",
+        "citations": 2,
+        "passed": true
+      },
+      {
+        "query_id": "control-domain",
+        "status": "insufficient_evidence",
+        "citations": 0,
+        "passed": true
+      }
+    ],
+    "aggregate": [
+      {
+        "id": "dev-count-runway-2020",
+        "passed": true,
+        "count": 98,
+        "denominator": 20000
+      },
+      {
+        "id": "dev-count-total",
+        "passed": true,
+        "count": 20000,
+        "denominator": 20000
+      }
+    ],
+    "provenance": {
+      "eval/queries.jsonl": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
+      "eval/qrels.jsonl": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+      "eval/corpus_manifest_20k.json": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+      "eval/gates.json": "0c29d0c472b23522eb0eb2ab7d72ef175dd3c9eb4df63910e087d0f91f8c3da3"
+    }
+  },
+  "local_production_smoke": {
+    "passed": true,
+    "statuses": {
+      "health": "ready",
+      "mechanism": "partial",
+      "count": "answered"
+    }
+  },
+  "validation": {
+    "pytest_passed": 63,
+    "ruff": "passed",
+    "web_install_types_lint_build": "passed",
+    "actionlint": "passed",
+    "protected_files_unchanged": 76,
+    "render_schema": "passed",
+    "vercel_schema_instance_rules": "passed",
+    "deployment_dockerfile_static_check": "passed",
+    "deployment_shell_syntax": "passed",
+    "live_deployment_performed": false,
+    "frozen_final_test_rerun": false
+  },
+  "github": {
+    "commit": "4d7101f89db580a9a1db6892982976d395cb9e75",
+    "pr_run": "https://github.com/cynthiawang109-sudo/safelens/actions/runs/44020104275",
+    "pr_status": "success",
+    "eval_dispatch_run": "https://github.com/cynthiawang109-sudo/safelens/actions/runs/44020105195",
+    "eval_status": "failure: missing OPENAI_API_KEY repository secret only",
+    "eval_artifact": "https://github.com/cynthiawang109-sudo/safelens/actions/runs/44020105195/artifacts/14302743392",
+    "eval_artifact_json_sha256": "ea37dfeb9c85dde861c1863103af4961be6c010da48929d71d72cc5c6d2ba6b4",
+    "hosted_metrics": {
+      "layer1": {
+        "dense": 0.6285714285714286,
+        "hybrid": 0.6428571428571429
+      },
+      "layer2_precision_on_judged": 0.95,
+      "layer2_judgment_coverage": 1.0,
+      "checks": [
+        {
+          "name": "layer1_dense",
+          "passed": true,
+          "actual": 0.6285714285714286,
+          "minimum": 0.6,
+          "baseline": 0.6285714285714286,
+          "source": "eval/experiment.json"
+        },
+        {
+          "name": "layer1_hybrid",
+          "passed": true,
+          "actual": 0.6428571428571429,
+          "minimum": 0.62,
+          "baseline": 0.6428571428571429,
+          "source": "eval/experiment_step7_part1.json"
+        },
+        {
+          "name": "layer2_dense",
+          "passed": true,
+          "actual": 0.95,
+          "minimum": 0.9
+        },
+        {
+          "name": "dev-count-runway-2020",
+          "passed": true
+        },
+        {
+          "name": "dev-count-total",
+          "passed": true
+        },
+        {
+          "name": "ask_smoke",
+          "passed": false,
+          "blocked": "Repository secret OPENAI_API_KEY is missing; no Ask requests attempted"
+        }
+      ],
+      "reports": 20000,
+      "chunks": 28306
+    }
+  }
+}

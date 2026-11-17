@@ -84,13 +84,27 @@ See the [Blueprint reference](https://render.com/docs/blueprint-spec) and
 [supported extensions](https://render.com/docs/postgresql-extensions).
 
 Every backend configuration variable is named in the Blueprint. Enter
-`OPENAI_API_KEY` into the secret prompt. For the **first provision only**, set
-`SAFELENS_BOOTSTRAP=1` at the prompt: this is explicit authorization to run the
-existing migration, pinned download and offline 20k reindex in the pre-deploy
-phase. The API intentionally cannot serve an empty or mismatched index.
+`OPENAI_API_KEY` into the secret prompt. For the **first provision only**, choose
+`SAFELENS_BOOTSTRAP=1` only if indexing fits the confirmed pipeline time budget
+below: this explicitly authorizes the existing migration, pinned download and
+offline 20k reindex in pre-deploy. Otherwise choose 0 and use the external
+bootstrap route below. The API intentionally cannot serve an empty or
+mismatched index.
 After the first healthy deployment, set `SAFELENS_BOOTSTRAP=0` before any later
 deploy. Normal pre-deploy checks verify readiness and never silently rebuild.
 `autoDeployTrigger: off` leaves later deployments manual.
+
+Render limits pre-deploy commands to **30 minutes**, independently of the API
+instance plan. Confirm pipeline compute and bootstrap duration before choosing
+the initial bootstrap flag; a Pro API instance does not itself select faster
+pipeline compute. Full CPU indexing is substantial. If it cannot fit that
+window, use the explicit external bootstrap below instead of repeatedly timing
+out an atomic build. [Deploy timeouts](https://render.com/docs/deploys) and
+[pipeline compute tiers](https://render.com/docs/build-pipeline).
+
+The Step 9 four-CPU GitHub run took about 50 minutes end-to-end. Prefer the
+external bootstrap route for initial provisioning unless a faster chosen
+pipeline has been measured to fit Render's 30-minute pre-deploy limit.
 
 The exact bootstrap command is:
 
@@ -107,6 +121,19 @@ Shell, after entering a maintenance window and draining requests. They replace
 the corpus using the existing offline lock; no model/config switch is implicit.
 Alternatively explicitly set the bootstrap flag to 1 for a manual maintenance
 deployment and reset it to 0 afterward. Never leave it enabled across deploys.
+
+For a long initial build, provision with `SAFELENS_BOOTSTRAP=0`; an empty DB
+will intentionally fail the initial readiness check. Temporarily allow only
+the provisioning host's IP on the Render DB, and use a separate provisioning
+shell with `DATABASE_URL` set to the **confirmed Render external connection
+string**, with `sslmode=require`. Run the three explicit Python commands above
+from the local repo (set both UTF-8 environment variables first). This uses the
+same pinned corpus and production pipeline without a pre-deploy time limit.
+It must not target the existing local database. After verifying the ready 20k
+index, restore `ipAllowList: []`, keep the bootstrap flag at 0 and manually
+redeploy the API; its private internal connection remains supplied by the
+Blueprint. This two-phase provisioning path needs no temporary fake health
+endpoint and no changes to the frozen API.
 
 The persistent disk mounts `/app/data` for the runtime model cache and any
 explicit maintenance downloads. Render pre-deploy runs on separate compute
@@ -197,7 +224,8 @@ policy before approving a live deployment.
    deployments may call the production API.
 3. OpenAI project/key, usage budget and GitHub secret setup. These are separate
    destinations; no credential is transferred automatically by this work.
-4. Initial explicit bootstrap flag, maintenance window, provider backup
+4. Initial bootstrap route (pipeline tier/time budget or external provisioning),
+   explicit bootstrap flag, maintenance window, provider backup
    retention and an actual restore/rollback owner.
 5. Public access versus an access-controlled demo, ingress rate limits and
    expected concurrent traffic. Accept the unchanged documented count-routing
