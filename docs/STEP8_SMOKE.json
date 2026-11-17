@@ -1,0 +1,79 @@
+{
+  "base": "http://127.0.0.1:3000",
+  "requests": [
+    {
+      "kind": "mechanism",
+      "httpStatus": 200,
+      "renderedStatus": "partial",
+      "stages": [
+        "route",
+        "retrieve",
+        "grade",
+        "generate",
+        "finalize"
+      ],
+      "usage": {
+        "input_tokens": 4464,
+        "output_tokens": 346,
+        "model_calls": 2,
+        "retries": 0,
+        "latency_ms": 20334.872851999535,
+        "query_attempts": [
+          "Unreliable airspeed indications left the pilots uncertain about the airplane's actual energy state."
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": null
+    },
+    {
+      "kind": "count",
+      "httpStatus": 200,
+      "renderedStatus": "answered",
+      "stages": [
+        "route",
+        "aggregate_sql"
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "model_calls": 0,
+        "retries": 0,
+        "latency_ms": 279.0978369957884,
+        "query_attempts": [
+          "How many reports in 2020 about runway incursions?"
+        ],
+        "caps": {
+          "retries": 2,
+          "model_calls": 6
+        }
+      },
+      "aggregate": {
+        "count": 98,
+        "denominator": 20000,
+        "filters": {
+          "year_start": 2020,
+          "year_end": 2020,
+          "anomaly_category": "Ground Incursion Runway"
+        }
+      }
+    }
+  ],
+  "checks": [
+    "Live citation navigates to indexed synopsis, narrative and metadata",
+    "Results snapshot renders, including unchanged ft-cnt-1 failure",
+    "Health, Ask and report errors visible; question retained; manual report retry available",
+    "No browser page errors; mobile Ask has no horizontal overflow"
+  ],
+  "screenshots": [
+    "docs/STEP8_LOADING.png",
+    "docs/STEP8_ASK_TRACE.png",
+    "docs/STEP8_ASK_MOBILE.png",
+    "docs/STEP8_REPORT.png",
+    "docs/STEP8_COUNT_TRACE.png",
+    "docs/STEP8_RESULTS.png"
+  ],
+  "passed": true
+}

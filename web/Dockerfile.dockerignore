@@ -1,0 +1,9 @@
+.git
+.env
+.env.*
+.venv
+data
+web/node_modules
+web/.next
+web/.env*
+docs

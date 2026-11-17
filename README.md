@@ -6,14 +6,50 @@ and BM25 with report-level weighted RRF (dense:BM25 10:1, k=60). A bounded
 LangGraph workflow grades evidence, conditionally rewrites the query, and answers
 or abstains; metadata count questions use auditable SQL.
 
+## Run the full stack
+
+With the existing indexed database and `data/models` cache from the offline
+ingest/reindex steps, start PostgreSQL, the unchanged FastAPI service and the
+Next.js frontend together:
+
+```powershell
+# Set OPENAI_API_KEY in your shell, or in the gitignored .env (see .env.example).
+docker compose up -d --build
+```
+
+Open http://localhost:3000 for Ask, source reports and the evaluation lab.
+The API is at http://localhost:8000. Stop any standalone servers using these
+ports before starting Compose. A fresh database still requires the documented
+offline migration/ingest/reindex steps; containers never silently rebuild the
+frozen index. Gradio remains the internal prototype and is unchanged.
+
+For frontend development against a running API:
+
+```powershell
+cd web
+npm ci
+# Optional: copy .env.example to .env.local and adjust the API base URL.
+npm run dev
+```
+
+`NEXT_PUBLIC_API_BASE_URL` defaults to `http://localhost:8000`; Compose uses
+`http://api:8000`. Next.js forwards the existing HTTP endpoints through a
+same-origin frontend route because the frozen API has no browser CORS policy.
+No API key belongs in frontend environment variables. `npm run build` regenerates
+the sanitized evaluation snapshot from committed records; `npm start` serves
+the production build. See [Step 8 validation](docs/STEP8_NOTES.md) for smoke
+commands, recorded statuses and screenshots.
+
 Current corpus: **20,000 reports**, retaining every Mini report. Step 5 indexing,
 Layer-1 evaluation, and full-coverage Layer-2 evaluation pass after importing
 46 additional human judgments (134 total qrels). See [Step 5 notes](docs/STEP5_NOTES.md).
 The production fusion matches the Step 6B winner on all 31 development queries;
 all-28 Category P@10 is 0.6429. Its five unjudged top-ten pairs remain pending
 human grades. See [Step 7 notes](docs/STEP7_NOTES.md) for the full adoption gate,
-real-provider agent smoke checks, and five-configuration ablation. Step 8 has
-not started. Earlier experiments remain historical development records.
+real-provider agent smoke checks, and five-configuration ablation. Step 8 adds
+the Next.js Ask, source-report and evaluation views, with the frozen final-test
+results displayed from committed records. Earlier experiments remain historical
+development records. See [Step 8 notes](docs/STEP8_NOTES.md).
 
 Step 7B calibrated mechanism-level grading and explicit generation outcomes:
 the production Ask path now returns supported `answered`/`partial` responses

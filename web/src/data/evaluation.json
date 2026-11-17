@@ -1,0 +1,323 @@
+{
+  "sources": [
+    {
+      "path": "eval/experiment.json",
+      "sha256": "241191654b8b20161a19c59986954e89b47c64b9c3f29a1ffd7abbd5ee1f942b"
+    },
+    {
+      "path": "eval/experiment_step7_ablation.json",
+      "sha256": "039d24222249510ae07bdf47f53cb2ebc0d32ec6d08186b40c1e4bf7cd036cba"
+    },
+    {
+      "path": "eval/experiment_step7b.json",
+      "sha256": "4124a0d8bf104b916e1f009938a3ba5cc5bec7efa055314a033e71f670f82e2b"
+    },
+    {
+      "path": "eval/experiment_step7d.json",
+      "sha256": "d34abd6f1633e0c8e10faca95db437089a21b07bb36cfa975e53e169453fe4fd"
+    }
+  ],
+  "corpus": {
+    "reports": 20000,
+    "chunks": 28306
+  },
+  "development": {
+    "layer1": {
+      "lexical": {
+        "queries": 28,
+        "category_precision_at_10": 0.08928571428571429,
+        "hit_at_10": 0.25
+      },
+      "dense": {
+        "queries": 28,
+        "category_precision_at_10": 0.6285714285714286,
+        "hit_at_10": 0.9642857142857143
+      },
+      "hybrid": {
+        "queries": 28,
+        "category_precision_at_10": 0.6107142857142858,
+        "hit_at_10": 0.9642857142857143
+      }
+    },
+    "layer2": {
+      "lexical": {
+        "precision_at_10": 0.05,
+        "mrr": 0.03125,
+        "ndcg_at_10": 0.024960048405214076
+      },
+      "dense": {
+        "precision_at_10": 0.95,
+        "mrr": 1,
+        "ndcg_at_10": 0.8456998925591415
+      },
+      "hybrid": {
+        "precision_at_10": 0.925,
+        "mrr": 1,
+        "ndcg_at_10": 0.8093308222668413
+      }
+    }
+  },
+  "ablation": [
+    {
+      "name": "Dense-only",
+      "statuses": {
+        "answered": 0,
+        "partial": 0,
+        "insufficient_evidence": 8
+      },
+      "controls": 3,
+      "fullyJudged": 8,
+      "coverage": 1,
+      "latency": 2403.7429272721056,
+      "input": 2551.4545454545455,
+      "output": 99.81818181818181,
+      "retries": 0
+    },
+    {
+      "name": "Hybrid-10:1",
+      "statuses": {
+        "answered": 0,
+        "partial": 0,
+        "insufficient_evidence": 8
+      },
+      "controls": 3,
+      "fullyJudged": 4,
+      "coverage": 0.9375,
+      "latency": 2431.694754548847,
+      "input": 2618.2727272727275,
+      "output": 98.36363636363636,
+      "retries": 0
+    },
+    {
+      "name": "Hybrid + Rerank",
+      "statuses": {
+        "answered": 0,
+        "partial": 0,
+        "insufficient_evidence": 8
+      },
+      "controls": 3,
+      "fullyJudged": 0,
+      "coverage": 0.4875,
+      "latency": 7839.2339636378565,
+      "input": 2801.5454545454545,
+      "output": 104.0909090909091,
+      "retries": 0
+    },
+    {
+      "name": "Hybrid + Rewrite",
+      "statuses": {
+        "answered": 0,
+        "partial": 1,
+        "insufficient_evidence": 7
+      },
+      "controls": 3,
+      "fullyJudged": 0,
+      "coverage": 0.6875,
+      "latency": 12052.688154548046,
+      "input": 7993.454545454545,
+      "output": 604.8181818181819,
+      "retries": 1.5454545454545454
+    },
+    {
+      "name": "Full Agentic",
+      "statuses": {
+        "answered": 0,
+        "partial": 0,
+        "insufficient_evidence": 8
+      },
+      "controls": 3,
+      "fullyJudged": 0,
+      "coverage": 0.45,
+      "latency": 25550.206972727956,
+      "input": 8084.818181818182,
+      "output": 623.6363636363636,
+      "retries": 1.6363636363636365
+    }
+  ],
+  "calibration": [
+    {
+      "name": "Production Ask",
+      "before": {
+        "supported": 1,
+        "statuses": {
+          "answered": 0,
+          "partial": 1,
+          "insufficient_evidence": 7
+        },
+        "controls": 3,
+        "precision": 1,
+        "coverage": 1,
+        "latency": 14195.2880727278,
+        "input": 8775.454545454546,
+        "output": 659.5454545454545
+      },
+      "after": {
+        "supported": 8,
+        "statuses": {
+          "answered": 2,
+          "partial": 6,
+          "insufficient_evidence": 0
+        },
+        "controls": 3,
+        "precision": 1,
+        "coverage": 0.8125,
+        "latency": 9738.072454544388,
+        "input": 6449.454545454545,
+        "output": 479.27272727272725
+      }
+    },
+    {
+      "name": "Dense-only",
+      "before": {
+        "supported": 0,
+        "statuses": {
+          "answered": 0,
+          "partial": 0,
+          "insufficient_evidence": 8
+        },
+        "controls": 3,
+        "precision": null,
+        "coverage": null,
+        "latency": 2403.7429272721056,
+        "input": 2551.4545454545455,
+        "output": 99.81818181818181
+      },
+      "after": {
+        "supported": 8,
+        "statuses": {
+          "answered": 1,
+          "partial": 7,
+          "insufficient_evidence": 0
+        },
+        "controls": 3,
+        "precision": 1,
+        "coverage": 1,
+        "latency": 2599.216645455189,
+        "input": 2826.4545454545455,
+        "output": 117.36363636363636
+      }
+    },
+    {
+      "name": "Hybrid-10:1",
+      "before": {
+        "supported": 0,
+        "statuses": {
+          "answered": 0,
+          "partial": 0,
+          "insufficient_evidence": 8
+        },
+        "controls": 3,
+        "precision": null,
+        "coverage": null,
+        "latency": 2431.694754548847,
+        "input": 2618.2727272727275,
+        "output": 98.36363636363636
+      },
+      "after": {
+        "supported": 8,
+        "statuses": {
+          "answered": 1,
+          "partial": 7,
+          "insufficient_evidence": 0
+        },
+        "controls": 3,
+        "precision": 1,
+        "coverage": 1,
+        "latency": 2788.2819454587825,
+        "input": 2893.2727272727275,
+        "output": 124.0909090909091
+      }
+    }
+  ],
+  "final": {
+    "retrieval": {
+      "dense": {
+        "precision_at_10": 0.9375,
+        "mrr": 1,
+        "ndcg_at_10": 0.8487137499351929
+      },
+      "hybrid": {
+        "precision_at_10": 0.9625,
+        "mrr": 1,
+        "ndcg_at_10": 0.8945081208330229
+      }
+    },
+    "retrievalCoverage": {
+      "dense": 1,
+      "hybrid": 1
+    },
+    "controlsPassed": 2,
+    "controlsTotal": 2,
+    "citation": {
+      "all answered/partial": {
+        "eligible_responses": 10,
+        "cited_report_pairs": 17,
+        "judged_report_pairs": 14,
+        "relevant_report_pairs": 14,
+        "precision_on_judged": 1,
+        "judged_coverage": 0.8235294117647058,
+        "unknown_report_pairs": 3,
+        "known_grade_zero_citations": 0
+      },
+      "mechanism answered/partial": {
+        "eligible_responses": 8,
+        "cited_report_pairs": 15,
+        "judged_report_pairs": 14,
+        "relevant_report_pairs": 14,
+        "precision_on_judged": 1,
+        "judged_coverage": 0.9333333333333333,
+        "unknown_report_pairs": 1,
+        "known_grade_zero_citations": 0
+      }
+    },
+    "cost": {
+      "questions": 12,
+      "input_tokens": 5451,
+      "output_tokens": 420.1666666666667,
+      "model_calls": 2.8333333333333335,
+      "retries": 0.5833333333333334,
+      "latency_ms": 8550.499699997696,
+      "graph_latency_ms": 8490.735599994272
+    },
+    "counts": [
+      {
+        "id": "ft-cnt-1",
+        "status": "partial",
+        "expected": 272,
+        "expectedDenominator": 20000,
+        "expectedFilters": {
+          "year_start": 2019,
+          "year_end": 2019,
+          "anomaly_category": "Conflict NMAC"
+        },
+        "actual": null,
+        "denominator": null,
+        "filters": null,
+        "exact": false
+      },
+      {
+        "id": "ft-cnt-2",
+        "status": "answered",
+        "expected": 2469,
+        "expectedDenominator": 20000,
+        "expectedFilters": {
+          "year_start": 2015,
+          "year_end": 2015,
+          "anomaly_category": null
+        },
+        "actual": 2469,
+        "denominator": 20000,
+        "filters": {
+          "year_start": 2015,
+          "year_end": 2015,
+          "anomaly_category": null
+        },
+        "exact": true
+      }
+    ],
+    "statuses": {
+      "partial": 6,
+      "answered": 2
+    }
+  }
+}
