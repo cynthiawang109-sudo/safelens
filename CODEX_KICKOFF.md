@@ -337,3 +337,64 @@ tests for the weighted-RRF production path (1:1 equals legacy equal-weight
 behavior on a fixture; lexical weight 0 equals dense), the BM25 index
 build-id invalidation, the rewrite cap, and the aggregate SQL routing.
 No final-test queries are created in this step; no Step 8 work.
+
+## Step 7B — Answer-rate calibration (diagnose first, then calibrate)
+
+*(Issued by Sunny on 2026-11-16, at Cynthia's decision. Context: the Step 7
+ablation showed all five configurations answering 0 of 8 answerable judged
+queries while refusing all 3 controls correctly. Retrieval is not the
+bottleneck (judged P@10 0.95). Note that the no-grader configurations
+(Dense-only, Hybrid-10:1) also refused 8/8, so the generator's own evidence
+bar is a prime suspect. Spec v1.4 gates apply; the hard rules below are not
+calibration variables.)*
+
+### Phase 1 — Diagnosis (no behavior changes)
+
+For each of the 8 judged queries and 3 controls, on the production Ask path
+and from the Step 7 ablation record, classify where each answerable query
+died:
+(a) grader marked evidence insufficient although judged-relevant reports
+    (grade ≥ 1 in qrels) were in the retrieved set;
+(b) grader marked sufficient but the generator still refused;
+(c) evidence packaging: the 5-report / 8-passage cap dropped the passages
+    that carry the relevant mechanism;
+(d) the rewrite loop's final attempt was worse than the first retrieval;
+(e) citation validation stripped an otherwise grounded answer.
+Deliverable: a per-query diagnosis table in `docs/STEP7B_NOTES.md`, each row
+citing the trace evidence for its classification.
+
+### Phase 2 — Calibration (only the levers the diagnosis implicates)
+
+Permitted levers, mechanism-level only (no per-query rules or thresholds
+keyed to specific query IDs):
+- Generation prompt: make the three-way outcome explicit — answer what the
+  evidence supports with qualifications (`answered` / `partial`) instead of
+  defaulting to refusal; a partial answer grounded in retrieved reports is a
+  success, not a failure.
+- Grader sufficiency definition: sufficient = at least one relevant report
+  whose passages address the question's mechanism (per the v1.4
+  relevance / answerability / groundedness definitions), not complete
+  coverage of the topic.
+- Evidence packaging: guarantee the generator receives each selected
+  report's synopsis plus its highest-ranked passages.
+Hard rules that must NOT be weakened: citation validation stays fail-closed;
+no claims beyond the supplied passages; reporter-account framing; controls
+must still refuse; retrieval defaults unchanged.
+
+### Phase 3 — Re-measure (pre-registered success criteria)
+
+Same 11 requests through (i) the production Ask path, (ii) Dense-only,
+(iii) Hybrid-10:1. Report a before/after status table per query per
+configuration, citation precision against qrels for answered/partial
+responses, and cost deltas. Success = controls still 3/3
+`insufficient_evidence` with zero invented citations AND at least 6 of 8
+answerable queries reach `answered` or `partial` with validated citations
+on the production path AND no answered/partial response cites a grade-0
+report as support. If the criteria are not met after the implicated levers,
+stop and report the diagnosis and what was tried — do not keep loosening.
+
+Deliverables: `docs/STEP7B_NOTES.md` (diagnosis + changes + before/after
+tables), a labeled section in `eval/results.md`, versioned experiment record.
+Prior tests must pass, plus new tests pinning any prompt/grader behavior
+changed. The 82 ablation additions stay unjudged in this step; no Step 8
+work; no final-test queries.
