@@ -398,3 +398,57 @@ tables), a labeled section in `eval/results.md`, versioned experiment record.
 Prior tests must pass, plus new tests pinning any prompt/grader behavior
 changed. The 82 ablation additions stay unjudged in this step; no Step 8
 work; no final-test queries.
+
+## Step 7C — Freeze the final test set (construction only; no evaluation run)
+
+*(Issued by Sunny on 2026-11-16, at Cynthia's decision. Per spec v1.4 §16
+P0-3: the final test is authored AFTER the design freeze — retrieval default
+(weighted RRF 10:1), the agentic workflow, and the Step 7B calibration are
+all final. This step only CONSTRUCTS and freezes the test. Nobody runs the
+system against these queries for scoring in this step, and no parameter,
+prompt, or threshold may change because of anything seen here.)*
+
+### The frozen queries
+
+Create `eval/queries_final.jsonl` with exactly these 12 queries (verbatim
+wording; fields: id, layer="final", kind, question):
+
+Mechanism queries (kind="mechanism"):
+- ft-ri-1: "A flight crew crossed a runway without clearance after accepting a taxi instruction that was meant for another aircraft with a similar call sign. Describe what happened in reports like this."
+- ft-ri-2: "In blowing snow, a crew taxied past a runway hold line because the surface markings and signs were obscured. What do reports like this describe?"
+- ft-alt-1: "A crew descended below a published crossing restriction because the FMS was programmed with the wrong arrival procedure. Describe what happened in reports like this."
+- ft-alt-2: "After a late runway change, a crew flew the wrong departure profile and climbed through their assigned altitude. What do reports like this describe?"
+- ft-nmac-1: "Two aircraft on converging courses at the same altitude received no warning from ATC until a pilot spotted the traffic visually at the last moment. Describe what happened in reports like this."
+- ft-nmac-2: "A drone passed close to an airliner on final approach and the crew went around. What do reports like this describe?"
+- ft-eq-1: "Smoke in the cockpit traced to an overheating galley oven led a crew to declare an emergency and land at the nearest suitable airport. Describe what happened in reports like this."
+- ft-eq-2: "After extension, a landing gear indication showed unsafe and the crew made a low pass so the gear could be checked visually before landing. What do reports like this describe?"
+
+Controls (kind="control"):
+- ft-ctl-1: "Describe the runway incursion that occurred at Denver International on the morning of October 9, 2017, including the exact time it happened."
+- ft-ctl-2: "Summarize the events in ASRS report ACN 777777777777777 involving a cargo aircraft."
+
+Aggregate counts (kind="count"):
+- ft-cnt-1: "How many reports in the corpus involve NMAC conflicts in 2019?"
+- ft-cnt-2: "How many reports in the corpus are from 2015?"
+
+### Construction tasks
+
+1. Verify ft-ctl-2's ACN does not exist in the corpus; if it ever did,
+   stop and report instead of substituting silently. Compute the two count
+   answers with the production aggregate SQL path and store them, sealed,
+   in the experiment record as ground truth.
+2. Build the judging pool for the 8 mechanism queries only: union of the
+   top-10 report pairs from dense and from production hybrid-10:1 on the
+   20,000-report corpus, blinded, shuffled, blank grades/notes, exported to
+   `eval/judging_pool_final.csv`. Report the pool size and per-query counts.
+3. Do NOT run the production Ask path (or any generation) on any final
+   query in this step. Do NOT grade any pool row. Do NOT touch the
+   development queries, qrels, or any production code.
+4. Write `docs/FINAL_TEST_FREEZE.md`: freeze date, the SHA-256 of
+   `eval/queries_final.jsonl`, pool statistics, and the freeze rules —
+   Cynthia judges the pool once; exactly one evaluation run follows
+   (Step 7D); any change to retrieval, generation, or grader code after
+   this freeze must be disclosed alongside any later re-run.
+5. Acceptance: queries file matches the wording above byte-for-byte;
+   fake ACN verified absent; count ground truths recorded; pool exported
+   with all grades blank; freeze doc written; all prior tests still pass.
