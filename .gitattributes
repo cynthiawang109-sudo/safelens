@@ -5,3 +5,4 @@
 /eval/qrels_final.jsonl -text
 /eval/experiment_step7d.json -text
 /eval/final_test_run_once.json -text
+deploy/*.sh text eol=lf

@@ -1,3 +1,5 @@
+import os
+import socket
 import uuid
 from pathlib import Path
 
@@ -8,6 +10,27 @@ from psycopg.conninfo import make_conninfo
 
 from safelens.config import Settings
 from safelens.migrate import migrate
+
+
+def pytest_collection_modifyitems(items):
+    for item in items:
+        if "database" in item.fixturenames:
+            item.add_marker(pytest.mark.postgres)
+
+
+@pytest.fixture(autouse=True)
+def hermetic_network(monkeypatch):
+    """PR tests can reach only their synthetic local Postgres service."""
+    if os.getenv("SAFELENS_HERMETIC") != "1":
+        return
+    original = socket.socket.connect
+
+    def connect(sock, address):
+        if not isinstance(address, tuple) or address[0] not in ("127.0.0.1", "::1", "localhost"):
+            raise RuntimeError("External network disabled in hermetic tests")
+        return original(sock, address)
+
+    monkeypatch.setattr(socket.socket, "connect", connect)
 
 
 @pytest.fixture

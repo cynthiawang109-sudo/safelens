@@ -1,0 +1,88 @@
+# Read docs/DEPLOYMENT.md before applying. No live resources are created by CI.
+services:
+  - type: web
+    name: safelens-api
+    runtime: docker
+    region: oregon
+    plan: pro
+    numInstances: 1
+    autoDeployTrigger: 'off'
+    dockerfilePath: ./deploy/Dockerfile
+    dockerContext: .
+    dockerCommand: sh deploy/start.sh
+    preDeployCommand: sh deploy/predeploy.sh
+    healthCheckPath: /health
+    disk:
+      name: safelens-models
+      mountPath: /app/data
+      sizeGB: 10
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: safelens-db
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SAFELENS_BOOTSTRAP
+        sync: false
+      - key: PORT
+        value: '10000'
+      - key: PYTHONUTF8
+        value: '1'
+      - key: PYTHONIOENCODING
+        value: utf-8
+      - key: EMBEDDING_MODEL
+        value: BAAI/bge-small-en-v1.5
+      - key: EMBEDDING_REVISION
+        value: 5c38ec7c405ec4b44b94cc5a9bb96e735b38267a
+      - key: EMBEDDING_DIM
+        value: '384'
+      - key: EMBEDDING_BATCH_SIZE
+        value: '32'
+      - key: EMBEDDING_THREADS
+        value: '4'
+      - key: EMBED_QUERY_PREFIX
+        value: 'Represent this sentence for searching relevant passages: '
+      - key: CHUNK_TOKENS
+        value: '500'
+      - key: CHUNK_OVERLAP
+        value: '0.15'
+      - key: LLM_PROVIDER
+        value: openai
+      - key: LLM_MODEL
+        value: gpt-4o-mini
+      - key: LLM_MAX_OUTPUT_TOKENS
+        value: '800'
+      - key: LLM_TIMEOUT
+        value: '30'
+      - key: LLM_TEMPERATURE
+        value: '0'
+      - key: LEXICAL_BACKEND
+        value: bm25
+      - key: RETRIEVAL_MODE
+        value: hybrid
+      - key: RRF_DENSE_WEIGHT
+        value: '10'
+      - key: RRF_LEXICAL_WEIGHT
+        value: '1'
+      - key: AGENT_ENABLED
+        value: 'true'
+      - key: AGENT_MAX_RETRIES
+        value: '2'
+      - key: AGENT_MAX_CALLS
+        value: '6'
+      - key: RERANK_ENABLED
+        value: 'false'
+      - key: RERANK_MODEL
+        value: cross-encoder/ms-marco-MiniLM-L6-v2
+      - key: RERANK_REVISION
+        value: 233902d25c440f23af6f7d6e94d2946bac0bee0a
+databases:
+  - name: safelens-db
+    region: oregon
+    plan: basic-1gb
+    postgresMajorVersion: '16'
+    diskSizeGB: 5
+    databaseName: safelens
+    user: safelens
+    ipAllowList: []

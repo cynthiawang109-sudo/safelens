@@ -1,5 +1,13 @@
 # SafeLens
 
+[![PR gate](https://github.com/cynthiawang109-sudo/safelens/actions/workflows/pr.yml/badge.svg)](https://github.com/cynthiawang109-sudo/safelens/actions/workflows/pr.yml)
+[![Development evaluation](https://github.com/cynthiawang109-sudo/safelens/actions/workflows/eval.yml/badge.svg)](https://github.com/cynthiawang109-sudo/safelens/actions/workflows/eval.yml)
+
+CI gates and cloud deployment configuration are ready. See
+[deployment instructions and required operator decisions](docs/DEPLOYMENT.md)
+and [Step 9 evidence](docs/STEP9_NOTES.md). No live cloud deployment has been
+performed. The frozen final evaluation is never run by CI.
+
 SafeLens retrieves NASA ASRS aviation reporter accounts and generates grounded
 answers with validated citations. Production retrieval uses local BGE embeddings
 and BM25 with report-level weighted RRF (dense:BM25 10:1, k=60). A bounded
