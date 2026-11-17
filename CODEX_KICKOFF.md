@@ -546,3 +546,63 @@ question, and records the rendered statuses; screenshots of the Ask page
 with an opened trace panel saved under `docs/`; backend source hashes
 unchanged (frontend, compose, README, and docs files excepted); prior
 Python tests still pass. No Step 9 work.
+
+## Step 9 — CI evaluation gates + deployment readiness (flagship M6)
+
+*(Issued by Sunny on 2026-11-16, at Cynthia's direction. Two parts: CI
+gates are built in full; deployment is prepared to one-click state —
+configs and docs — but no live deploy is performed in this step, since the
+hosting accounts are Cynthia's to confirm. The frozen final test must
+never run in CI: it is spent, and re-running it would be tuning against
+it. All CI evaluation uses the development sets only. The ft-cnt-1 routing
+gap stays untouched in this step.)*
+
+### Part 1 — GitHub Actions, two layers
+
+1. **PR gate** (`.github/workflows/pr.yml`, on pull_request, no secrets):
+   hermetic and fast — ruff, the Python test suite (tests needing a live
+   corpus or the OpenAI API must be explicitly marked and excluded here;
+   adding pytest markers/fixtures for this is in scope, changing test
+   assertions is not), plus the web checks: `npm ci`, `npx tsc --noEmit`,
+   `npm run lint`, `npm run build`.
+2. **Eval gate** (`.github/workflows/eval.yml`, on push to master and
+   workflow_dispatch; OpenAI key from repo secrets): provision a pgvector
+   Postgres service, ingest the full 20,000-report corpus with the
+   production pipeline, then run and compare against the committed
+   baselines in `eval/gates.json`:
+   - Layer-1 Category P@10: dense ≥ 0.60, production hybrid ≥ 0.62
+     (recorded baselines 0.6286 / 0.6429);
+   - Layer-2 on the judged development qrels: dense P@10 ≥ 0.90
+     (baseline 0.950), reported with judgment coverage; unjudged pairs
+     are excluded, never zero-filled;
+   - aggregate SQL checks: the recorded development counts reproduce
+     exactly (e.g., 2020 runway incursions = 98 / 20,000);
+   - Ask smoke: 3 development mechanism questions must not return
+     `insufficient_evidence`, and 1 development control question must
+     refuse with zero citations.
+   Any failed check fails the workflow. Record the run's numbers as a
+   workflow artifact. Add the workflow status badge to the README.
+
+### Part 2 — Deployment readiness (no live deploy)
+
+- `render.yaml` (or equivalent Blueprint) describing the API service and
+  a pgvector-capable Postgres, with every required env var named
+  (`OPENAI_API_KEY` as a secret placeholder, never a value), plus the
+  corpus ingest/reindex steps as documented post-deploy commands.
+- Vercel notes for `web/` (root directory, `NEXT_PUBLIC_API_BASE_URL`)
+  in the same doc.
+- `docs/DEPLOYMENT.md`: the full recipe — local one-command stack
+  (already working), the cloud path above with realistic cost and limits
+  notes (corpus size, BM25 memory, cold start), and the exact decisions
+  Cynthia must confirm before a live deploy.
+- A production smoke script that, given a base URL, checks `/health`,
+  one mechanism question, and one count question.
+
+Acceptance: both workflows are valid and the PR gate passes on this
+step's own PR or push (show the run); the eval gate is executed at least
+once via workflow_dispatch and its artifact numbers are quoted in
+`docs/STEP9_NOTES.md` (if the eval gate cannot run for a stated reason —
+e.g., missing repo secret — say so plainly and show everything that did
+run); deployment files exist and are internally consistent; no production
+behavior changes (protected-hash check as in Step 8); prior tests pass.
+This completes the flagship roadmap.
