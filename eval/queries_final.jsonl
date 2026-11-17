@@ -1,0 +1,12 @@
+{"id":"ft-ri-1","layer":"final","kind":"mechanism","question":"A flight crew crossed a runway without clearance after accepting a taxi instruction that was meant for another aircraft with a similar call sign. Describe what happened in reports like this."}
+{"id":"ft-ri-2","layer":"final","kind":"mechanism","question":"In blowing snow, a crew taxied past a runway hold line because the surface markings and signs were obscured. What do reports like this describe?"}
+{"id":"ft-alt-1","layer":"final","kind":"mechanism","question":"A crew descended below a published crossing restriction because the FMS was programmed with the wrong arrival procedure. Describe what happened in reports like this."}
+{"id":"ft-alt-2","layer":"final","kind":"mechanism","question":"After a late runway change, a crew flew the wrong departure profile and climbed through their assigned altitude. What do reports like this describe?"}
+{"id":"ft-nmac-1","layer":"final","kind":"mechanism","question":"Two aircraft on converging courses at the same altitude received no warning from ATC until a pilot spotted the traffic visually at the last moment. Describe what happened in reports like this."}
+{"id":"ft-nmac-2","layer":"final","kind":"mechanism","question":"A drone passed close to an airliner on final approach and the crew went around. What do reports like this describe?"}
+{"id":"ft-eq-1","layer":"final","kind":"mechanism","question":"Smoke in the cockpit traced to an overheating galley oven led a crew to declare an emergency and land at the nearest suitable airport. Describe what happened in reports like this."}
+{"id":"ft-eq-2","layer":"final","kind":"mechanism","question":"After extension, a landing gear indication showed unsafe and the crew made a low pass so the gear could be checked visually before landing. What do reports like this describe?"}
+{"id":"ft-ctl-1","layer":"final","kind":"control","question":"Describe the runway incursion that occurred at Denver International on the morning of October 9, 2017, including the exact time it happened."}
+{"id":"ft-ctl-2","layer":"final","kind":"control","question":"Summarize the events in ASRS report ACN 777777777777777 involving a cargo aircraft."}
+{"id":"ft-cnt-1","layer":"final","kind":"count","question":"How many reports in the corpus involve NMAC conflicts in 2019?"}
+{"id":"ft-cnt-2","layer":"final","kind":"count","question":"How many reports in the corpus are from 2015?"}

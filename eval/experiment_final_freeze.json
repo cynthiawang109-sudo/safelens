@@ -1,0 +1,274 @@
+{
+  "phase": "final_test_construction_only",
+  "freeze_date": "2026-11-16",
+  "freeze_date_timezone": "America/New_York",
+  "timestamp_utc": "2026-11-17T01:58:47.306421+00:00",
+  "evaluation_runs": 0,
+  "final_ask_calls": 0,
+  "generation_calls": 0,
+  "human_grades_assigned": 0,
+  "pool_retrieval_calls": 16,
+  "sql_ground_truth_calls": 2,
+  "queries_path": "eval/queries_final.jsonl",
+  "queries_sha256": "2160adf50cb818fce182c8c431e1005587acecd63261005241bef3a90a4ec2de",
+  "query_counts": {
+    "mechanism": 8,
+    "control": 2,
+    "count": 2
+  },
+  "query_wording_verification": "question UTF-8 bytes exactly match the Step 7C kickoff strings; canonical JSONL fields id/layer/kind/question",
+  "kickoff_sha256": "ee906752dc396bdfa544c69aae0f94b5b69a9463abe69418c029b5d8912c53eb",
+  "control_verification": {
+    "query_id": "ft-ctl-2",
+    "acn": "777777777777777",
+    "present_in_reports": false,
+    "present_in_manifest": false,
+    "snapshot_sha256": "c47c73dae040d26dba7221e50c6cbeb457859632f6ef385e7fdf338b03db850b"
+  },
+  "sealed_ground_truth": {
+    "status": "sealed_for_step7d_only",
+    "answers": {
+      "ft-cnt-1": {
+        "count": 272,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2019,
+          "year_end": 2019,
+          "anomaly_category": "Conflict NMAC"
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2019,
+          2019,
+          2019,
+          2019,
+          "Conflict NMAC",
+          "Conflict NMAC"
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "ft-cnt-2": {
+        "count": 2469,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2015,
+          "year_end": 2015,
+          "anomaly_category": null
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2015,
+          2015,
+          2015,
+          2015,
+          null,
+          null
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      }
+    },
+    "payload_sha256": "3a1857118ada997acf9603ea719fb275c4a116197a866fcc3f9e387e284562b8",
+    "method": "production aggregate.execute_count; explicit metadata filter bindings, no Ask/router/generation"
+  },
+  "corpus": {
+    "reports": 20000,
+    "chunks": 28306,
+    "null_embeddings": 0,
+    "snapshot_sha256": "c47c73dae040d26dba7221e50c6cbeb457859632f6ef385e7fdf338b03db850b",
+    "manifest_path": "eval/corpus_manifest_20k.json",
+    "manifest_sha256": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+    "source_dataset": "elihoole/asrs-aviation-reports",
+    "source_revision": "f1e681e92cddae20d01fc498d685f1cf6a052d34"
+  },
+  "index": {
+    "id": 4,
+    "status": "ready",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dim": 384,
+    "embed_query_prefix": "Represent this sentence for searching relevant passages: ",
+    "chunk_config": {
+      "tokens": 500,
+      "overlap": 0.15,
+      "algorithm": "paragraph_offsets_v1",
+      "token_limit": "min(target, model_max_seq_length); includes synopsis and special tokens",
+      "lexical_config": "simple",
+      "overlap_policy": "configured fraction of previous narrative window tokens; synopsis repeated separately",
+      "text_construction": "synopsis+all_labeled_narratives; synopsis_per_chunk",
+      "embedding_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a"
+    },
+    "report_count": 20000,
+    "built_at": "2026-11-16T02:13:12.326784+00:00"
+  },
+  "retrieval_config": {
+    "candidate_chunks": 100,
+    "candidate_reports": 50,
+    "rrf_k": 60,
+    "aggregation": "max_chunk_score_then_report_rrf; ties=acn; chunk_ties=id"
+  },
+  "production_configuration": {
+    "index": {
+      "embedding_model": "BAAI/bge-small-en-v1.5",
+      "embedding_dim": 384,
+      "embed_query_prefix": "Represent this sentence for searching relevant passages: ",
+      "chunk_config": {
+        "tokens": 500,
+        "overlap": 0.15,
+        "text_construction": "synopsis+all_labeled_narratives; synopsis_per_chunk",
+        "lexical_config": "simple",
+        "embedding_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+        "algorithm": "paragraph_offsets_v1",
+        "token_limit": "min(target, model_max_seq_length); includes synopsis and special tokens",
+        "overlap_policy": "configured fraction of previous narrative window tokens; synopsis repeated separately"
+      }
+    },
+    "lexical_backend": "bm25",
+    "retrieval_mode": "hybrid",
+    "rrf_dense_weight": 10.0,
+    "rrf_lexical_weight": 1.0,
+    "bm25": {
+      "k1": 1.5,
+      "b": 0.75,
+      "epsilon": 0.25,
+      "preprocessing": "lowercase ASCII alphanumeric terms minus fixed sklearn English stoplist"
+    },
+    "agent_enabled": true,
+    "agent_max_retries": 2,
+    "agent_max_calls": 6,
+    "rerank_enabled": false,
+    "rerank_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+    "rerank_revision": "233902d25c440f23af6f7d6e94d2946bac0bee0a",
+    "llm_provider": "openai",
+    "llm_model": "gpt-4o-mini",
+    "llm_temperature": 0.0,
+    "llm_max_output_tokens": 800,
+    "llm_timeout": 30.0
+  },
+  "pool": {
+    "path": "eval/judging_pool_final.csv",
+    "rows": 89,
+    "per_query_counts": {
+      "ft-ri-1": 10,
+      "ft-ri-2": 11,
+      "ft-alt-1": 12,
+      "ft-alt-2": 11,
+      "ft-nmac-1": 10,
+      "ft-nmac-2": 12,
+      "ft-eq-1": 11,
+      "ft-eq-2": 12
+    },
+    "blank_csv_sha256": "6bce74c3b2944df18c0361fb39fcef35827720aa5c743166d56d6ceb70a6ab7f",
+    "identity_sha256": "d0ddb3dcb8d26c938064856f477cf2b864d343f7335f4d9e5c5f9c661080321c",
+    "shuffle_seed": 20261118,
+    "grades_assigned": 0,
+    "notes_assigned": 0,
+    "blinded": true,
+    "retrievers": [
+      "dense",
+      "production hybrid dense:BM25 10:1"
+    ],
+    "local_provenance_path": "data/final_pool_construction_rankings.json",
+    "local_provenance_sha256": "5b815bbc2966f2ec1c8f0102106712fb0877e4149312cc46b0dd92e2077958bf"
+  },
+  "protected_sha256_before": {
+    "db/migrations/0001_init.sql": "54cf3da8035fe84f8badfda7bec16c820dcb3278eef18476522df013eba00441",
+    "db/migrations/0002_ingest_state.sql": "3f9d5106d16be48f79c397bbe507247c3403086654acf904c76be4ded8f98682",
+    "eval/corpus_manifest_20k.json": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+    "eval/current_corpus.json": "8ce220818e5749fd810139a9adf33739cf0bd57a5bece3c60e949e74af8f47db",
+    "eval/judging_pool_step7_ablation_additions.csv": "cf81e62f30a680a855a6489950b54fd753948f012bd16ad1f397dc4455a6c016",
+    "eval/qrels.jsonl": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+    "eval/queries.jsonl": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
+    "eval/results.md": "2796b2b36c25af8547982d74db29f687ff313df1f1f42a0e7e49575127ac2c96",
+    "eval/subset_manifest.json": "50800dd75b0e6c3e489232ca8a420e2fb68d052c60fe2fef96f98f7838fd7172",
+    "pyproject.toml": "d7a637c00f400f1f2fecd5d65f2adaaf08e757e119da7ee21f3987b6633e3d13",
+    "src/safelens/__init__.py": "3340002dd9bd260fa3200cf807788d625cdd6ab145616a2cd55629b52b9488fc",
+    "src/safelens/agent.py": "97c0f573311c3612c23183736f2a5558b6721954532e8183327070c333129994",
+    "src/safelens/aggregate.py": "a540da2b97e28bec5da21f0f05538ad34ddbbf44f87664e5cc99ebc7dde29bc8",
+    "src/safelens/app.py": "8e035ce524b536b69466a6a1f194eb3463224d6e91802e24ba795782fde8a6c4",
+    "src/safelens/bm25.py": "e8d02fefe093ccef33f6e21f3453579d5f792b8ceb5813e44a6bfea98d962cf0",
+    "src/safelens/chunk.py": "2bcb25eb897160db042fa5ae676cc10889a3472ef45dc4267ce8d9203a53fde9",
+    "src/safelens/cli.py": "cb28adc0f8af0b6f7c2850a26cd838d7b251079640686254a07ccdcac7c4a84c",
+    "src/safelens/config.py": "eb69e3305c31af4cb6a61dddeee03279f6a315ad3de75bf19edc34053a77fad2",
+    "src/safelens/corpus.py": "6c08abc16db36a3b2d9e3c0f078db0299e85e21c676ccd1032ad17c51a11879d",
+    "src/safelens/embed.py": "0c9517e98c13f0e2bd2222b0c99f74ec869fbf58a18e1cbaa48626136c4e935c",
+    "src/safelens/evaluation.py": "51d9915ddb2100ef20a94e0d8e6971542c544a15dad69fa26148937753ec59c3",
+    "src/safelens/fusion_experiment.py": "93a1557cfe41f4bc590b74330bcb45422d84c0232fe1f9c77db7883829d28d9b",
+    "src/safelens/generate.py": "a4466617721174bf14f263a772e1ec3e3ec32f452f9dce46b0660d56f4cbb24b",
+    "src/safelens/ingest.py": "33842d8afdf4addb997da9d3efbd243d576d867fe11930661a4fef39bbedcaf8",
+    "src/safelens/lexical_bakeoff.py": "97e558305a1016e89afd6c0bf571d7ce3af858b5df012af4f3dadf9dff95e9dd",
+    "src/safelens/llm.py": "ab488a97f2f6f33d33e7d15e79d304af126bb9637f824909f0788d2f23a15a4e",
+    "src/safelens/migrate.py": "bd5a7a8f77c9c6a5d537f5ab670b500eb213833a053e5bbe01fbd0dff75e45b1",
+    "src/safelens/providers.py": "2aa0f7852192a5240eca3e8938bd92ec261d0bda5a74b6e4da3123200d5d7a97",
+    "src/safelens/reindex.py": "7f416f11d1625f986d1201022aaae77961da953073ad7cac023115f2689ab3dd",
+    "src/safelens/rerank.py": "bcbae8f429812752c84379c7b4de48cf9a2a6ba6e7ccab033d64afba7f2838e7",
+    "src/safelens/retrieve.py": "a466ff131681849e980fb46df25800f587e78b7b742bb1cab715eda9b3b6076a",
+    "src/safelens/scale_report.py": "714c65b0c8da28a116e500cd27fad6106abf00a64c842004412d7db8c19004e0",
+    "src/safelens/step7_report.py": "c2ca3f506de9c4a5b0e4e8a48e52e0776d1e1f3cb35786b7d5fabbf19b99b496",
+    "src/safelens/subset.py": "9a164b1d580874107ff855f34f5d2887f38204aad9cab831fa038740d800681d",
+    "src/safelens/ui.py": "4334f0041067ee0ddf167fcb052e37b21582e5ee2ccc37993b259ffee18dc0d2",
+    "uv.lock": "d0b1104a84ffd619e471abc82655bf259c12358b284a3359920f5120a96782df"
+  },
+  "protected_sha256_after": {
+    "db/migrations/0001_init.sql": "54cf3da8035fe84f8badfda7bec16c820dcb3278eef18476522df013eba00441",
+    "db/migrations/0002_ingest_state.sql": "3f9d5106d16be48f79c397bbe507247c3403086654acf904c76be4ded8f98682",
+    "eval/corpus_manifest_20k.json": "d255dafdca92edfbb3fd87c9411b1ff836552b1e76491431d2a8d0ebe1bdb332",
+    "eval/current_corpus.json": "8ce220818e5749fd810139a9adf33739cf0bd57a5bece3c60e949e74af8f47db",
+    "eval/judging_pool_step7_ablation_additions.csv": "cf81e62f30a680a855a6489950b54fd753948f012bd16ad1f397dc4455a6c016",
+    "eval/qrels.jsonl": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+    "eval/queries.jsonl": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
+    "eval/results.md": "2796b2b36c25af8547982d74db29f687ff313df1f1f42a0e7e49575127ac2c96",
+    "eval/subset_manifest.json": "50800dd75b0e6c3e489232ca8a420e2fb68d052c60fe2fef96f98f7838fd7172",
+    "pyproject.toml": "d7a637c00f400f1f2fecd5d65f2adaaf08e757e119da7ee21f3987b6633e3d13",
+    "src/safelens/__init__.py": "3340002dd9bd260fa3200cf807788d625cdd6ab145616a2cd55629b52b9488fc",
+    "src/safelens/agent.py": "97c0f573311c3612c23183736f2a5558b6721954532e8183327070c333129994",
+    "src/safelens/aggregate.py": "a540da2b97e28bec5da21f0f05538ad34ddbbf44f87664e5cc99ebc7dde29bc8",
+    "src/safelens/app.py": "8e035ce524b536b69466a6a1f194eb3463224d6e91802e24ba795782fde8a6c4",
+    "src/safelens/bm25.py": "e8d02fefe093ccef33f6e21f3453579d5f792b8ceb5813e44a6bfea98d962cf0",
+    "src/safelens/chunk.py": "2bcb25eb897160db042fa5ae676cc10889a3472ef45dc4267ce8d9203a53fde9",
+    "src/safelens/cli.py": "cb28adc0f8af0b6f7c2850a26cd838d7b251079640686254a07ccdcac7c4a84c",
+    "src/safelens/config.py": "eb69e3305c31af4cb6a61dddeee03279f6a315ad3de75bf19edc34053a77fad2",
+    "src/safelens/corpus.py": "6c08abc16db36a3b2d9e3c0f078db0299e85e21c676ccd1032ad17c51a11879d",
+    "src/safelens/embed.py": "0c9517e98c13f0e2bd2222b0c99f74ec869fbf58a18e1cbaa48626136c4e935c",
+    "src/safelens/evaluation.py": "51d9915ddb2100ef20a94e0d8e6971542c544a15dad69fa26148937753ec59c3",
+    "src/safelens/fusion_experiment.py": "93a1557cfe41f4bc590b74330bcb45422d84c0232fe1f9c77db7883829d28d9b",
+    "src/safelens/generate.py": "a4466617721174bf14f263a772e1ec3e3ec32f452f9dce46b0660d56f4cbb24b",
+    "src/safelens/ingest.py": "33842d8afdf4addb997da9d3efbd243d576d867fe11930661a4fef39bbedcaf8",
+    "src/safelens/lexical_bakeoff.py": "97e558305a1016e89afd6c0bf571d7ce3af858b5df012af4f3dadf9dff95e9dd",
+    "src/safelens/llm.py": "ab488a97f2f6f33d33e7d15e79d304af126bb9637f824909f0788d2f23a15a4e",
+    "src/safelens/migrate.py": "bd5a7a8f77c9c6a5d537f5ab670b500eb213833a053e5bbe01fbd0dff75e45b1",
+    "src/safelens/providers.py": "2aa0f7852192a5240eca3e8938bd92ec261d0bda5a74b6e4da3123200d5d7a97",
+    "src/safelens/reindex.py": "7f416f11d1625f986d1201022aaae77961da953073ad7cac023115f2689ab3dd",
+    "src/safelens/rerank.py": "bcbae8f429812752c84379c7b4de48cf9a2a6ba6e7ccab033d64afba7f2838e7",
+    "src/safelens/retrieve.py": "a466ff131681849e980fb46df25800f587e78b7b742bb1cab715eda9b3b6076a",
+    "src/safelens/scale_report.py": "714c65b0c8da28a116e500cd27fad6106abf00a64c842004412d7db8c19004e0",
+    "src/safelens/step7_report.py": "c2ca3f506de9c4a5b0e4e8a48e52e0776d1e1f3cb35786b7d5fabbf19b99b496",
+    "src/safelens/subset.py": "9a164b1d580874107ff855f34f5d2887f38204aad9cab831fa038740d800681d",
+    "src/safelens/ui.py": "4334f0041067ee0ddf167fcb052e37b21582e5ee2ccc37993b259ffee18dc0d2",
+    "uv.lock": "d0b1104a84ffd619e471abc82655bf259c12358b284a3359920f5120a96782df"
+  },
+  "software": {
+    "python": "3.12.16",
+    "sentence-transformers": "5.7.0",
+    "torch": "2.15.0",
+    "rank-bm25": "0.2.2",
+    "scikit-learn": "1.9.1",
+    "psycopg": "3.3.9",
+    "langgraph": "1.2.22",
+    "openai": "3.51.0"
+  },
+  "git_head": "67a80ab230da8e32d4cf384215b34c8e596dce17",
+  "freeze_rules": {
+    "human_judging_passes": 1,
+    "authorized_future_evaluation": "exactly one run in Step 7D, after Cynthia's judgments",
+    "post_freeze_changes": "disclose code/config changes with any later rerun; never silently tune or replace the test"
+  },
+  "acceptance": {
+    "wording_exact": true,
+    "fake_acn_absent": true,
+    "count_truth_sealed": true,
+    "pool_blank": true,
+    "protected_assets_unchanged": true,
+    "evaluation_not_run": true
+  }
+}

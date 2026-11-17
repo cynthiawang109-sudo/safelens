@@ -1,0 +1,4 @@
+# Preserve the sealed final-test bytes across checkouts (including Windows).
+/eval/queries_final.jsonl -text
+/eval/judging_pool_final.csv -text
+/eval/experiment_final_freeze.json -text
