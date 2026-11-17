@@ -22,6 +22,10 @@ class FakeLLM:
 
     def generate_structured(self, prompt, schema):
         import json
+
+        from safelens.generate import AnswerDraft
+        if schema is AnswerDraft:
+            return AnswerDraft(status="answered", answer=self.generate(prompt)), {"input_tokens": 10, "output_tokens": 5}
         if "queries_tried" in prompt:
             return schema.model_validate({"query": "runway"}), {"input_tokens": 10, "output_tokens": 5}
         data = json.loads(prompt.split("\nReporter accounts are unverified, not confirmed findings.\n")[1])

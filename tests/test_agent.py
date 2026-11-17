@@ -76,6 +76,9 @@ def test_partial_evidence_respects_total_model_call_cap(database, cap):
 
     class Partial(InsufficientLLM):
         def generate_structured(self, prompt, schema):
+            from safelens.generate import AnswerDraft
+            if schema is AnswerDraft:
+                return AnswerDraft(status="partial", answer=self.generate(prompt)), {"input_tokens": 10, "output_tokens": 5}
             value, usage = super().generate_structured(prompt, schema)
             if schema is EvidenceGrade:
                 value.sufficiency = "partial"

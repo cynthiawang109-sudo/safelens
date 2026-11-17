@@ -15,6 +15,15 @@ human grades. See [Step 7 notes](docs/STEP7_NOTES.md) for the full adoption gate
 real-provider agent smoke checks, and five-configuration ablation. Step 8 has
 not started. Earlier experiments remain historical development records.
 
+Step 7B calibrated mechanism-level grading and explicit generation outcomes:
+the production Ask path now returns supported `answered`/`partial` responses
+for 8/8 existing normal development queries, versus 1/8 before, while all three
+controls still refuse. No known grade-0 reports are cited as support. Citation
+precision on judged citations is 100% at 81.25% production judgment coverage;
+three cited pairs remain unjudged. Retrieval, fail-closed citation validation,
+and evidence packaging are unchanged. See [Step 7B notes](docs/STEP7B_NOTES.md)
+for diagnosis, all three before/after configurations, and measured cost deltas.
+
 ## Production retrieval and Ask configuration
 
 The BM25Okapi index uses the Step 6 preprocessing and parameters (lowercase

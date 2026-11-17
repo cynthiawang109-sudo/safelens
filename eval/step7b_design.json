@@ -1,0 +1,18 @@
+{
+  "step": "7B",
+  "split": "development",
+  "phases": ["diagnosis with unchanged behavior", "one implicated mechanism-level calibration", "remeasure and stop"],
+  "configurations": ["Production Ask", "Dense-only", "Hybrid-10:1"],
+  "queries": "the same eight Layer-2 queries and three controls in eval/queries.jsonl",
+  "production_baseline": "fresh HTTP production path plus Step 7 Hybrid + Rewrite record",
+  "other_baselines": "Step 7 Dense-only and Hybrid-10:1 original real-provider responses",
+  "success": {
+    "production_answered_or_partial_with_validated_citations": "at least 6 of 8 normal queries",
+    "controls": "3 of 3 insufficient_evidence with zero invented citations in each measured configuration",
+    "grade_zero_citations_on_answered_or_partial": 0
+  },
+  "citation_precision": "unique cited report ACNs per response; relevant means existing qrel >=1; report relevant/judged and coverage, unknown pairs never treated as irrelevant; controls have no relevance labels",
+  "hard_rules": ["fail-closed citation validation unchanged", "claims only from supplied passages", "reporter-account framing", "controls refuse", "retrieval defaults unchanged"],
+  "stopping_rule": "one calibration batch using only diagnosis-implicated levers; if success fails, report what was tried without further loosening",
+  "frozen": ["eval/queries.jsonl", "eval/qrels.jsonl", "eval/corpus_manifest_20k.json", "eval/subset_manifest.json", "eval/judging_pool_step7_ablation_additions.csv", "src/safelens/retrieve.py", "src/safelens/bm25.py", "src/safelens/embed.py", "src/safelens/config.py", "src/safelens/rerank.py"]
+}

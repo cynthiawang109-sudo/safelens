@@ -1,0 +1,10 @@
+{
+  "batch": 1,
+  "sources": {
+    "src/safelens/generate.py": "a4466617721174bf14f263a772e1ec3e3ec32f452f9dce46b0660d56f4cbb24b",
+    "src/safelens/agent.py": "97c0f573311c3612c23183736f2a5558b6721954532e8183327070c333129994",
+    "src/safelens/llm.py": "ab488a97f2f6f33d33e7d15e79d304af126bb9637f824909f0788d2f23a15a4e",
+    "src/safelens/app.py": "8e035ce524b536b69466a6a1f194eb3463224d6e91802e24ba795782fde8a6c4"
+  },
+  "design_sha256": "853015d127b5d09693721450170253668ba9b896b52c1932f4d028c7230d1c59"
+}
