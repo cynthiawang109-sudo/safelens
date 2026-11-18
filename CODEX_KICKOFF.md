@@ -606,3 +606,53 @@ e.g., missing repo secret — say so plainly and show everything that did
 run); deployment files exist and are internally consistent; no production
 behavior changes (protected-hash check as in Step 8); prior tests pass.
 This completes the flagship roadmap.
+
+## Post-freeze tails — cnt-1 routing patch + the five pending judgments
+
+*(Issued by Sunny on 2026-11-17, at Cynthia's direction. Both items are
+post-freeze development. The frozen record is history: `queries_final`,
+`qrels_final`, the freeze doc, and the Step 7D results section stay
+byte-identical, and the frozen set is never re-run or re-scored.)*
+
+### Part A — Fix the aggregate category mapping (the ft-cnt-1 class)
+
+Root cause, from the frozen run: the aggregate router only matched a
+category when the question used the canonical name order ("Conflict
+NMAC"); the inverted phrasing ("NMAC conflicts") did not map, so the
+question fell back to the evidence path and returned no count.
+
+1. Make category mapping order-insensitive: match the known category list
+   by token-set containment (exact phrase match keeps priority), in the
+   aggregate routing layer only. No changes to retrieval, generation,
+   grader, or prompts.
+2. Unit tests for the mapper: inverted and reordered phrasings across
+   several categories, including the "NMAC conflicts" pattern as a pure
+   string-mapping case.
+3. Validate on development data only: the full local dev gate reproduces
+   its baselines (Layer-1, Layer-2, the 2020 runway count of 98, the Ask
+   smoke with its control refusal), plus new development count questions
+   in inverted phrasing whose expected values are computed independently
+   by SQL. The frozen ft-cnt-1 question is not run through Ask, and its
+   sealed answer is not used as a target anywhere.
+4. Disclose: `docs/POST_FREEZE_FIX_CNT1.md` states the fix was motivated
+   by the frozen ft-cnt-1 failure, what changed, and that the frozen
+   results stand unrevised. Re-issue the protected-hash manifest through
+   its own process for the changed production files; frozen assets must
+   still verify byte-identical.
+
+### Part B — Import the five Step 7 Part 1 judgments
+
+Only when `eval/judging_pool_step7_additions.csv` has all five grades
+filled (if still blank, skip this part and report it as waiting on
+judgments):
+
+1. Import with the existing judgment-import validation; development
+   qrels grow 134 → 139 rows, prior rows byte-unchanged.
+2. Recompute the production hybrid's development Layer-2 row (previously
+   incomplete for exactly these five pairs) and update the development
+   section of `eval/results.md` plus the experiment record. Dense rows
+   do not change.
+
+Acceptance: full test suite passes; Part A validation numbers quoted in
+the fix doc; Part B's completed hybrid Layer-2 row quoted in
+`docs/STEP9_NOTES.md` or a short addendum note; no frozen asset changed.
