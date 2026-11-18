@@ -1,0 +1,53 @@
+{
+  "completed_at_utc": "2026-11-18T03:23:01.874239+00:00",
+  "split": "development only",
+  "imported_rows": 5,
+  "qrels_rows_before": 134,
+  "qrels_rows_after": 139,
+  "prior_qrels_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+  "qrels_sha256": "169676088359fe273e57ba7de6a9d527f9f1f6591d17148d716441f7fab0b9cf",
+  "prior_rows_byte_unchanged": true,
+  "pool_sha256": "a09addaa84ad1a5ce13d975bf7c1829658ed09ee8633089153b1a65d1a4aa519",
+  "ranking_orders_unchanged": true,
+  "hybrid_coverage_at_10": 1.0,
+  "hybrid": {
+    "precision_at_10": 0.9625,
+    "mrr": 1.0,
+    "ndcg_at_10": 0.8528626272363985
+  },
+  "retained_dense_and_lexical_qrels_rows": 134,
+  "retained_dense_and_lexical_qrels_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+  "dense_metrics_unchanged": true,
+  "extended_pool_changes_ideal_for": [
+    "nmac-l2-1"
+  ],
+  "ndcg_comparison_note": "Hybrid uses the extended 139-qrel pooled ideal. Dense/legacy lexical remain historical at 134 qrels; do not treat their nDCG as a new common-pool comparison.",
+  "new_judgments": [
+    {
+      "query_id": "alt-l2-1",
+      "acn": "1317493",
+      "grade": 1
+    },
+    {
+      "query_id": "equip-l2-1",
+      "acn": "1036550",
+      "grade": 1
+    },
+    {
+      "query_id": "equip-l2-2",
+      "acn": "1827813",
+      "grade": 2
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "acn": "1212065",
+      "grade": 2
+    },
+    {
+      "query_id": "nmac-l2-1",
+      "acn": "1501571",
+      "grade": 1
+    }
+  ],
+  "frozen_test_rerun": false
+}

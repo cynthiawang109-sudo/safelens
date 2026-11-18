@@ -16,15 +16,49 @@ def count_intent(question):
     return bool(re.search(r"\b(how many|number of|count(?: the)?)\b.*\breports?\b", question, re.IGNORECASE))
 
 
+def category_words(text):
+    return re.findall(r"[a-z0-9]+", text.lower())
+
+
+def map_categories(text):
+    """Consume exact phrases first, then known category token sets in any order."""
+    phrases = {label: sorted({*aliases, label.lower()}, key=lambda p: (-len(p), p))
+               for label, aliases in ALIASES.items()}
+    vocabulary = {word for variants in phrases.values() for phrase in variants for word in category_words(phrase)}
+
+    def normalize(word):
+        # Only inflections of known category words, not arbitrary stemming.
+        return word[:-1] if word.endswith("s") and word[:-1] in vocabulary - {"from"} else word
+
+    words = list(re.finditer(r"[a-z0-9]+", text))
+    normalized = [normalize(word.group()) for word in words]
+    present = set(normalized)
+    removed, categories = set(), []
+    for label, variants in phrases.items():
+        exact = [match for phrase in variants for match in re.finditer(r"\b" + re.escape(phrase) + r"\b", text)]
+        if exact:
+            categories.append(label)
+            removed.update(word.start() for word in words
+                           if any(match.start() <= word.start() and word.end() <= match.end() for match in exact))
+        candidates = {frozenset(normalize(word) for word in category_words(phrase)) for phrase in variants}
+        matches = sorted((tokens for tokens in candidates if tokens <= present),
+                         key=lambda tokens: (-len(tokens), sorted(tokens)))
+        if matches:
+            if label not in categories:
+                categories.append(label)
+            consumed = set().union(*matches)
+            # A canonical label contains "from". Consume that category word,
+            # but preserve an actual "from YEAR" connector for the year grammar.
+            removed.update(word.start() for word, normalized_word in zip(words, normalized)
+                           if normalized_word in consumed and not (
+                               normalized_word == "from" and re.match(r"\s+(?:19|20)\d{2}\b", text[word.end():])))
+    remaining = re.sub(r"[a-z0-9]+", lambda match: " " if match.start() in removed else match.group(), text)
+    return categories, remaining
+
+
 def map_count_filters(question, category=None):
     """Only allow a small published count grammar; leftover terms mean unmapped."""
-    text = question.lower()
-    categories = []
-    for label, aliases in ALIASES.items():
-        for phrase in sorted({*aliases, label.lower()}, key=len, reverse=True):
-            if phrase in text:
-                categories.append(label)
-                text = text.replace(phrase, " ")
+    categories, text = map_categories(question.lower())
     if len(set(categories)) > 1 or (category and categories and category not in categories):
         return None
     selected = categories[0] if categories else category

@@ -45,7 +45,7 @@
     "build_batch_order": "token_length_descending"
   },
   "query_file_sha256": "64c039bf52d65c6805652e89825399dc3d89cacc8366f4121440446af07a88df",
-  "qrels_file_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+  "qrels_file_sha256": "169676088359fe273e57ba7de6a9d527f9f1f6591d17148d716441f7fab0b9cf",
   "query_order": [
     "ri-l1-1",
     "ri-l1-2",
@@ -90,30 +90,7 @@
     "notes_assigned": 0
   },
   "judged_relevance": {
-    "status": "needs_judgments",
-    "missing_pairs": [
-      [
-        "alt-l2-1",
-        "1317493"
-      ],
-      [
-        "equip-l2-1",
-        "1036550"
-      ],
-      [
-        "equip-l2-2",
-        "1827813"
-      ],
-      [
-        "nmac-l2-1",
-        "1212065"
-      ],
-      [
-        "nmac-l2-1",
-        "1501571"
-      ]
-    ],
-    "reason": "Expanded corpus top-ten coverage incomplete; unjudged documents are not irrelevant",
+    "status": "ready",
     "averages": {
       "lexical": {
         "precision_at_10": 0.05,
@@ -124,6 +101,11 @@
         "precision_at_10": 0.95,
         "mrr": 1.0,
         "ndcg_at_10": 0.8456998925591415
+      },
+      "hybrid": {
+        "precision_at_10": 0.9625,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8528626272363985
       }
     },
     "per_query": [
@@ -238,8 +220,65 @@
         "precision_at_10": 1.0,
         "mrr": 1.0,
         "ndcg_at_10": 0.8552385058825712
+      },
+      {
+        "query_id": "ri-l2-1",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.835303929415951
+      },
+      {
+        "query_id": "ri-l2-2",
+        "method": "hybrid",
+        "precision_at_10": 0.9,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.8027641604507135
+      },
+      {
+        "query_id": "alt-l2-1",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.9334235959390282
+      },
+      {
+        "query_id": "alt-l2-2",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.9477367187919186
+      },
+      {
+        "query_id": "nmac-l2-1",
+        "method": "hybrid",
+        "precision_at_10": 0.9,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.7516918851346635
+      },
+      {
+        "query_id": "nmac-l2-2",
+        "method": "hybrid",
+        "precision_at_10": 0.9,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.7277751357085988
+      },
+      {
+        "query_id": "equip-l2-1",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.9660618696988307
+      },
+      {
+        "query_id": "equip-l2-2",
+        "method": "hybrid",
+        "precision_at_10": 1.0,
+        "mrr": 1.0,
+        "ndcg_at_10": 0.858143722751484
       }
-    ]
+    ],
+    "definitions": "P@10 denominator=10; relevant=grade>=1; MRR over retrieved top ten; nDCG linear gains 2/1/0, pooled ideal; unjudged top-ten fails"
   },
   "layer1_primary": {
     "lexical": {
@@ -2005,5 +2044,58 @@
     "rss_delta_bytes": 399577088,
     "process_rss_bytes": 1125720064,
     "memory_method": "process RSS after minus before loading chunk texts and building BM25; allocator-dependent"
+  },
+  "post_freeze_judgment_completion": {
+    "completed_at_utc": "2026-11-18T03:23:01.874239+00:00",
+    "split": "development only",
+    "imported_rows": 5,
+    "qrels_rows_before": 134,
+    "qrels_rows_after": 139,
+    "prior_qrels_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+    "qrels_sha256": "169676088359fe273e57ba7de6a9d527f9f1f6591d17148d716441f7fab0b9cf",
+    "prior_rows_byte_unchanged": true,
+    "pool_sha256": "a09addaa84ad1a5ce13d975bf7c1829658ed09ee8633089153b1a65d1a4aa519",
+    "ranking_orders_unchanged": true,
+    "hybrid_coverage_at_10": 1.0,
+    "hybrid": {
+      "precision_at_10": 0.9625,
+      "mrr": 1.0,
+      "ndcg_at_10": 0.8528626272363985
+    },
+    "retained_dense_and_lexical_qrels_rows": 134,
+    "retained_dense_and_lexical_qrels_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465",
+    "dense_metrics_unchanged": true,
+    "extended_pool_changes_ideal_for": [
+      "nmac-l2-1"
+    ],
+    "ndcg_comparison_note": "Hybrid uses the extended 139-qrel pooled ideal. Dense/legacy lexical remain historical at 134 qrels; do not treat their nDCG as a new common-pool comparison.",
+    "new_judgments": [
+      {
+        "query_id": "alt-l2-1",
+        "acn": "1317493",
+        "grade": 1
+      },
+      {
+        "query_id": "equip-l2-1",
+        "acn": "1036550",
+        "grade": 1
+      },
+      {
+        "query_id": "equip-l2-2",
+        "acn": "1827813",
+        "grade": 2
+      },
+      {
+        "query_id": "nmac-l2-1",
+        "acn": "1212065",
+        "grade": 2
+      },
+      {
+        "query_id": "nmac-l2-1",
+        "acn": "1501571",
+        "grade": 1
+      }
+    ],
+    "frozen_test_rerun": false
   }
 }

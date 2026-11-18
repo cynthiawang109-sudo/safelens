@@ -1,0 +1,144 @@
+{
+  "split": "post-freeze development only",
+  "frozen_question_asked": false,
+  "sealed_final_answer_used_as_target": false,
+  "checks": [
+    {
+      "question": "Count reports in 2018 about NMAC conflicts",
+      "year": 2018,
+      "category": "Conflict NMAC",
+      "independent_sql_count": 112,
+      "denominator": 20000,
+      "actual": {
+        "count": 112,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2018,
+          "year_end": 2018,
+          "anomaly_category": "Conflict NMAC"
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2018,
+          2018,
+          2018,
+          2018,
+          "Conflict NMAC",
+          "Conflict NMAC"
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "status": "answered",
+      "model_calls": 0,
+      "stages": [
+        "route",
+        "aggregate_sql"
+      ],
+      "passed": true
+    },
+    {
+      "question": "How many reports in 2017 about incursions runway?",
+      "year": 2017,
+      "category": "Ground Incursion Runway",
+      "independent_sql_count": 147,
+      "denominator": 20000,
+      "actual": {
+        "count": 147,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2017,
+          "year_end": 2017,
+          "anomaly_category": "Ground Incursion Runway"
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2017,
+          2017,
+          2017,
+          2017,
+          "Ground Incursion Runway",
+          "Ground Incursion Runway"
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "status": "answered",
+      "model_calls": 0,
+      "stages": [
+        "route",
+        "aggregate_sql"
+      ],
+      "passed": true
+    },
+    {
+      "question": "Count reports in 2021 about problems critical equipment",
+      "year": 2021,
+      "category": "Aircraft Equipment Problem Critical",
+      "independent_sql_count": 513,
+      "denominator": 20000,
+      "actual": {
+        "count": 513,
+        "denominator": 20000,
+        "denominator_definition": "all reports in the active indexed corpus",
+        "filters": {
+          "year_start": 2021,
+          "year_end": 2021,
+          "anomaly_category": "Aircraft Equipment Problem Critical"
+        },
+        "sql": "SELECT count(*) FILTER (WHERE (%s::int IS NULL OR report_year >= %s) AND (%s::int IS NULL OR report_year <= %s) AND (%s::text IS NULL OR %s=ANY(anomaly_codes))), count(*) FROM reports",
+        "parameters": [
+          2021,
+          2021,
+          2021,
+          2021,
+          "Aircraft Equipment Problem Critical",
+          "Aircraft Equipment Problem Critical"
+        ],
+        "caveat": "Counts of voluntary ASRS reports, not incident rates; metadata labels may overlap and dates have month precision."
+      },
+      "status": "answered",
+      "model_calls": 0,
+      "stages": [
+        "route",
+        "aggregate_sql"
+      ],
+      "passed": true
+    }
+  ],
+  "part_b": {
+    "rows": 5,
+    "filled_grades": 5,
+    "status": "ready_for_import_validation",
+    "pool_sha256": "a09addaa84ad1a5ce13d975bf7c1829658ed09ee8633089153b1a65d1a4aa519"
+  },
+  "aggregate_source_sha256": "ae647e04cd80b5da86ecc6c0678aad2f427ea6fa2b597f3cd96f46893a559177",
+  "passed": true,
+  "final_acceptance": {
+    "pytest_passed": 80,
+    "ruff": "passed",
+    "protected_manifest_check": "passed",
+    "authorized_changed_existing_paths": [
+      "eval/experiment_step7_part1.json",
+      "eval/judging_pool_step7_additions.csv",
+      "eval/qrels.jsonl",
+      "eval/results.md",
+      "eval/step9_protected_hashes.json",
+      "src/safelens/aggregate.py"
+    ],
+    "frozen_sha256": {
+      "eval/queries_final.jsonl": "2160adf50cb818fce182c8c431e1005587acecd63261005241bef3a90a4ec2de",
+      "eval/qrels_final.jsonl": "b7288db09abe8525168a49a1f717900a06d89797309b8355d058e296424d62f3",
+      "docs/FINAL_TEST_FREEZE.md": "dab1c561170980bb7bd6532289dc66de739e609de992809c66b4b88d45f70024",
+      "eval/experiment_final_freeze.json": "a61e9a107b28f2d97548a9e007dc2f87ee19b1e9156ae3353b32ffbdd5583e53",
+      "eval/experiment_step7d.json": "d34abd6f1633e0c8e10faca95db437089a21b07bb36cfa975e53e169453fe4fd",
+      "eval/final_test_run_once.json": "39dbc1810390688bde1eb66bf2e7c6de6e9c1303372a92cf84ec4d2f21e53cee"
+    },
+    "frozen_results_section_sha256": "9113d41bef7b5e848c25cf3a0ec0e24039bb9506a5dd4e4bc0379dac682c2a68",
+    "prior_134_qrel_lines_byte_unchanged": true,
+    "development_qrels_rows": 139,
+    "duplicate_qrel_pairs": 0,
+    "dense_table_row_byte_unchanged": true,
+    "part_b_completion_record": "docs/POST_FREEZE_STEP7_JUDGMENTS.json"
+  }
+}

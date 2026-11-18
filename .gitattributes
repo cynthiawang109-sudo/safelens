@@ -7,3 +7,6 @@
 /eval/final_test_run_once.json -text
 deploy/*.sh text eol=lf
 /docs/STEP9_CI_EVAL.json -text
+/eval/step9_protected_hashes.json -text
+/eval/protected_hash_history/step9_before_cnt1.json -text
+/eval/protected_hash_history/cnt1_reissue.json -text

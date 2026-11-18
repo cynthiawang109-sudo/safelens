@@ -825,11 +825,11 @@ Production lexical = BM25Okapi; hybrid = dense:BM25 10:1, report-level RRF k=60.
 |---|---:|---:|---:|---:|---:|
 | lexical (legacy FTS) | 0.0893 | 0.2500 | 0.0500 | 0.0312 | 0.0250 |
 | dense | 0.6286 | 0.9643 | 0.9500 | 1.0000 | 0.8457 |
-| hybrid | 0.6429 | 1.0000 | pending judgments | pending judgments | pending judgments |
+| hybrid | 0.6429 | 1.0000 | 0.9625 | 1.0000 | 0.8529 |
 
 Equivalence gate: **31/31** production hybrid top-ten ACN orders match Step 6B 10:1. BM25 cold build: **8033.10 ms**, process RSS delta **380.99 MiB** (process RSS after minus before loading chunk texts and building BM25; allocator-dependent). Cache reuse is once per database/schema ready build ID; switching the ready build invalidates it.
 
-Hybrid Layer-2 has **5** missing query/ACN pairs, exported blinded and blank to `eval/judging_pool_step7_additions.csv`. Unknowns are never assigned grade zero. Dense and legacy lexical metrics retain their existing complete judgments. Full record: `eval/experiment_step7_part1.json`.
+Post-freeze judgment completion: the five human additions are imported (139 development qrels). Production hybrid top-ten coverage is 100%; all rankings are unchanged. Dense and legacy lexical rows remain historical at 134 qrels. Hybrid nDCG uses the extended 139-qrel pooled ideal; the ideal changes for nmac-l2-1, so these nDCG rows are not a new common-pool comparison. See docs/POST_FREEZE_STEP7_JUDGMENTS.md.
 
 <!-- agent-ablation-step7 -->
 ## Step 7 Part 3 — development ablation

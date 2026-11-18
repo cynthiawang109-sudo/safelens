@@ -52,8 +52,9 @@
     "original_checkout_sha256": "039d24222249510ae07bdf47f53cb2ebc0d32ec6d08186b40c1e4bf7cd036cba"
   },
   "eval/experiment_step7_part1.json": {
-    "repository_sha256": "db6b25132fcdd38471342628798561e66c7c68740e5aa452785174eb6db8d5cd",
-    "original_checkout_sha256": "b4c444f72c6ebe4906a1bf1b04e3e06567d64e80e0b31440e059037e77f58382"
+    "repository_sha256": "1f693b11fd77c71cc4092dd32212c5cd0145f7879ace379ade1981fd53062311",
+    "original_checkout_sha256": "37319422705240973c1042b03da27c9f3012498e66a07cd31141f288df4bf6f1",
+    "windows_checkout_sha256": "37319422705240973c1042b03da27c9f3012498e66a07cd31141f288df4bf6f1"
   },
   "eval/experiment_step7b.json": {
     "repository_sha256": "2d81c9981100e6180d4d993a231fc8f1bbe67039d6613fda1755cce1a26a1841",
@@ -112,16 +113,18 @@
     "original_checkout_sha256": "cf81e62f30a680a855a6489950b54fd753948f012bd16ad1f397dc4455a6c016"
   },
   "eval/judging_pool_step7_additions.csv": {
-    "repository_sha256": "42db06b33d54f18fbe4fd6c0ca6ee3cf08315c65b9ac6bda47dc4b57954125b1",
-    "original_checkout_sha256": "60a90e6dd89b9bf250415fc5fc02df816d687bbfcb793ddf4f429ba2bf0ee40b"
+    "repository_sha256": "e047d0335014cf1b6208998c93f611fb657601a34bfeb64458c4787e2734a6bf",
+    "original_checkout_sha256": "a09addaa84ad1a5ce13d975bf7c1829658ed09ee8633089153b1a65d1a4aa519",
+    "windows_checkout_sha256": "a09addaa84ad1a5ce13d975bf7c1829658ed09ee8633089153b1a65d1a4aa519"
   },
   "eval/judgments_20k_import.json": {
     "repository_sha256": "d4c478d0f7b329bb17fdd8992407fd472599e38a19d382fbfc3243f8ee54953a",
     "original_checkout_sha256": "0bf6fe5f012f8e81346fc93f5cc594ab8765da8ea44104277aa5d20f90d789d2"
   },
   "eval/qrels.jsonl": {
-    "repository_sha256": "296057032f9ec61897f5b7ea095434e7f3a2022aa9faa9618ef6245ed7a66835",
-    "original_checkout_sha256": "51b93d1b97c873dbf6b6489a436bcde3cd0724b7e30f4acafc0bff0f78029465"
+    "repository_sha256": "8e7f13ca9111c87a9421d514f68c628e77659f75dfdf4e45229bcfdd8de6ebdb",
+    "original_checkout_sha256": "169676088359fe273e57ba7de6a9d527f9f1f6591d17148d716441f7fab0b9cf",
+    "windows_checkout_sha256": "580be22594cfdf8f3c110eeca246fd4a85a287928394eac95c78aac14ed21011"
   },
   "eval/qrels_final.jsonl": {
     "repository_sha256": "b7288db09abe8525168a49a1f717900a06d89797309b8355d058e296424d62f3",
@@ -140,8 +143,9 @@
     "original_checkout_sha256": "61253588dba068d6950e6a81b4bf8fdf6468efb0a938c25a452ca16cc21bbc79"
   },
   "eval/results.md": {
-    "repository_sha256": "c45e70ca6ed329300bef1176b09a2da6d2ef7669b9f8a56163edfedbe15eb5d9",
-    "original_checkout_sha256": "925a4e7fdae4a362bf2ae0de95b90822f2faae544eb0a78482c41bd93e4ba4bd"
+    "repository_sha256": "95422e309c6b1f883ef5707a5352f39e668c624b2e61240036b00d5960a19fee",
+    "original_checkout_sha256": "47e17f6bf96772249b298c30b6f5054f8b0396bdd99615d50701f37a6d45643d",
+    "windows_checkout_sha256": "09377f7fc7ebb0f037212815aeb86ab79210ebe3f5b43d69652474adb922b9d7"
   },
   "eval/results_5k.md": {
     "repository_sha256": "ccac6f07dba876229511d846393925e3db21249ff99b8890431478834e8a2373",
@@ -204,8 +208,9 @@
     "original_checkout_sha256": "97c0f573311c3612c23183736f2a5558b6721954532e8183327070c333129994"
   },
   "src/safelens/aggregate.py": {
-    "repository_sha256": "a540da2b97e28bec5da21f0f05538ad34ddbbf44f87664e5cc99ebc7dde29bc8",
-    "original_checkout_sha256": "a540da2b97e28bec5da21f0f05538ad34ddbbf44f87664e5cc99ebc7dde29bc8"
+    "repository_sha256": "ae647e04cd80b5da86ecc6c0678aad2f427ea6fa2b597f3cd96f46893a559177",
+    "original_checkout_sha256": "ae647e04cd80b5da86ecc6c0678aad2f427ea6fa2b597f3cd96f46893a559177",
+    "windows_checkout_sha256": "910a9debcc15bf71342ec712336ea4f7dea17b0bab45eed37eabf2dbc60fba31"
   },
   "src/safelens/app.py": {
     "repository_sha256": "8e035ce524b536b69466a6a1f194eb3463224d6e91802e24ba795782fde8a6c4",
