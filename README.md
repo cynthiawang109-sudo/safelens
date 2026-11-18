@@ -16,6 +16,13 @@ and BM25 with report-level weighted RRF (dense:BM25 10:1, k=60). A bounded
 LangGraph workflow grades evidence, conditionally rewrites the query, and answers
 or abstains; metadata count questions use auditable SQL.
 
+## Demo
+
+[Watch the SafeLens walkthrough](docs/demo.mp4). It follows an unreliable
+airspeed question from the answer and stage trace to a cited ASRS report,
+then shows the 2020 runway-incursion count with its SQL provenance and
+walks through the evaluation results and their source records.
+
 ## Run the full stack
 
 With the existing indexed database and `data/models` cache from the offline
