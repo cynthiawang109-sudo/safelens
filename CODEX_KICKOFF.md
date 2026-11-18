@@ -656,3 +656,40 @@ judgments):
 Acceptance: full test suite passes; Part A validation numbers quoted in
 the fix doc; Part B's completed hybrid Layer-2 row quoted in
 `docs/STEP9_NOTES.md` or a short addendum note; no frozen asset changed.
+
+## Demo recording — scripted walkthrough video for the README
+
+*(Issued by Sunny on 2026-11-18, at Cynthia's direction. Fully scripted —
+no manual operation. Media and docs only: no production code changes.
+Development example questions only; frozen final-test questions must not
+appear, as everywhere else in the UI.)*
+
+Produce a 60–150 second walkthrough of the local web UI with Playwright
+video recording (extend the Step 8 smoke infrastructure or a new
+`web/scripts/record-demo.mjs`):
+
+1. Start the local stack (`docker compose up -d`, existing 20k index) and
+   open the Ask page at a 1440×900 viewport.
+2. Beat 1 — mechanism: submit the Step 8 smoke mechanism question
+   (unreliable airspeed); dwell on the rendered answer, then open the
+   trace panel and dwell on the stage timeline.
+3. Beat 2 — evidence: click the first ACN citation chip, dwell on the
+   report view (synopsis + narrative), then return.
+4. Beat 3 — count: submit the 2020 runway-incursion count question; dwell
+   on the answered count with filters/denominator and the SQL provenance
+   expanded.
+5. Beat 4 — evaluation: open `/results` and slow-scroll through the four
+   sections to the source trail.
+6. Post-process with ffmpeg if present (otherwise note it and deliver the
+   raw recording): trim dead head/tail, speed up the long provider waits
+   so the final cut stays in range, export `docs/demo.mp4` (H.264,
+   ≤ 25 MB). An additional short GIF teaser is welcome only if it stays
+   under ~8 MB.
+7. README: add a short "Demo" section linking the video and naming what
+   it shows; keep the existing screenshots.
+
+Acceptance: `docs/demo.mp4` exists, plays start to finish, and visibly
+covers all four beats; no secrets, keys, or frozen questions on screen;
+the only repo changes are the media file, the recording script, and the
+README section; prior tests unaffected (no code touched). Report the
+final duration and file size.
